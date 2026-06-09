@@ -114,7 +114,7 @@
       transition: all 0.15s; white-space: nowrap;
     }
     .fb-toggle:hover { border-color: var(--accent); color: var(--accent); }
-    .chart-wrap { position: relative; height: 600px; }
+    .chart-wrap { position: relative; height: 580px; }
 
     /* ── MATCHES ── */
     .spieltag-group { margin-bottom: 2.5rem; }

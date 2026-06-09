@@ -203,14 +203,7 @@ function renderSpiele() {
 }
 
 // ── CHART ─────────────────────────────────────────────────────────
-// Envidual (5): Ludwig, Jonas, Luca, Marcel, Chris
-// Hanako   (5): Cristian, Greta, Florian, Leonie, Niklas
-// Headsquare(8): Raphael, Andreas, Agnes, Christoph, Irene, Lukas, Marco, Martin
-const COLORS = [
-  '#5BB8E8', '#2E94C4', '#1B719C', '#125078', '#0A3154', // Envidual
-  '#6BBAD4', '#3D8FAD', '#2B6D88', '#1A4D63', '#0E303F', // Hanako
-  '#FF9999', '#FF5555', '#FF2222', '#E70713', '#C00010', '#90000C', '#600008', '#300004' // Headsquare
-];
+const COLORS = ['#d4f53a','#3af5b4','#3a8ff5','#f5a03a','#f53ab4','#a03af5','#f5f53a','#3af5f5','#f53a5a','#7af53a','#f57a3a','#3a5af5','#f53af5','#5af5f5','#f5c43a','#3af58a','#f5503a','#c43af5'];
 
 let chart = null;
 let hoveredIdx = null;
@@ -244,7 +237,7 @@ function initChart() {
       scales: {
         x: { grid: { color: '#222' }, ticks: { color: '#5a5a72', font: { family: 'DM Mono', size: 11 } } },
         y: {
-          min: 600, max: 1400,
+          min: 700, max: 1300,
           grid: { color: '#222' },
           ticks: { color: '#5a5a72', font: { family: 'DM Mono', size: 11 } }
         }

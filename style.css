@@ -82,8 +82,8 @@
       padding: 2px 7px; border-radius: 100px; margin-left: 8px;
     }
     .firma-Envidual   { background: rgba(58,143,245,0.12); color: var(--envidual); }
-    .firma-Hanako     { background: rgba(245,58,180,0.12); color: var(--hanako); }
-    .firma-Headsquare { background: rgba(245,160,58,0.12); color: var(--headsquare); }
+    .firma-Hanako     { background: rgba(255,255,255,0.1); color: var(--hanako); }
+    .firma-Headsquare { background: rgba(0.0.0.0); color: rgba(231,7,19,0.7); }
 
     .elo-val    { font-family: 'DM Mono', monospace; font-size: 0.9rem; font-weight: 400; color: var(--dim); }
     .punkte-val { font-family: 'DM Mono', monospace; font-size: 1.05rem; font-weight: 700; color: var(--accent); }

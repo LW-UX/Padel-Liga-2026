@@ -1,40 +1,68 @@
 const PADEL_DATA = {
+
   players: [
-    { id: "ludwig_w",   name: "Ludwig W.",   elo: 1099, history: [
+    { id: "ludwig_w",   name: "Ludwig W.",   firma: "Envidual",   elo: 1099, history: [
       { date: "2026-05-13", elo: 1000, spiel: "Start" },
       { date: "2026-05-13", elo: 1053, spiel: "Spiel 4" },
       { date: "2026-05-19", elo: 1099, spiel: "Spiel 6" }
     ]},
-    { id: "jonas_l",    name: "Jonas L.",    elo: 1056, history: [
+    { id: "jonas_l",    name: "Jonas L.",    firma: "Envidual",   elo: 1056, history: [
       { date: "2026-05-13", elo: 1000, spiel: "Start" },
       { date: "2026-05-20", elo: 1056, spiel: "Spiel 2" }
     ]},
-    { id: "luca_w",     name: "Luca W.",     elo: 1056, history: [
+    { id: "luca_w",     name: "Luca W.",     firma: "Envidual",   elo: 1056, history: [
       { date: "2026-05-13", elo: 1000, spiel: "Start" },
       { date: "2026-05-20", elo: 1056, spiel: "Spiel 2" }
     ]},
-    { id: "raphael_h",  name: "Raphael H.",  elo: 1053, history: [
+    { id: "raphael_h",  name: "Raphael H.",  firma: "Headsquare", elo: 1053, history: [
       { date: "2026-05-13", elo: 1000, spiel: "Start" },
       { date: "2026-05-13", elo: 1053, spiel: "Spiel 4" }
     ]},
-    { id: "cristian_b", name: "Cristian B.", elo: 992,  history: [
+    { id: "cristian_b", name: "Cristian B.", firma: "Hanako",     elo: 992,  history: [
       { date: "2026-05-13", elo: 1000, spiel: "Start" },
       { date: "2026-05-19", elo: 1051, spiel: "Spiel 6" },
       { date: "2026-05-20", elo: 992,  spiel: "Spiel 2" }
     ]},
-    { id: "greta_p",    name: "Greta P.",    elo: 949,  history: [
+    { id: "marcel_m",   name: "Marcel M.",   firma: "Envidual",   elo: 1000, history: [
+      { date: "2026-05-13", elo: 1000, spiel: "Start" }
+    ]},
+    { id: "andreas_l",  name: "Andreas L.",  firma: "Headsquare", elo: 1000, history: [
+      { date: "2026-05-13", elo: 1000, spiel: "Start" }
+    ]},
+    { id: "greta_p",    name: "Greta P.",    firma: "Hanako",     elo: 949,  history: [
       { date: "2026-05-13", elo: 1000, spiel: "Start" },
       { date: "2026-05-19", elo: 949,  spiel: "Spiel 6" }
     ]},
-    { id: "leonie_r",   name: "Leonie R.",   elo: 947,  history: [
-      { date: "2026-05-13", elo: 1000, spiel: "Start" },
-      { date: "2026-05-20", elo: 947,  spiel: "Spiel 2" }
+    { id: "agnes_k",    name: "Agnes K.",    firma: "Headsquare", elo: 1000, history: [
+      { date: "2026-05-13", elo: 1000, spiel: "Start" }
     ]},
-    { id: "florian_z",  name: "Florian Z.",  elo: 947,  history: [
+    { id: "chris_m",    name: "Chris M.",    firma: "Envidual",   elo: 1000, history: [
+      { date: "2026-05-13", elo: 1000, spiel: "Start" }
+    ]},
+    { id: "christoph_l",name: "Christoph L.",firma: "Headsquare", elo: 1000, history: [
+      { date: "2026-05-13", elo: 1000, spiel: "Start" }
+    ]},
+    { id: "irene_w",    name: "Irene W.",    firma: "Headsquare", elo: 1000, history: [
+      { date: "2026-05-13", elo: 1000, spiel: "Start" }
+    ]},
+    { id: "lukas_p",    name: "Lukas P.",    firma: "Headsquare", elo: 1000, history: [
+      { date: "2026-05-13", elo: 1000, spiel: "Start" }
+    ]},
+    { id: "marco_m",    name: "Marco M.",    firma: "Headsquare", elo: 1000, history: [
+      { date: "2026-05-13", elo: 1000, spiel: "Start" }
+    ]},
+    { id: "martin_b",   name: "Martin B.",   firma: "Headsquare", elo: 1000, history: [
+      { date: "2026-05-13", elo: 1000, spiel: "Start" }
+    ]},
+    { id: "florian_z",  name: "Florian Z.",  firma: "Hanako",     elo: 947,  history: [
       { date: "2026-05-13", elo: 1000, spiel: "Start" },
       { date: "2026-05-13", elo: 947,  spiel: "Spiel 4" }
     ]},
-    { id: "niklas_k",   name: "Niklas K.",   elo: 901,  history: [
+    { id: "leonie_r",   name: "Leonie R.",   firma: "Hanako",     elo: 947,  history: [
+      { date: "2026-05-13", elo: 1000, spiel: "Start" },
+      { date: "2026-05-20", elo: 947,  spiel: "Spiel 2" }
+    ]},
+    { id: "niklas_k",   name: "Niklas K.",   firma: "Hanako",     elo: 901,  history: [
       { date: "2026-05-13", elo: 1000, spiel: "Start" },
       { date: "2026-05-13", elo: 947,  spiel: "Spiel 4" },
       { date: "2026-05-19", elo: 901,  spiel: "Spiel 6" }
@@ -42,32 +70,39 @@ const PADEL_DATA = {
   ],
 
   matches: [
-    {
-      id: "spiel4",
-      datum: "2026-05-13",
-      spieltag: 1,
-      team1: { spieler: ["Ludwig W.", "Raphael H."], saetze: 2 },
-      team2: { spieler: ["Florian Z.", "Niklas K."], saetze: 0 },
-      ergebnis: "6:3, 6:2",
-      sieger: 1
-    },
-    {
-      id: "spiel6",
-      datum: "2026-05-19",
-      spieltag: 2,
-      team1: { spieler: ["Ludwig W.", "Cristian B."], saetze: 2 },
-      team2: { spieler: ["Niklas K.", "Greta P."], saetze: 0 },
-      ergebnis: "7:5, 6:1",
-      sieger: 1
-    },
-    {
-      id: "spiel2",
-      datum: "2026-05-20",
-      spieltag: 1,
-      team1: { spieler: ["Leonie R.", "Cristian B."], saetze: 0 },
-      team2: { spieler: ["Jonas L.", "Luca W."], saetze: 2 },
-      ergebnis: "2:6, 0:6",
-      sieger: 2
-    }
+    // SPIELTAG 1
+    { id: "spiel1",  spieltag: 1, datum: "2026-06-11", team1: { spieler: ["Greta P.",    "Agnes K."]    }, team2: { spieler: ["Christoph L.", "Marco M."]  }, ergebnis: null, saetze: null, sieger: null },
+    { id: "spiel2",  spieltag: 1, datum: "2026-05-20", team1: { spieler: ["Leonie R.",   "Cristian B."] }, team2: { spieler: ["Jonas L.",     "Luca W."]   }, ergebnis: "2:6, 0:6", saetze: "0:2", sieger: 2 },
+    { id: "spiel3",  spieltag: 1, datum: "2026-05-22", team1: { spieler: ["Martin B.",   "Chris M."]    }, team2: { spieler: ["Marcel M.",    "Irene W."]  }, ergebnis: null, saetze: null, sieger: null },
+    { id: "spiel4",  spieltag: 1, datum: "2026-05-13", team1: { spieler: ["Ludwig W.",   "Raphael H."]  }, team2: { spieler: ["Florian Z.",   "Niklas K."] }, ergebnis: "6:3, 6:2", saetze: "2:0", sieger: 1 },
+    // SPIELTAG 2
+    { id: "spiel5",  spieltag: 2, datum: "2026-06-10", team1: { spieler: ["Lukas P.",    "Martin B."]   }, team2: { spieler: ["Luca W.",      "Andreas L."]}, ergebnis: null, saetze: null, sieger: null },
+    { id: "spiel6",  spieltag: 2, datum: "2026-05-19", team1: { spieler: ["Ludwig W.",   "Cristian B."] }, team2: { spieler: ["Niklas K.",    "Greta P."]  }, ergebnis: "7:5, 6:1", saetze: "2:0", sieger: 1 },
+    { id: "spiel7",  spieltag: 2, datum: "2026-06-18", team1: { spieler: ["Christoph L.","Raphael H."]  }, team2: { spieler: ["Marco M.",     "Marcel M."] }, ergebnis: null, saetze: null, sieger: null },
+    { id: "spiel8",  spieltag: 2, datum: "2026-06-05", team1: { spieler: ["Chris M.",    "Jonas L."]    }, team2: { spieler: ["Irene W.",     "Leonie R."] }, ergebnis: null, saetze: null, sieger: null },
+    // SPIELTAG 3
+    { id: "spiel9",  spieltag: 3, datum: "2026-06-19", team1: { spieler: ["Cristian B.", "Chris M."]    }, team2: { spieler: ["Raphael H.",   "Leonie R."] }, ergebnis: null, saetze: null, sieger: null },
+    { id: "spiel10", spieltag: 3, datum: "2026-06-17", team1: { spieler: ["Agnes K.",    "Lukas P."]    }, team2: { spieler: ["Ludwig W.",    "Marco M."]  }, ergebnis: null, saetze: null, sieger: null },
+    { id: "spiel11", spieltag: 3, datum: "2026-06-19", team1: { spieler: ["Christoph L.","Florian Z."]  }, team2: { spieler: ["Luca W.",      "Irene W."]  }, ergebnis: null, saetze: null, sieger: null },
+    { id: "spiel12", spieltag: 3, datum: "2026-06-03", team1: { spieler: ["Greta P.",    "Andreas L."]  }, team2: { spieler: ["Marcel M.",    "Jonas L."]  }, ergebnis: "1:6, 6:3 – 6:10", saetze: "1:2", sieger: 2 },
+    // SPIELTAG 4
+    { id: "spiel13", spieltag: 4, datum: "2026-07-03", team1: { spieler: ["Chris M.",    "Raphael H."]  }, team2: { spieler: ["Ludwig W.",    "Irene W."]  }, ergebnis: null, saetze: null, sieger: null },
+    { id: "spiel14", spieltag: 4, datum: "2026-07-03", team1: { spieler: ["Cristian B.", "Lukas P."]    }, team2: { spieler: ["Christoph L.", "Martin B."] }, ergebnis: null, saetze: null, sieger: null },
+    { id: "spiel15", spieltag: 4, datum: "2026-07-03", team1: { spieler: ["Marco M.",    "Andreas L."]  }, team2: { spieler: ["Leonie R.",    "Niklas K."] }, ergebnis: null, saetze: null, sieger: null },
+    { id: "spiel16", spieltag: 4, datum: "2026-07-03", team1: { spieler: ["Marcel M.",   "Florian Z."]  }, team2: { spieler: ["Agnes K.",     "Jonas L."]  }, ergebnis: null, saetze: null, sieger: null },
+    // SPIELTAG 5
+    { id: "spiel17", spieltag: 5, datum: "2026-07-17", team1: { spieler: ["Martin B.",   "Luca W."]     }, team2: { spieler: ["Florian Z.",   "Ludwig W."] }, ergebnis: null, saetze: null, sieger: null },
+    { id: "spiel18", spieltag: 5, datum: "2026-07-17", team1: { spieler: ["Chris M.",    "Agnes K."]    }, team2: { spieler: ["Jonas L.",     "Greta P."]  }, ergebnis: null, saetze: null, sieger: null },
+    { id: "spiel19", spieltag: 5, datum: "2026-07-17", team1: { spieler: ["Raphael H.",  "Andreas L."]  }, team2: { spieler: ["Lukas P.",     "Niklas K."] }, ergebnis: null, saetze: null, sieger: null },
+    { id: "spiel20", spieltag: 5, datum: "2026-07-17", team1: { spieler: ["Christoph L.","Irene W."]    }, team2: { spieler: ["Marco M.",     "Cristian B."]},ergebnis: null, saetze: null, sieger: null },
+    // SPIELTAG 6
+    { id: "spiel21", spieltag: 6, datum: "2026-07-31", team1: { spieler: ["Florian Z.",  "Leonie R."]   }, team2: { spieler: ["Andreas L.",   "Ludwig W."] }, ergebnis: null, saetze: null, sieger: null },
+    { id: "spiel22", spieltag: 6, datum: "2026-07-31", team1: { spieler: ["Irene W.",    "Cristian B."] }, team2: { spieler: ["Greta P.",     "Christoph L."]},ergebnis: null,saetze: null, sieger: null },
+    { id: "spiel23", spieltag: 6, datum: "2026-07-31", team1: { spieler: ["Jonas L.",    "Marco M."]    }, team2: { spieler: ["Agnes K.",     "Martin B."] }, ergebnis: null, saetze: null, sieger: null },
+    { id: "spiel24", spieltag: 6, datum: "2026-07-31", team1: { spieler: ["Marcel M.",   "Niklas K."]   }, team2: { spieler: ["Lukas P.",     "Luca W."]   }, ergebnis: null, saetze: null, sieger: null },
+    // SPIELTAG 7 – Ausgleichsspieltag
+    { id: "spiel25", spieltag: 7, datum: "2026-08-14", team1: { spieler: ["Niklas K.",   "Chris M."]    }, team2: { spieler: ["Agnes K.",     "Andreas L."]}, ergebnis: null, saetze: null, sieger: null },
+    { id: "spiel26", spieltag: 7, datum: "2026-08-14", team1: { spieler: ["Florian Z.",  "Raphael H."]  }, team2: { spieler: ["Marcel M.",    "Luca W."]   }, ergebnis: null, saetze: null, sieger: null },
+    { id: "spiel27", spieltag: 7, datum: "2026-08-14", team1: { spieler: ["Leonie R.",   "Lukas P."]    }, team2: { spieler: ["Martin B.",    "?"]         }, ergebnis: null, saetze: null, sieger: null }
   ]
 };

@@ -84,8 +84,6 @@
 </main>
 
 <script>
-const COLORS = ['#d4f53a','#3af5b4','#3a8ff5','#f5a03a','#f53ab4','#a03af5','#f5f53a','#3af5f5','#f53a5a','#7af53a','#f57a3a','#3a5af5','#f53af5','#5af5f5','#f5c43a','#3af58a','#f5503a','#c43af5'];
-
 // ── NAV ───────────────────────────────────────────────────────────
 function nav(id, el) {
   document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
@@ -205,7 +203,17 @@ function renderSpiele() {
 }
 
 // ── CHART ─────────────────────────────────────────────────────────
+// Envidual (5): Ludwig, Jonas, Luca, Marcel, Chris
+// Hanako   (5): Cristian, Greta, Florian, Leonie, Niklas
+// Headsquare(8): Raphael, Andreas, Agnes, Christoph, Irene, Lukas, Marco, Martin
+const COLORS = [
+  '#5BB8E8', '#2E94C4', '#1B719C', '#125078', '#0A3154', // Envidual
+  '#6BBAD4', '#3D8FAD', '#2B6D88', '#1A4D63', '#0E303F', // Hanako
+  '#FF9999', '#FF5555', '#FF2222', '#E70713', '#C00010', '#90000C', '#600008', '#300004' // Headsquare
+];
+
 let chart = null;
+let hoveredIdx = null;
 const activeP = new Set(PADEL_DATA.players.map(p => p.id));
 
 function initChart() {
@@ -215,37 +223,62 @@ function initChart() {
   const datasets = PADEL_DATA.players.map((p, i) => ({
     label: p.name,
     data: allDates.map(d => { const pts = p.history.filter(h => h.date <= d); return pts.length ? pts[pts.length-1].elo : null; }),
-    borderColor: COLORS[i], backgroundColor: COLORS[i]+'15',
-    borderWidth: 2, pointRadius: 4, pointHoverRadius: 6, tension: 0.3, spanGaps: true
+    borderColor: COLORS[i],
+    backgroundColor: 'transparent',
+    borderWidth: 2,
+    pointRadius: 4,
+    pointHoverRadius: 4,
+    tension: 0.3,
+    spanGaps: true
   }));
   chart = new Chart(ctx, {
     type: 'line',
     data: { labels: allDates.map(d => new Date(d).toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit'})), datasets },
     options: {
       responsive: true, maintainAspectRatio: false,
-      interaction: { mode: 'index', intersect: false },
+      interaction: { mode: 'none' },
       plugins: {
         legend: { display: false },
-        tooltip: {
-          backgroundColor: '#13131a', borderColor: '#25252f', borderWidth: 1,
-          titleColor: '#5a5a72', bodyColor: '#eeeef5',
-          bodyFont: { family: 'DM Mono' },
-          callbacks: { label: c => ` ${c.dataset.label}: ${c.parsed.y}` }
-        }
+        tooltip: { enabled: false }
       },
       scales: {
-        x: { grid: { color: '#1c1c26' }, ticks: { color: '#5a5a72', font: { family: 'DM Mono', size: 11 } } },
-        y: { grid: { color: '#1c1c26' }, ticks: { color: '#5a5a72', font: { family: 'DM Mono', size: 11 } } }
+        x: { grid: { color: '#222' }, ticks: { color: '#5a5a72', font: { family: 'DM Mono', size: 11 } } },
+        y: {
+          min: 600, max: 1400,
+          grid: { color: '#222' },
+          ticks: { color: '#5a5a72', font: { family: 'DM Mono', size: 11 } }
+        }
       }
     }
   });
   renderFilter();
 }
 
+function applyHover(idx) {
+  hoveredIdx = idx;
+  chart.data.datasets.forEach((ds, i) => {
+    if (idx === null || i === idx) {
+      ds.borderColor = COLORS[i];
+      ds.borderWidth = idx === null ? 2 : 3;
+      ds.borderOpacity = 1;
+    } else {
+      ds.borderColor = '#333333';
+      ds.borderWidth = 1;
+    }
+  });
+  chart.update('none');
+}
+
 function renderFilter() {
   document.getElementById('filter-row').innerHTML = PADEL_DATA.players.map((p,i) => {
     const on = activeP.has(p.id);
-    return `<button class="fb ${on?'on':''}" style="${on?`background:${COLORS[i]};`:''}" onclick="toggleP('${p.id}',${i},this)">${p.name}</button>`;
+    return `<button
+      class="fb ${on?'on':''}"
+      style="${on ? `background:${COLORS[i]};` : ''}"
+      onclick="toggleP('${p.id}',${i},this)"
+      onmouseenter="applyHover(${i})"
+      onmouseleave="applyHover(null)"
+    >${p.name}</button>`;
   }).join('');
 }
 

@@ -38,7 +38,7 @@
     nav button.active { color: var(--accent); background: var(--surface2); }
 
     /* ── HERO ── */
-    .hero { padding: 5rem 2rem 3.5rem; max-width: 1100px; margin: 0 auto; }
+    .hero { padding: 3rem 2rem 2rem; max-width: 1100px; margin: 0 auto; }
     .hero-eyebrow { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); margin-bottom: 1rem; }
     .hero h1 { font-family: 'Bebas Neue', sans-serif; font-size: clamp(4rem, 10vw, 8rem); line-height: 0.9; letter-spacing: 0.02em; }
     .hero h1 em { color: var(--accent); font-style: normal; }

@@ -6,909 +6,661 @@
   <title>Padel-Liga 2026</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <script src="data/data.js"></script>
   <style>
     :root {
-      --bg: #0a0a0a;
-      --surface: #111111;
-      --surface2: #1a1a1a;
-      --border: #222222;
-      --accent: #c8f53a;
-      --accent2: #3af5a0;
-      --text: #f0f0f0;
-      --text-muted: #666;
-      --text-dim: #999;
-      --danger: #f53a3a;
-      --font-display: 'Bebas Neue', sans-serif;
-      --font-body: 'DM Sans', sans-serif;
-      --font-mono: 'DM Mono', monospace;
-      --radius: 12px;
+      --bg:       #0c0c0f;
+      --surface:  #13131a;
+      --surface2: #1c1c26;
+      --border:   #25252f;
+      --accent:   #d4f53a;
+      --accent2:  #3af5b4;
+      --danger:   #f53a5a;
+      --text:     #eeeef5;
+      --muted:    #5a5a72;
+      --dim:      #8888a8;
+      --envidual: #3a8ff5;
+      --hanako:   #f53ab4;
+      --headsquare: #f5a03a;
     }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; min-height: 100vh; }
 
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-
-    body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: var(--font-body);
-      min-height: 100vh;
-      overflow-x: hidden;
-    }
-
-    /* HEADER */
+    /* ── HEADER ── */
     header {
+      position: sticky; top: 0; z-index: 200;
+      background: rgba(12,12,15,0.92); backdrop-filter: blur(16px);
       border-bottom: 1px solid var(--border);
-      padding: 0 2rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      height: 64px;
-      position: sticky;
-      top: 0;
-      background: rgba(10,10,10,0.95);
-      backdrop-filter: blur(12px);
-      z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 2rem; height: 60px;
     }
-
-    .logo {
-      font-family: var(--font-display);
-      font-size: 1.6rem;
-      letter-spacing: 0.05em;
-      color: var(--accent);
+    .logo { font-family: 'Bebas Neue', sans-serif; font-size: 1.5rem; letter-spacing: 0.08em; color: var(--accent); }
+    .logo span { color: var(--dim); font-size: 1rem; margin-left: 6px; }
+    nav { display: flex; gap: 2px; }
+    nav button {
+      background: none; border: none; color: var(--muted); font-family: 'DM Sans', sans-serif;
+      font-size: 0.82rem; font-weight: 500; padding: 6px 14px; border-radius: 6px;
+      cursor: pointer; transition: all 0.15s;
     }
+    nav button:hover { color: var(--text); background: var(--surface2); }
+    nav button.active { color: var(--accent); background: var(--surface2); }
 
-    nav { display: flex; gap: 0; }
-    nav a {
-      color: var(--text-muted);
-      text-decoration: none;
-      font-size: 0.85rem;
-      font-weight: 500;
-      padding: 0.5rem 1rem;
-      border-radius: 6px;
-      transition: all 0.15s;
-      cursor: pointer;
-    }
-    nav a:hover, nav a.active { color: var(--text); background: var(--surface2); }
-    nav a.active { color: var(--accent); }
-
-    /* HERO */
+    /* ── HERO ── */
     .hero {
-      padding: 4rem 2rem 3rem;
-      max-width: 1100px;
-      margin: 0 auto;
+      padding: 5rem 2rem 3.5rem; max-width: 1100px; margin: 0 auto;
+      display: grid; grid-template-columns: 1fr auto; align-items: end; gap: 2rem;
     }
+    .hero-eyebrow { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); margin-bottom: 1rem; }
+    .hero h1 { font-family: 'Bebas Neue', sans-serif; font-size: clamp(4rem, 10vw, 8rem); line-height: 0.9; letter-spacing: 0.02em; }
+    .hero h1 em { color: var(--accent); font-style: normal; }
+    .hero-sub { color: var(--dim); font-size: 0.9rem; font-weight: 300; margin-top: 1rem; }
+    .hero-stats { display: flex; flex-direction: column; gap: 12px; align-items: flex-end; }
+    .hero-stat { text-align: right; }
+    .hero-stat-val { font-family: 'Bebas Neue', sans-serif; font-size: 2.5rem; color: var(--text); line-height: 1; }
+    .hero-stat-lbl { font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
 
-    .hero-label {
-      font-size: 0.75rem;
-      font-weight: 600;
-      letter-spacing: 0.15em;
-      color: var(--accent);
-      text-transform: uppercase;
-      margin-bottom: 0.75rem;
-    }
-
-    .hero h1 {
-      font-family: var(--font-display);
-      font-size: clamp(3rem, 8vw, 6rem);
-      line-height: 0.95;
-      letter-spacing: 0.02em;
-      margin-bottom: 1rem;
-    }
-
-    .hero h1 span { color: var(--accent); }
-
-    .hero-sub {
-      color: var(--text-dim);
-      font-size: 1rem;
-      font-weight: 300;
-    }
-
-    /* MAIN LAYOUT */
-    main {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 0 2rem 4rem;
-    }
-
-    /* SECTIONS */
+    /* ── MAIN ── */
+    main { max-width: 1100px; margin: 0 auto; padding: 0 2rem 6rem; }
     .section { display: none; }
     .section.active { display: block; }
 
-    /* SECTION HEADER */
-    .section-header {
-      display: flex;
-      align-items: baseline;
-      gap: 1rem;
-      margin-bottom: 1.5rem;
-      padding-bottom: 1rem;
+    /* ── SECTION HEADER ── */
+    .sh { display: flex; align-items: baseline; gap: 12px; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border); }
+    .sh-title { font-family: 'Bebas Neue', sans-serif; font-size: 2rem; letter-spacing: 0.05em; }
+    .sh-meta { font-family: 'DM Mono', monospace; font-size: 0.72rem; color: var(--muted); }
+
+    /* ── RANKING ── */
+    .ranking-wrap { overflow-x: auto; }
+    table.rt { width: 100%; border-collapse: collapse; }
+    table.rt th {
+      text-align: left; font-size: 0.68rem; font-weight: 600; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--muted); padding: 10px 16px;
       border-bottom: 1px solid var(--border);
     }
+    table.rt th.r { text-align: right; }
+    table.rt td { padding: 14px 16px; border-bottom: 1px solid var(--border); }
+    table.rt tr:last-child td { border-bottom: none; }
+    table.rt tbody tr { transition: background 0.1s; cursor: default; }
+    table.rt tbody tr:hover { background: var(--surface); }
 
-    .section-title {
-      font-family: var(--font-display);
-      font-size: 2rem;
-      letter-spacing: 0.05em;
+    .rn { font-family: 'DM Mono', monospace; font-size: 0.78rem; color: var(--muted); width: 36px; }
+    .r1 .rn { color: var(--accent); font-weight: 700; }
+    .r2 .rn { color: #bbb; }
+    .r3 .rn { color: #c97b2e; }
+
+    .pname { font-weight: 500; font-size: 0.95rem; }
+    .firma-badge {
+      display: inline-block; font-size: 0.65rem; font-weight: 600;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      padding: 2px 7px; border-radius: 100px; margin-left: 8px;
     }
+    .firma-Envidual   { background: rgba(58,143,245,0.12); color: var(--envidual); }
+    .firma-Hanako     { background: rgba(245,58,180,0.12); color: var(--hanako); }
+    .firma-Headsquare { background: rgba(245,160,58,0.12); color: var(--headsquare); }
 
-    .section-count {
-      font-family: var(--font-mono);
-      font-size: 0.75rem;
-      color: var(--text-muted);
+    .elo-val { font-family: 'DM Mono', monospace; font-size: 1.05rem; font-weight: 500; color: var(--accent); text-align: right; }
+    .elo-delta { font-family: 'DM Mono', monospace; font-size: 0.78rem; text-align: right; }
+    .pos { color: var(--accent2); }
+    .neg { color: var(--danger); }
+    .neu { color: var(--muted); }
+
+    .bar-cell { width: 160px; }
+    .bar-wrap { background: var(--border); border-radius: 2px; height: 3px; overflow: hidden; }
+    .bar-fill { height: 100%; background: var(--accent); border-radius: 2px; }
+
+    .sp-count { font-family: 'DM Mono', monospace; font-size: 0.78rem; color: var(--muted); text-align: right; }
+
+    /* ── CHART ── */
+    .chart-box {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 14px; padding: 1.5rem; margin-bottom: 1.5rem;
     }
-
-    /* RANKING TABLE */
-    .ranking-table {
-      width: 100%;
-      border-collapse: collapse;
+    .chart-box-title { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 1.25rem; }
+    .filter-row { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 1.25rem; }
+    .fb {
+      font-family: 'DM Sans', sans-serif; font-size: 0.75rem; font-weight: 500;
+      padding: 3px 10px; border-radius: 100px; border: 1px solid var(--border);
+      background: transparent; color: var(--muted); cursor: pointer; transition: all 0.15s;
     }
+    .fb.on { color: #000; border-color: transparent; }
+    .chart-wrap { position: relative; height: 340px; }
 
-    .ranking-table th {
-      text-align: left;
-      font-size: 0.7rem;
-      font-weight: 600;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--text-muted);
-      padding: 0.75rem 1rem;
-      border-bottom: 1px solid var(--border);
+    /* ── MATCHES ── */
+    .spieltag-group { margin-bottom: 2rem; }
+    .spieltag-label {
+      font-size: 0.68rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 10px; padding-bottom: 8px; border-bottom: 1px solid var(--border);
     }
-
-    .ranking-table th:last-child,
-    .ranking-table td:last-child { text-align: right; }
-
-    .ranking-table tr.player-row {
-      border-bottom: 1px solid var(--border);
-      transition: background 0.15s;
-      cursor: pointer;
+    .match-list { display: flex; flex-direction: column; gap: 8px; }
+    .mc {
+      background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+      padding: 1rem 1.25rem; display: grid;
+      grid-template-columns: 70px 1fr 90px 1fr 80px;
+      align-items: center; gap: 12px; transition: border-color 0.15s;
     }
+    .mc.played { border-color: var(--border); }
+    .mc.pending { opacity: 0.5; }
+    .mc-date { font-family: 'DM Mono', monospace; font-size: 0.68rem; color: var(--muted); }
+    .mc-team { display: flex; flex-direction: column; gap: 2px; }
+    .mc-team.win .mc-players { font-weight: 600; color: var(--text); }
+    .mc-team:not(.win) .mc-players { color: var(--muted); }
+    .mc-players { font-size: 0.88rem; }
+    .mc-score { text-align: center; }
+    .mc-score-main { font-family: 'Bebas Neue', sans-serif; font-size: 1.8rem; letter-spacing: 0.05em; color: var(--text); line-height: 1; }
+    .mc-score-detail { font-family: 'DM Mono', monospace; font-size: 0.65rem; color: var(--muted); margin-top: 2px; }
+    .mc-pending-label { font-size: 0.7rem; color: var(--muted); text-align: center; font-style: italic; }
+    .mc-nr { font-family: 'DM Mono', monospace; font-size: 0.68rem; color: var(--muted); text-align: right; }
 
-    .ranking-table tr.player-row:hover { background: var(--surface2); }
+    /* ── ADMIN ── */
+    .admin-gate { max-width: 380px; margin: 4rem auto; text-align: center; }
+    .admin-gate h2 { font-family: 'Bebas Neue', sans-serif; font-size: 2.5rem; letter-spacing: 0.05em; margin-bottom: 0.5rem; }
+    .admin-gate p { color: var(--muted); font-size: 0.88rem; margin-bottom: 2rem; }
+    .pw-row { display: flex; gap: 8px; }
 
-    .ranking-table td {
-      padding: 1rem;
-      font-size: 0.95rem;
+    .admin-inner { display: none; }
+    .admin-inner.on { display: block; }
+
+    .admin-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+    .admin-card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 1.5rem; }
+    .admin-card-title { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 1.25rem; }
+
+    .teams-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 1.25rem; }
+    .team-block { background: var(--surface2); border-radius: 10px; padding: 1rem; }
+    .team-block-lbl { font-size: 0.68rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; }
+    .prow { display: flex; gap: 8px; margin-bottom: 8px; }
+    .prow:last-child { margin-bottom: 0; }
+    .prow input[type=text]   { flex: 2; min-width: 0; }
+    .prow input[type=number] { flex: 1; min-width: 0; }
+
+    .sets-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 1.25rem; }
+    .set-block { background: var(--surface2); border-radius: 10px; padding: 0.9rem; }
+    .set-lbl { font-size: 0.65rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+    .set-pair { display: flex; align-items: center; gap: 6px; }
+    .set-pair input { flex: 1; text-align: center; }
+    .set-pair span { color: var(--muted); }
+
+    input[type=text], input[type=number], input[type=password], select {
+      background: var(--surface2); border: 1px solid var(--border); border-radius: 8px;
+      color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 0.88rem;
+      padding: 8px 12px; outline: none; width: 100%; transition: border-color 0.15s;
     }
-
-    .rank-num {
-      font-family: var(--font-mono);
-      font-size: 0.8rem;
-      color: var(--text-muted);
-      width: 40px;
-    }
-
-    .rank-1 .rank-num { color: var(--accent); font-weight: 700; }
-    .rank-2 .rank-num { color: #aaa; }
-    .rank-3 .rank-num { color: #cd7f32; }
-
-    .player-name { font-weight: 500; }
-
-    .elo-value {
-      font-family: var(--font-mono);
-      font-size: 1.1rem;
-      font-weight: 500;
-      color: var(--accent);
-    }
-
-    .elo-bar-cell { width: 180px; }
-    .elo-bar-wrap { background: var(--border); border-radius: 2px; height: 3px; overflow: hidden; }
-    .elo-bar { height: 100%; background: var(--accent); border-radius: 2px; }
-
-    .spiele-count {
-      font-family: var(--font-mono);
-      font-size: 0.8rem;
-      color: var(--text-muted);
-    }
-
-    /* CHART SECTION */
-    .chart-container {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 1.5rem;
-      margin-bottom: 2rem;
-    }
-
-    .chart-title {
-      font-size: 0.75rem;
-      font-weight: 600;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--text-muted);
-      margin-bottom: 1.5rem;
-    }
-
-    .chart-wrap { position: relative; height: 320px; }
-
-    .player-filter {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-bottom: 1.25rem;
-    }
-
-    .filter-btn {
-      font-family: var(--font-body);
-      font-size: 0.8rem;
-      font-weight: 500;
-      padding: 4px 12px;
-      border-radius: 100px;
-      border: 1px solid var(--border);
-      background: transparent;
-      color: var(--text-muted);
-      cursor: pointer;
-      transition: all 0.15s;
-    }
-
-    .filter-btn.active {
-      background: var(--accent);
-      color: #000;
-      border-color: var(--accent);
-    }
-
-    /* MATCHES */
-    .matches-grid {
-      display: grid;
-      gap: 12px;
-    }
-
-    .match-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 1.25rem 1.5rem;
-      display: grid;
-      grid-template-columns: auto 1fr auto 1fr auto;
-      align-items: center;
-      gap: 1rem;
-      transition: border-color 0.15s;
-    }
-
-    .match-card:hover { border-color: var(--border); }
-
-    .match-meta {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-      min-width: 80px;
-    }
-
-    .match-date {
-      font-family: var(--font-mono);
-      font-size: 0.7rem;
-      color: var(--text-muted);
-    }
-
-    .match-spieltag {
-      font-size: 0.7rem;
-      font-weight: 600;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--accent);
-    }
-
-    .match-team {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
-
-    .match-team.winner .team-names { color: var(--text); font-weight: 600; }
-    .match-team:not(.winner) .team-names { color: var(--text-muted); }
-
-    .team-names { font-size: 0.9rem; }
-
-    .match-score {
-      text-align: center;
-      min-width: 100px;
-    }
-
-    .score-saetze {
-      font-family: var(--font-display);
-      font-size: 1.6rem;
-      letter-spacing: 0.05em;
-      color: var(--text);
-    }
-
-    .score-detail {
-      font-family: var(--font-mono);
-      font-size: 0.7rem;
-      color: var(--text-muted);
-      margin-top: 2px;
-    }
-
-    /* ADMIN */
-    .admin-gate {
-      max-width: 400px;
-      margin: 3rem auto;
-      text-align: center;
-    }
-
-    .admin-gate h2 {
-      font-family: var(--font-display);
-      font-size: 2rem;
-      margin-bottom: 0.5rem;
-      letter-spacing: 0.05em;
-    }
-
-    .admin-gate p {
-      color: var(--text-muted);
-      font-size: 0.9rem;
-      margin-bottom: 2rem;
-    }
-
-    .input-group {
-      display: flex;
-      gap: 8px;
-    }
-
-    input[type="password"],
-    input[type="text"],
-    input[type="number"],
-    select {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      color: var(--text);
-      font-family: var(--font-body);
-      font-size: 0.9rem;
-      padding: 0.6rem 1rem;
-      flex: 1;
-      outline: none;
-      transition: border-color 0.15s;
-    }
-
     input:focus, select:focus { border-color: var(--accent); }
 
-    button.primary {
-      background: var(--accent);
-      color: #000;
-      border: none;
-      border-radius: 8px;
-      font-family: var(--font-body);
-      font-size: 0.9rem;
-      font-weight: 600;
-      padding: 0.6rem 1.25rem;
-      cursor: pointer;
-      transition: opacity 0.15s;
+    button.btn {
+      background: var(--accent); color: #000; border: none; border-radius: 8px;
+      font-family: 'DM Sans', sans-serif; font-size: 0.9rem; font-weight: 600;
+      padding: 9px 18px; cursor: pointer; transition: opacity 0.15s; white-space: nowrap;
     }
+    button.btn:hover { opacity: 0.85; }
+    button.btn.full { width: 100%; padding: 11px; }
+    button.btn.ghost { background: var(--surface2); color: var(--text); border: 1px solid var(--border); }
+    button.btn.ghost:hover { border-color: var(--accent); color: var(--accent); opacity: 1; }
 
-    button.primary:hover { opacity: 0.85; }
+    .calc-result { background: var(--surface2); border-radius: 10px; padding: 1rem 1.25rem; display: none; margin-top: 1rem; }
+    .calc-result.on { display: block; }
+    .prob-bar-wrap { height: 4px; background: var(--border); border-radius: 2px; margin: 8px 0 4px; overflow: hidden; }
+    .prob-bar-fill { height: 100%; background: var(--accent); border-radius: 2px; transition: width 0.4s; }
+    .prob-txt { font-family: 'DM Mono', monospace; font-size: 0.72rem; color: var(--muted); text-align: center; }
+    .pf-txt  { font-family: 'DM Mono', monospace; font-size: 0.68rem; color: var(--muted); text-align: center; margin-top: 3px; }
+    .res-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px; }
+    .res-team-lbl { font-size: 0.65rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
+    .res-row { display: flex; justify-content: space-between; align-items: center; padding: 5px 0; border-bottom: 1px solid var(--border); font-size: 0.88rem; }
+    .res-row:last-child { border: none; }
+    .res-right { display: flex; gap: 8px; align-items: center; }
+    .res-elo { font-family: 'DM Mono', monospace; font-weight: 500; color: var(--accent); }
 
-    .admin-content { display: none; }
-    .admin-content.visible { display: block; }
+    /* export box */
+    .export-box { background: var(--surface2); border-radius: 10px; padding: 1rem; margin-top: 1rem; display: none; }
+    .export-box.on { display: block; }
+    .export-box-lbl { font-size: 0.68rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+    .export-box textarea { font-family: 'DM Mono', monospace; font-size: 0.72rem; min-height: 120px; resize: vertical; }
 
-    .elo-calculator {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 1.5rem;
-    }
+    .err { color: var(--danger); font-size: 0.8rem; margin-top: 6px; }
 
-    .calc-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
-      margin-bottom: 1.5rem;
-    }
-
-    .calc-team {
-      background: var(--surface2);
-      border-radius: 8px;
-      padding: 1rem;
-    }
-
-    .calc-team-label {
-      font-size: 0.7rem;
-      font-weight: 600;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--text-muted);
-      margin-bottom: 12px;
-    }
-
-    .calc-row {
-      display: flex;
-      gap: 8px;
-      margin-bottom: 8px;
-    }
-
-    .calc-row input[type="text"] { flex: 2; }
-    .calc-row input[type="number"] { flex: 1; }
-
-    .score-inputs {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      margin-bottom: 1.5rem;
-    }
-
-    .score-set {
-      background: var(--surface2);
-      border-radius: 8px;
-      padding: 1rem;
-    }
-
-    .score-set-label {
-      font-size: 0.7rem;
-      font-weight: 600;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--text-muted);
-      margin-bottom: 10px;
-    }
-
-    .score-pair {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .score-pair input { flex: 1; text-align: center; }
-    .score-pair span { color: var(--text-muted); font-size: 1.1rem; }
-
-    .calc-result {
-      background: var(--surface2);
-      border-radius: 8px;
-      padding: 1rem 1.25rem;
-      display: none;
-    }
-
-    .calc-result.visible { display: block; }
-
-    .result-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      margin-top: 1rem;
-    }
-
-    .result-player {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 6px 0;
-      border-bottom: 1px solid var(--border);
-      font-size: 0.9rem;
-    }
-
-    .result-player:last-child { border: none; }
-
-    .result-delta-pos { color: var(--accent2); font-family: var(--font-mono); font-weight: 500; }
-    .result-delta-neg { color: var(--danger); font-family: var(--font-mono); font-weight: 500; }
-    .result-elo { font-family: var(--font-mono); font-weight: 500; color: var(--accent); }
-
-    .prob-bar-wrap {
-      height: 4px;
-      background: var(--border);
-      border-radius: 2px;
-      margin: 0.75rem 0 0.25rem;
-      overflow: hidden;
-    }
-
-    .prob-bar-fill {
-      height: 100%;
-      background: var(--accent);
-      border-radius: 2px;
-      transition: width 0.4s ease;
-    }
-
-    .prob-label {
-      font-family: var(--font-mono);
-      font-size: 0.75rem;
-      color: var(--text-muted);
-      text-align: center;
-    }
-
-    .pf-label {
-      font-family: var(--font-mono);
-      font-size: 0.7rem;
-      color: var(--text-muted);
-      text-align: center;
-      margin-top: 4px;
-    }
-
-    .err-msg {
-      color: var(--danger);
-      font-size: 0.8rem;
-      margin-top: 6px;
-    }
-
-    /* FOOTER */
-    footer {
-      border-top: 1px solid var(--border);
-      padding: 2rem;
-      text-align: center;
-      font-size: 0.75rem;
-      color: var(--text-muted);
-    }
-
-    /* RESPONSIVE */
-    @media (max-width: 700px) {
-      .hero h1 { font-size: 3rem; }
-      .match-card { grid-template-columns: 1fr; }
-      .calc-grid, .score-inputs, .result-grid { grid-template-columns: 1fr; }
-      .elo-bar-cell { display: none; }
-      nav a { padding: 0.5rem 0.6rem; font-size: 0.8rem; }
+    @media (max-width: 768px) {
+      .hero { grid-template-columns: 1fr; }
+      .hero-stats { flex-direction: row; align-items: flex-start; }
+      .admin-grid { grid-template-columns: 1fr; }
+      .bar-cell { display: none; }
+      .mc { grid-template-columns: 1fr; }
+      .mc-nr { text-align: left; }
+      .teams-grid, .sets-grid, .res-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
 <body>
 
 <header>
-  <div class="logo">PADEL·LIGA·26</div>
+  <div class="logo">PADEL·LIGA <span>2026</span></div>
   <nav>
-    <a class="active" onclick="showSection('rangliste', this)">Rangliste</a>
-    <a onclick="showSection('verlauf', this)">Verlauf</a>
-    <a onclick="showSection('spiele', this)">Spiele</a>
-    <a onclick="showSection('admin', this)">Admin</a>
+    <button class="active" onclick="nav('rangliste',this)">Rangliste</button>
+    <button onclick="nav('verlauf',this)">Verlauf</button>
+    <button onclick="nav('spiele',this)">Spiele</button>
+    <button onclick="nav('admin',this)">Admin</button>
   </nav>
 </header>
 
 <div class="hero">
-  <div class="hero-label">Saison 2026</div>
-  <h1>ELO<br><span>RANKING</span></h1>
-  <div class="hero-sub">Live-Tabelle · Headsquare × Hanako × Envidual</div>
+  <div>
+    <div class="hero-eyebrow">Saison 2026 · Elo-Ranking</div>
+    <h1>PADEL<br><em>LIGA</em></h1>
+    <div class="hero-sub">Headsquare &nbsp;×&nbsp; Hanako &nbsp;×&nbsp; Envidual</div>
+  </div>
+  <div class="hero-stats" id="hero-stats"></div>
 </div>
 
 <main>
 
   <!-- RANGLISTE -->
   <section id="rangliste" class="section active">
-    <div class="section-header">
-      <div class="section-title">RANGLISTE</div>
-      <div class="section-count" id="ranking-count"></div>
+    <div class="sh">
+      <div class="sh-title">RANGLISTE</div>
+      <div class="sh-meta" id="rl-meta"></div>
     </div>
-    <table class="ranking-table">
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>Spieler</th>
-          <th class="elo-bar-cell"></th>
-          <th>Spiele</th>
-          <th>Elo</th>
-        </tr>
-      </thead>
-      <tbody id="ranking-body"></tbody>
-    </table>
+    <div class="ranking-wrap">
+      <table class="rt">
+        <thead>
+          <tr>
+            <th>#</th><th>Spieler</th>
+            <th class="bar-cell"></th>
+            <th class="r">Spiele</th>
+            <th class="r">Elo</th>
+            <th class="r">±</th>
+          </tr>
+        </thead>
+        <tbody id="rl-body"></tbody>
+      </table>
+    </div>
   </section>
 
   <!-- VERLAUF -->
   <section id="verlauf" class="section">
-    <div class="section-header">
-      <div class="section-title">ELO-VERLAUF</div>
-    </div>
-    <div class="chart-container">
-      <div class="chart-title">Alle Spieler</div>
-      <div class="player-filter" id="player-filter"></div>
-      <div class="chart-wrap">
-        <canvas id="eloChart"></canvas>
-      </div>
+    <div class="sh"><div class="sh-title">ELO-VERLAUF</div></div>
+    <div class="chart-box">
+      <div class="chart-box-title">Rating-Entwicklung</div>
+      <div class="filter-row" id="filter-row"></div>
+      <div class="chart-wrap"><canvas id="eloChart"></canvas></div>
     </div>
   </section>
 
   <!-- SPIELE -->
   <section id="spiele" class="section">
-    <div class="section-header">
-      <div class="section-title">SPIELERGEBNISSE</div>
-      <div class="section-count" id="matches-count"></div>
+    <div class="sh">
+      <div class="sh-title">SPIELPLAN</div>
+      <div class="sh-meta" id="sp-meta"></div>
     </div>
-    <div class="matches-grid" id="matches-grid"></div>
+    <div id="spielplan"></div>
   </section>
 
   <!-- ADMIN -->
   <section id="admin" class="section">
-    <div class="section-header">
-      <div class="section-title">ADMIN</div>
-    </div>
+    <div class="sh"><div class="sh-title">ADMIN</div></div>
 
     <div class="admin-gate" id="admin-gate">
       <h2>Zugang</h2>
       <p>Nur für Administratoren</p>
-      <div class="input-group">
-        <input type="password" id="admin-pw" placeholder="Passwort" onkeydown="if(event.key==='Enter') checkAdmin()">
-        <button class="primary" onclick="checkAdmin()">Weiter</button>
+      <div class="pw-row">
+        <input type="password" id="pw-field" placeholder="Passwort" onkeydown="if(event.key==='Enter')checkPw()">
+        <button class="btn" onclick="checkPw()">Weiter</button>
       </div>
-      <div class="err-msg" id="pw-err"></div>
+      <div class="err" id="pw-err"></div>
     </div>
 
-    <div class="admin-content" id="admin-content">
-      <div class="elo-calculator">
-        <div class="calc-grid">
-          <div class="calc-team">
-            <div class="calc-team-label">Team 1</div>
-            <div class="calc-row">
-              <input type="text" id="c-t1p1n" placeholder="Name">
-              <input type="number" id="c-t1p1e" placeholder="Elo" value="1000">
+    <div class="admin-inner" id="admin-inner">
+      <div class="admin-grid">
+
+        <!-- ELO RECHNER -->
+        <div class="admin-card">
+          <div class="admin-card-title">Elo-Rechner</div>
+
+          <div class="teams-grid">
+            <div class="team-block">
+              <div class="team-block-lbl">Team 1</div>
+              <div class="prow">
+                <input type="text"   id="t1p1n" placeholder="Name">
+                <input type="number" id="t1p1e" placeholder="Elo" value="1000">
+              </div>
+              <div class="prow">
+                <input type="text"   id="t1p2n" placeholder="Name">
+                <input type="number" id="t1p2e" placeholder="Elo" value="1000">
+              </div>
             </div>
-            <div class="calc-row">
-              <input type="text" id="c-t1p2n" placeholder="Name">
-              <input type="number" id="c-t1p2e" placeholder="Elo" value="1000">
+            <div class="team-block">
+              <div class="team-block-lbl">Team 2</div>
+              <div class="prow">
+                <input type="text"   id="t2p1n" placeholder="Name">
+                <input type="number" id="t2p1e" placeholder="Elo" value="1000">
+              </div>
+              <div class="prow">
+                <input type="text"   id="t2p2n" placeholder="Name">
+                <input type="number" id="t2p2e" placeholder="Elo" value="1000">
+              </div>
             </div>
           </div>
-          <div class="calc-team">
-            <div class="calc-team-label">Team 2</div>
-            <div class="calc-row">
-              <input type="text" id="c-t2p1n" placeholder="Name">
-              <input type="number" id="c-t2p1e" placeholder="Elo" value="1000">
+
+          <div class="sets-grid">
+            <div class="set-block">
+              <div class="set-lbl">Satz 1</div>
+              <div class="set-pair">
+                <input type="number" id="s1t1" min="0" max="7" value="6">
+                <span>:</span>
+                <input type="number" id="s1t2" min="0" max="7" value="3">
+              </div>
             </div>
-            <div class="calc-row">
-              <input type="text" id="c-t2p2n" placeholder="Name">
-              <input type="number" id="c-t2p2e" placeholder="Elo" value="1000">
+            <div class="set-block">
+              <div class="set-lbl">Satz 2</div>
+              <div class="set-pair">
+                <input type="number" id="s2t1" min="0" max="7" value="6">
+                <span>:</span>
+                <input type="number" id="s2t2" min="0" max="7" value="2">
+              </div>
+            </div>
+            <div class="set-block">
+              <div class="set-lbl">Tiebreak (opt.)</div>
+              <div class="set-pair">
+                <input type="number" id="s3t1" min="0" max="10" placeholder="–">
+                <span>:</span>
+                <input type="number" id="s3t2" min="0" max="10" placeholder="–">
+              </div>
+            </div>
+          </div>
+
+          <button class="btn full" onclick="calcElo()">Berechnen</button>
+          <div class="err" id="calc-err"></div>
+
+          <div class="calc-result" id="calc-result">
+            <div class="prob-bar-wrap"><div class="prob-bar-fill" id="prob-fill"></div></div>
+            <div class="prob-txt" id="prob-txt"></div>
+            <div class="pf-txt"  id="pf-txt"></div>
+            <div class="res-grid">
+              <div><div class="res-team-lbl">Team 1</div><div id="res1"></div></div>
+              <div><div class="res-team-lbl">Team 2</div><div id="res2"></div></div>
             </div>
           </div>
         </div>
 
-        <div class="score-inputs">
-          <div class="score-set">
-            <div class="score-set-label">Satz 1</div>
-            <div class="score-pair">
-              <input type="number" id="c-s1t1" min="0" max="7" value="6">
-              <span>:</span>
-              <input type="number" id="c-s1t2" min="0" max="7" value="3">
-            </div>
+        <!-- DATEN AKTUALISIEREN -->
+        <div class="admin-card">
+          <div class="admin-card-title">data.js exportieren</div>
+          <p style="font-size:0.85rem; color:var(--dim); margin-bottom:1.25rem; line-height:1.6;">
+            Nach der Berechnung kannst du hier die aktualisierte <code style="font-family:'DM Mono',monospace; color:var(--accent); font-size:0.8rem;">data.js</code> generieren und direkt in GitHub einfügen.
+          </p>
+
+          <div style="margin-bottom: 1rem;">
+            <label style="font-size:0.75rem; color:var(--muted); display:block; margin-bottom:6px;">Spieler · neuen Elo-Wert eintragen:</label>
+            <div id="quick-update-list"></div>
           </div>
-          <div class="score-set">
-            <div class="score-set-label">Satz 2</div>
-            <div class="score-pair">
-              <input type="number" id="c-s2t1" min="0" max="7" value="6">
-              <span>:</span>
-              <input type="number" id="c-s2t2" min="0" max="7" value="2">
-            </div>
-          </div>
-          <div class="score-set">
-            <div class="score-set-label">Match-Tiebreak (optional)</div>
-            <div class="score-pair">
-              <input type="number" id="c-s3t1" min="0" max="10" placeholder="–">
-              <span>:</span>
-              <input type="number" id="c-s3t2" min="0" max="10" placeholder="–">
-            </div>
+
+          <button class="btn full" onclick="generateExport()">data.js generieren</button>
+
+          <div class="export-box" id="export-box">
+            <div class="export-box-lbl">Inhalt kopieren → in GitHub einfügen</div>
+            <textarea id="export-ta" readonly onclick="this.select()"></textarea>
+            <button class="btn ghost full" style="margin-top:8px;" onclick="copyExport()">Kopieren</button>
           </div>
         </div>
 
-        <button class="primary" style="width:100%; padding: 0.75rem;" onclick="calcElo()">Elo berechnen</button>
-        <div class="err-msg" id="calc-err"></div>
-
-        <div class="calc-result" id="calc-result">
-          <div class="prob-bar-wrap"><div class="prob-bar-fill" id="c-prob-bar"></div></div>
-          <div class="prob-label" id="c-prob-txt"></div>
-          <div class="pf-label" id="c-pf-txt"></div>
-          <div class="result-grid">
-            <div>
-              <div style="font-size:0.7rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--text-muted); margin-bottom:8px; font-weight:600;">Team 1</div>
-              <div id="c-res1"></div>
-            </div>
-            <div>
-              <div style="font-size:0.7rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--text-muted); margin-bottom:8px; font-weight:600;">Team 2</div>
-              <div id="c-res2"></div>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
   </section>
 
 </main>
 
-<footer>Padel-Liga 2026 · Headsquare × Hanako × Envidual</footer>
-
 <script>
-// ── NAV ──────────────────────────────────────────────────────────────
-function showSection(id, el) {
+// ── CONSTANTS ─────────────────────────────────────────────────────
+const ADMIN_PW = 'padel2026';
+const COLORS = ['#d4f53a','#3af5b4','#3a8ff5','#f5a03a','#f53ab4','#a03af5','#f5f53a','#3af5f5','#f53a5a','#7af53a','#f57a3a','#3a5af5','#f53af5','#5af5f5','#f5c43a','#3af58a','#f5503a','#c43af5'];
+
+// ── NAV ───────────────────────────────────────────────────────────
+function nav(id, el) {
   document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-  document.querySelectorAll('nav a').forEach(a => a.classList.remove('active'));
+  document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
   document.getElementById(id).classList.add('active');
   el.classList.add('active');
   if (id === 'verlauf') initChart();
+  if (id === 'admin' && document.getElementById('admin-inner').classList.contains('on')) buildQuickUpdate();
 }
 
-// ── RANKING ──────────────────────────────────────────────────────────
+// ── HERO ──────────────────────────────────────────────────────────
+function renderHero() {
+  const played = PADEL_DATA.matches.filter(m => m.sieger !== null).length;
+  const total  = PADEL_DATA.matches.length;
+  document.getElementById('hero-stats').innerHTML = `
+    <div class="hero-stat"><div class="hero-stat-val">${PADEL_DATA.players.length}</div><div class="hero-stat-lbl">Spieler</div></div>
+    <div class="hero-stat"><div class="hero-stat-val">${played}</div><div class="hero-stat-lbl">Spiele gespielt</div></div>
+    <div class="hero-stat"><div class="hero-stat-val">${total - played}</div><div class="hero-stat-lbl">Ausstehend</div></div>
+  `;
+}
+
+// ── RANKING ───────────────────────────────────────────────────────
 function renderRanking() {
   const sorted = [...PADEL_DATA.players].sort((a,b) => b.elo - a.elo);
-  const maxElo = sorted[0].elo;
-  const minElo = 800;
-  const body = document.getElementById('ranking-body');
-  document.getElementById('ranking-count').textContent = sorted.length + ' Spieler';
-
-  body.innerHTML = sorted.map((p, i) => {
+  const maxElo = sorted[0].elo, minElo = 800;
+  document.getElementById('rl-meta').textContent = sorted.length + ' Spieler';
+  document.getElementById('rl-body').innerHTML = sorted.map((p, i) => {
     const spiele = p.history.length - 1;
-    const pct = Math.round(((p.elo - minElo) / (maxElo - minElo)) * 100);
-    return `<tr class="player-row rank-${i+1}" onclick="">
-      <td class="rank-num">${i+1}</td>
-      <td class="player-name">${p.name}</td>
-      <td class="elo-bar-cell">
-        <div class="elo-bar-wrap"><div class="elo-bar" style="width:${pct}%"></div></div>
-      </td>
-      <td class="spiele-count">${spiele}</td>
-      <td class="elo-value">${p.elo}</td>
+    const pct = Math.max(0, Math.round(((p.elo - minElo) / (maxElo - minElo)) * 100));
+    const hist = p.history;
+    const delta = hist.length > 1 ? p.elo - hist[hist.length-2].elo : 0;
+    const dStr = delta > 0 ? `<span class="pos">+${delta}</span>` : delta < 0 ? `<span class="neg">${delta}</span>` : `<span class="neu">—</span>`;
+    return `<tr class="r${i+1}">
+      <td class="rn">${i+1}</td>
+      <td><span class="pname">${p.name}</span><span class="firma-badge firma-${p.firma}">${p.firma}</span></td>
+      <td class="bar-cell"><div class="bar-wrap"><div class="bar-fill" style="width:${pct}%"></div></div></td>
+      <td class="sp-count">${spiele}</td>
+      <td class="elo-val">${p.elo}</td>
+      <td class="elo-delta">${dStr}</td>
     </tr>`;
   }).join('');
 }
 
-// ── MATCHES ──────────────────────────────────────────────────────────
-function renderMatches() {
-  const sorted = [...PADEL_DATA.matches].sort((a,b) => new Date(b.datum) - new Date(a.datum));
-  document.getElementById('matches-count').textContent = sorted.length + ' Spiele';
+// ── MATCHES ───────────────────────────────────────────────────────
+function renderSpiele() {
+  const spieltage = [...new Set(PADEL_DATA.matches.map(m => m.spieltag))].sort((a,b)=>a-b);
+  const played = PADEL_DATA.matches.filter(m => m.sieger !== null).length;
+  document.getElementById('sp-meta').textContent = `${played} / ${PADEL_DATA.matches.length} gespielt`;
 
-  document.getElementById('matches-grid').innerHTML = sorted.map(m => {
-    const t1win = m.sieger === 1;
-    const t2win = m.sieger === 2;
-    const d = new Date(m.datum);
-    const dateStr = d.toLocaleDateString('de-DE', { day:'2-digit', month:'2-digit', year:'numeric' });
-    return `<div class="match-card">
-      <div class="match-meta">
-        <div class="match-spieltag">ST ${m.spieltag}</div>
-        <div class="match-date">${dateStr}</div>
-      </div>
-      <div class="match-team ${t1win ? 'winner' : ''}">
-        <div class="team-names">${m.team1.spieler.join(' & ')}</div>
-      </div>
-      <div class="match-score">
-        <div class="score-saetze">${m.team1.saetze}:${m.team2.saetze}</div>
-        <div class="score-detail">${m.ergebnis}</div>
-      </div>
-      <div class="match-team ${t2win ? 'winner' : ''}">
-        <div class="team-names">${m.team2.spieler.join(' & ')}</div>
-      </div>
+  document.getElementById('spielplan').innerHTML = spieltage.map(st => {
+    const matches = PADEL_DATA.matches.filter(m => m.spieltag === st);
+    const rows = matches.map(m => {
+      if (m.sieger === null) {
+        const d = new Date(m.datum);
+        const ds = d.toLocaleDateString('de-DE', {day:'2-digit', month:'2-digit'});
+        return `<div class="mc pending">
+          <div class="mc-date">${ds}</div>
+          <div class="mc-team"><div class="mc-players">${m.team1.spieler.join(' & ')}</div></div>
+          <div class="mc-score"><div class="mc-pending-label">ausstehend</div></div>
+          <div class="mc-team"><div class="mc-players">${m.team2.spieler.join(' & ')}</div></div>
+          <div class="mc-nr">${m.id.replace('spiel','Sp.')}</div>
+        </div>`;
+      }
+      const d = new Date(m.datum);
+      const ds = d.toLocaleDateString('de-DE', {day:'2-digit', month:'2-digit'});
+      const t1w = m.sieger === 1, t2w = m.sieger === 2;
+      const [s1, s2] = m.saetze.split(':');
+      return `<div class="mc played">
+        <div class="mc-date">${ds}</div>
+        <div class="mc-team ${t1w?'win':''}"><div class="mc-players">${m.team1.spieler.join(' & ')}</div></div>
+        <div class="mc-score">
+          <div class="mc-score-main">${s1}:${s2}</div>
+          <div class="mc-score-detail">${m.ergebnis}</div>
+        </div>
+        <div class="mc-team ${t2w?'win':''}"><div class="mc-players">${m.team2.spieler.join(' & ')}</div></div>
+        <div class="mc-nr">${m.id.replace('spiel','Sp.')}</div>
+      </div>`;
+    }).join('');
+
+    const label = st === 7 ? 'Spieltag 7 – Ausgleichsspieltag' : `Spieltag ${st}`;
+    return `<div class="spieltag-group">
+      <div class="spieltag-label">${label}</div>
+      <div class="match-list">${rows}</div>
     </div>`;
   }).join('');
 }
 
-// ── CHART ────────────────────────────────────────────────────────────
-const COLORS = ['#c8f53a','#3af5a0','#3ab5f5','#f5a03a','#f53a8a','#a03af5','#f5f53a','#3af5f5','#f53a3a'];
+// ── CHART ─────────────────────────────────────────────────────────
 let chart = null;
-let activeFilter = new Set(PADEL_DATA.players.map(p => p.id));
+const activeP = new Set(PADEL_DATA.players.map(p => p.id));
 
 function initChart() {
   if (chart) return;
+  const allDates = [...new Set(PADEL_DATA.players.flatMap(p => p.history.map(h => h.date)))].sort();
   const ctx = document.getElementById('eloChart').getContext('2d');
-
-  const allDates = [...new Set(
-    PADEL_DATA.players.flatMap(p => p.history.map(h => h.date))
-  )].sort();
-
   const datasets = PADEL_DATA.players.map((p, i) => ({
     label: p.name,
-    data: allDates.map(d => {
-      const pts = p.history.filter(h => h.date <= d);
-      return pts.length ? pts[pts.length-1].elo : null;
-    }),
-    borderColor: COLORS[i % COLORS.length],
-    backgroundColor: COLORS[i % COLORS.length] + '18',
-    borderWidth: 2,
-    pointRadius: 4,
-    pointHoverRadius: 6,
-    tension: 0.3,
-    spanGaps: true,
-    hidden: false
+    data: allDates.map(d => { const pts = p.history.filter(h => h.date <= d); return pts.length ? pts[pts.length-1].elo : null; }),
+    borderColor: COLORS[i], backgroundColor: COLORS[i]+'15',
+    borderWidth: 2, pointRadius: 4, pointHoverRadius: 6, tension: 0.3, spanGaps: true
   }));
-
   chart = new Chart(ctx, {
     type: 'line',
-    data: { labels: allDates.map(d => {
-      const dt = new Date(d);
-      return dt.toLocaleDateString('de-DE', { day:'2-digit', month:'2-digit' });
-    }), datasets },
+    data: { labels: allDates.map(d => new Date(d).toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit'})), datasets },
     options: {
-      responsive: true,
-      maintainAspectRatio: false,
+      responsive: true, maintainAspectRatio: false,
       interaction: { mode: 'index', intersect: false },
       plugins: {
         legend: { display: false },
         tooltip: {
-          backgroundColor: '#111',
-          borderColor: '#333',
-          borderWidth: 1,
-          titleColor: '#999',
-          bodyColor: '#f0f0f0',
+          backgroundColor: '#13131a', borderColor: '#25252f', borderWidth: 1,
+          titleColor: '#5a5a72', bodyColor: '#eeeef5',
           bodyFont: { family: 'DM Mono' },
-          callbacks: {
-            label: ctx => ` ${ctx.dataset.label}: ${ctx.parsed.y}`
-          }
+          callbacks: { label: c => ` ${c.dataset.label}: ${c.parsed.y}` }
         }
       },
       scales: {
-        x: { grid: { color: '#1a1a1a' }, ticks: { color: '#666', font: { family: 'DM Mono', size: 11 } } },
-        y: { grid: { color: '#1a1a1a' }, ticks: { color: '#666', font: { family: 'DM Mono', size: 11 } } }
+        x: { grid: { color: '#1c1c26' }, ticks: { color: '#5a5a72', font: { family: 'DM Mono', size: 11 } } },
+        y: { grid: { color: '#1c1c26' }, ticks: { color: '#5a5a72', font: { family: 'DM Mono', size: 11 } } }
       }
     }
   });
-
   renderFilter();
 }
 
 function renderFilter() {
-  const wrap = document.getElementById('player-filter');
-  wrap.innerHTML = PADEL_DATA.players.map((p, i) => `
-    <button class="filter-btn ${activeFilter.has(p.id) ? 'active' : ''}"
-      style="${activeFilter.has(p.id) ? `background:${COLORS[i%COLORS.length]};border-color:${COLORS[i%COLORS.length]};color:#000` : ''}"
-      onclick="toggleFilter('${p.id}', ${i}, this)">${p.name}</button>
-  `).join('');
+  document.getElementById('filter-row').innerHTML = PADEL_DATA.players.map((p,i) => {
+    const on = activeP.has(p.id);
+    return `<button class="fb ${on?'on':''}" style="${on?`background:${COLORS[i]};`:''}" onclick="toggleP('${p.id}',${i},this)">${p.name}</button>`;
+  }).join('');
 }
 
-function toggleFilter(id, idx, btn) {
-  const ds = chart.data.datasets[idx];
+function toggleP(id, i, btn) {
+  const ds = chart.data.datasets[i];
   ds.hidden = !ds.hidden;
-  if (ds.hidden) { activeFilter.delete(id); btn.classList.remove('active'); btn.style = ''; }
-  else { activeFilter.add(id); btn.classList.add('active'); btn.style = `background:${COLORS[idx%COLORS.length]};border-color:${COLORS[idx%COLORS.length]};color:#000`; }
+  if (ds.hidden) { activeP.delete(id); btn.classList.remove('on'); btn.style = ''; }
+  else { activeP.add(id); btn.classList.add('on'); btn.style = `background:${COLORS[i]};`; }
   chart.update();
 }
 
-// ── ADMIN ────────────────────────────────────────────────────────────
-const ADMIN_PW = 'padel2026';
-
-function checkAdmin() {
-  const pw = document.getElementById('admin-pw').value;
-  if (pw === ADMIN_PW) {
+// ── ADMIN ─────────────────────────────────────────────────────────
+function checkPw() {
+  if (document.getElementById('pw-field').value === ADMIN_PW) {
     document.getElementById('admin-gate').style.display = 'none';
-    document.getElementById('admin-content').classList.add('visible');
+    document.getElementById('admin-inner').classList.add('on');
+    buildQuickUpdate();
   } else {
     document.getElementById('pw-err').textContent = 'Falsches Passwort.';
   }
 }
 
-// ── ELO CALCULATOR ───────────────────────────────────────────────────
-function eE(a, b) { return 1 / (1 + Math.pow(10, (b-a)/500)); }
-function eP(r, o1, o2) { return (eE(r,o1) + eE(r,o2)) / 2; }
-function kV() { return 50; }
-function pf(diff) { return Math.pow(Math.log10(Math.abs(diff)+1), 3) + 2; }
+// ── ELO CALC ──────────────────────────────────────────────────────
+function eE(a,b) { return 1/(1+Math.pow(10,(b-a)/500)); }
+function eP(r,o1,o2) { return (eE(r,o1)+eE(r,o2))/2; }
+function pf(diff) { return Math.pow(Math.log10(Math.abs(diff)+1),3)+2; }
 
 function calcElo() {
-  const g = id => parseFloat(document.getElementById(id).value);
-  const s = id => document.getElementById(id).value;
-
-  const t1p1e = g('c-t1p1e')||1000, t1p2e = g('c-t1p2e')||1000;
-  const t2p1e = g('c-t2p1e')||1000, t2p2e = g('c-t2p2e')||1000;
-  const t1p1n = s('c-t1p1n')||'Sp1', t1p2n = s('c-t1p2n')||'Sp2';
-  const t2p1n = s('c-t2p1n')||'Sp3', t2p2n = s('c-t2p2n')||'Sp4';
-
-  const s1t1 = g('c-s1t1')||0, s1t2 = g('c-s1t2')||0;
-  const s2t1 = g('c-s2t1')||0, s2t2 = g('c-s2t2')||0;
-  const tb1v = document.getElementById('c-s3t1').value;
-  const tb2v = document.getElementById('c-s3t2').value;
-  const tb1 = tb1v !== '' ? parseInt(tb1v) : null;
-  const tb2 = tb2v !== '' ? parseInt(tb2v) : null;
+  const g = id => parseFloat(document.getElementById(id).value)||0;
+  const s = id => document.getElementById(id).value||'';
+  const t1p1e=g('t1p1e')||1000, t1p2e=g('t1p2e')||1000, t2p1e=g('t2p1e')||1000, t2p2e=g('t2p2e')||1000;
+  const t1p1n=s('t1p1n')||'Sp1', t1p2n=s('t1p2n')||'Sp2', t2p1n=s('t2p1n')||'Sp3', t2p2n=s('t2p2n')||'Sp4';
+  const s1t1=g('s1t1'), s1t2=g('s1t2'), s2t1=g('s2t1'), s2t2=g('s2t2');
+  const tb1v=document.getElementById('s3t1').value, tb2v=document.getElementById('s3t2').value;
+  const tb1=tb1v!==''?parseInt(tb1v):null, tb2=tb2v!==''?parseInt(tb2v):null;
 
   const err = document.getElementById('calc-err');
-  const w1 = (s1t1>s1t2?1:0)+(s2t1>s2t2?1:0);
-  const w2 = (s1t2>s1t1?1:0)+(s2t2>s2t1?1:0);
-  let winner = w1===2 ? 1 : w2===2 ? 2 : (tb1!==null && tb2!==null ? (tb1>tb2?1:2) : null);
+  const w1=(s1t1>s1t2?1:0)+(s2t1>s2t2?1:0), w2=(s1t2>s1t1?1:0)+(s2t2>s2t1?1:0);
+  let winner = w1===2?1:w2===2?2:(tb1!==null&&tb2!==null?(tb1>tb2?1:2):null);
+  if (!winner) { err.textContent='Bei 1:1 Sätzen bitte Tiebreak eintragen.'; return; }
+  err.textContent='';
 
-  if (!winner) { err.textContent = 'Bei 1:1 Sätzen bitte Tiebreak eintragen.'; return; }
-  err.textContent = '';
+  const regDiff=Math.abs((s1t1+s2t1)-(s1t2+s2t2));
+  const tbNorm=(tb1!==null&&tb2!==null)?(Math.abs(tb1-tb2)/10)*3:0;
+  const factor=pf(regDiff+tbNorm);
+  const K=50;
+  const Ep1=eP(t1p1e,t2p1e,t2p2e), Ep2=eP(t1p2e,t2p1e,t2p2e);
+  const Ep3=eP(t2p1e,t1p1e,t1p2e), Ep4=eP(t2p2e,t1p1e,t1p2e);
+  const ET1=(Ep1+Ep2)/2;
+  const S1=winner===1?1:0, S2=winner===2?1:0;
+  const n1=Math.round(t1p1e+factor*K*(S1-Ep1)), n2=Math.round(t1p2e+factor*K*(S1-Ep2));
+  const n3=Math.round(t2p1e+factor*K*(S2-Ep3)), n4=Math.round(t2p2e+factor*K*(S2-Ep4));
 
-  const regDiff = Math.abs((s1t1+s2t1)-(s1t2+s2t2));
-  const tbNorm = (tb1!==null && tb2!==null) ? (Math.abs(tb1-tb2)/10)*3 : 0;
-  const factor = pf(regDiff + tbNorm);
-  const k = kV();
+  const prob=Math.round(ET1*100);
+  document.getElementById('prob-fill').style.width=prob+'%';
+  document.getElementById('prob-txt').textContent=`Team 1 ${prob}% – Team 2 ${100-prob}%`;
+  document.getElementById('pf-txt').textContent=`Punktfaktor: ${factor.toFixed(2)} · Sieger: Team ${winner}`;
 
-  const Ep1 = eP(t1p1e,t2p1e,t2p2e), Ep2 = eP(t1p2e,t2p1e,t2p2e);
-  const Ep3 = eP(t2p1e,t1p1e,t1p2e), Ep4 = eP(t2p2e,t1p1e,t1p2e);
-  const S1 = winner===1?1:0, S2 = winner===2?1:0;
-
-  const n1=Math.round(t1p1e+factor*k*(S1-Ep1)), n2=Math.round(t1p2e+factor*k*(S1-Ep2));
-  const n3=Math.round(t2p1e+factor*k*(S2-Ep3)), n4=Math.round(t2p2e+factor*k*(S2-Ep4));
-
-  const prob = Math.round(((Ep1+Ep2)/2)*100);
-  document.getElementById('c-prob-bar').style.width = prob + '%';
-  document.getElementById('c-prob-txt').textContent = `Team 1 ${prob}% – Team 2 ${100-prob}%`;
-  document.getElementById('c-pf-txt').textContent = `Punktfaktor: ${factor.toFixed(2)} · Sieger: Team ${winner}`;
-
-  function resRow(name, old, nw) {
-    const d = nw-old;
-    const cls = d>=0?'result-delta-pos':'result-delta-neg';
-    return `<div class="result-player"><span>${name}</span><div style="display:flex;gap:8px;align-items:center"><span class="${cls}">${d>=0?'+':''}${d}</span><span class="result-elo">${nw}</span></div></div>`;
+  function rr(name,old,nw) {
+    const d=nw-old, cls=d>=0?'pos':'neg';
+    return `<div class="res-row"><span>${name}</span><div class="res-right"><span class="${cls}">${d>=0?'+':''}${d}</span><span class="res-elo">${nw}</span></div></div>`;
   }
-
-  document.getElementById('c-res1').innerHTML = resRow(t1p1n,t1p1e,n1)+resRow(t1p2n,t1p2e,n2);
-  document.getElementById('c-res2').innerHTML = resRow(t2p1n,t2p1e,n3)+resRow(t2p2n,t2p2e,n4);
-  document.getElementById('calc-result').classList.add('visible');
+  document.getElementById('res1').innerHTML=rr(t1p1n,t1p1e,n1)+rr(t1p2n,t1p2e,n2);
+  document.getElementById('res2').innerHTML=rr(t2p1n,t2p1e,n3)+rr(t2p2n,t2p2e,n4);
+  document.getElementById('calc-result').classList.add('on');
 }
 
-// ── INIT ─────────────────────────────────────────────────────────────
+// ── QUICK UPDATE ──────────────────────────────────────────────────
+function buildQuickUpdate() {
+  document.getElementById('quick-update-list').innerHTML = PADEL_DATA.players
+    .sort((a,b) => b.elo - a.elo)
+    .map(p => `<div style="display:flex;gap:8px;align-items:center;margin-bottom:6px;">
+      <span style="flex:1;font-size:0.85rem;">${p.name}</span>
+      <input type="number" id="qu-${p.id}" value="${p.elo}" style="width:80px;text-align:center;">
+    </div>`).join('');
+}
+
+// ── EXPORT ────────────────────────────────────────────────────────
+function generateExport() {
+  // read updated elos
+  PADEL_DATA.players.forEach(p => {
+    const inp = document.getElementById('qu-'+p.id);
+    if (inp) {
+      const newElo = parseInt(inp.value);
+      if (newElo !== p.elo) {
+        p.elo = newElo;
+        // add to history if not already there
+        const today = new Date().toISOString().split('T')[0];
+        const last = p.history[p.history.length-1];
+        if (last.elo !== newElo) {
+          p.history.push({ date: today, elo: newElo, spiel: 'Manuell' });
+        }
+      }
+    }
+  });
+
+  const js = `const PADEL_DATA = ${JSON.stringify(PADEL_DATA, null, 2)};`;
+  document.getElementById('export-ta').value = js;
+  document.getElementById('export-box').classList.add('on');
+
+  // re-render
+  renderRanking(); renderHero();
+  if (chart) { chart.destroy(); chart = null; activeP.clear(); PADEL_DATA.players.forEach(p => activeP.add(p.id)); }
+}
+
+function copyExport() {
+  const ta = document.getElementById('export-ta');
+  ta.select();
+  document.execCommand('copy');
+  const btn = event.target;
+  btn.textContent = 'Kopiert ✓';
+  setTimeout(() => btn.textContent = 'Kopieren', 2000);
+}
+
+// ── INIT ──────────────────────────────────────────────────────────
+renderHero();
 renderRanking();
-renderMatches();
+renderSpiele();
 </script>
 </body>
 </html>

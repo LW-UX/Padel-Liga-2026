@@ -9,159 +9,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <script src="data/data.js"></script>
-  <style>
-    :root {
-      --bg:         #111111;
-      --surface:    #292929;
-      --surface2:   #5a5a5a;
-      --border:     #25252f;
-      --accent:     #d4f53a;
-      --accent2:    #3af5b4;
-      --danger:     #f53a5a;
-      --text:       #ffffff;
-      --muted:      #a2a2b7;
-      --dim:        #a9a9c3;
-      --envidual:   #1B719C;
-      --hanako:     #2B6D88;
-      --headsquare: #E70713;
-    }
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
-    body { background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; min-height: 100vh; }
-
-    /* ── HEADER ── */
-    header {
-      position: sticky; top: 0; z-index: 200;
-      background: rgba(12,12,15,0.92); backdrop-filter: blur(16px);
-      border-bottom: 1px solid var(--border);
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 0 2rem; height: 60px;
-    }
-    .logo { font-family: 'Bebas Neue', sans-serif; font-size: 1.5rem; letter-spacing: 0.08em; color: var(--accent); }
-    .logo span { color: var(--dim); font-size: 1rem; margin-left: 6px; }
-    nav { display: flex; gap: 2px; }
-    nav button {
-      background: none; border: none; color: var(--muted); font-family: 'DM Sans', sans-serif;
-      font-size: 0.82rem; font-weight: 500; padding: 6px 14px; border-radius: 6px;
-      cursor: pointer; transition: all 0.15s;
-    }
-    nav button:hover { color: var(--text); background: var(--surface2); }
-    nav button.active { color: var(--accent); background: var(--surface2); }
-
-    /* ── HERO ── */
-    .hero { padding: 5rem 2rem 3.5rem; max-width: 1100px; margin: 0 auto; }
-    .hero-eyebrow { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); margin-bottom: 1rem; }
-    .hero h1 { font-family: 'Bebas Neue', sans-serif; font-size: clamp(4rem, 10vw, 8rem); line-height: 0.9; letter-spacing: 0.02em; }
-    .hero h1 em { color: var(--accent); font-style: normal; }
-    .hero-sub { color: var(--dim); font-size: 0.9rem; font-weight: 300; margin-top: 1rem; }
-
-    /* ── MAIN ── */
-    main { max-width: 1100px; margin: 0 auto; padding: 0 2rem 6rem; }
-    .section { display: none; }
-    .section.active { display: block; }
-
-    /* ── SECTION HEADER ── */
-    .sh { display: flex; align-items: baseline; gap: 12px; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border); }
-    .sh-title { font-family: 'Bebas Neue', sans-serif; font-size: 2rem; letter-spacing: 0.05em; }
-    .sh-meta { font-family: 'DM Mono', monospace; font-size: 0.72rem; color: var(--muted); }
-
-    /* ── RANKING TABLE ── */
-    .ranking-wrap { overflow-x: auto; }
-    table.rt { width: 100%; border-collapse: collapse; }
-    table.rt th {
-      text-align: right; font-size: 0.68rem; font-weight: 600; letter-spacing: 0.12em;
-      text-transform: uppercase; color: var(--muted); padding: 10px 16px;
-      border-bottom: 1px solid var(--border);
-    }
-    table.rt th.l { text-align: left; }
-    table.rt td { padding: 14px 16px; border-bottom: 1px solid var(--border); text-align: right; }
-    table.rt td.l { text-align: left; }
-    table.rt tr:last-child td { border-bottom: none; }
-    table.rt tbody tr { transition: background 0.1s; }
-    table.rt tbody tr:hover { background: var(--surface); }
-
-    .rn { font-family: 'DM Mono', monospace; font-size: 0.78rem; color: var(--muted); width: 36px; text-align: left !important; }
-    .r1 .rn { color: var(--accent); font-weight: 700; }
-    .r2 .rn { color: #bbb; }
-    .r3 .rn { color: #c97b2e; }
-
-    .pname { font-weight: 500; font-size: 0.95rem; }
-    .firma-badge {
-      display: inline-block; font-size: 0.65rem; font-weight: 600;
-      letter-spacing: 0.08em; text-transform: uppercase;
-      padding: 2px 7px; border-radius: 100px; margin-left: 8px;
-    }
-    .firma-Envidual   { background: rgba(58,143,245,0.12); color: var(--envidual); }
-    .firma-Hanako     { background: rgba(245,58,180,0.12); color: var(--hanako); }
-    .firma-Headsquare { background: rgba(245,160,58,0.12); color: var(--headsquare); }
-
-    .elo-val  { font-family: 'DM Mono', monospace; font-size: 1.05rem; font-weight: 500; color: var(--accent); }
-    .elo-delta { font-family: 'DM Mono', monospace; font-size: 0.78rem; }
-    .num-val  { font-family: 'DM Mono', monospace; font-size: 0.88rem; color: var(--text); }
-    .pos { color: var(--accent2); }
-    .neg { color: var(--danger); }
-    .neu { color: var(--muted); }
-
-    .bar-cell { width: 120px; }
-    .bar-wrap { background: var(--border); border-radius: 2px; height: 3px; overflow: hidden; }
-    .bar-fill { height: 100%; background: var(--accent); border-radius: 2px; }
-
-    /* ── CHART ── */
-    .chart-box {
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: 14px; padding: 1.5rem; margin-bottom: 1.5rem;
-    }
-    .chart-box-title { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 1rem; }
-    .filter-controls { display: flex; align-items: center; gap: 10px; margin-bottom: 1rem; flex-wrap: wrap; }
-    .filter-row { display: flex; flex-wrap: wrap; gap: 6px; flex: 1; }
-    .filter-toggle-btns { display: flex; gap: 6px; }
-    .fb {
-      font-family: 'DM Sans', sans-serif; font-size: 0.75rem; font-weight: 500;
-      padding: 3px 10px; border-radius: 100px; border: 1px solid var(--border);
-      background: transparent; color: var(--muted); cursor: pointer; transition: all 0.15s;
-    }
-    .fb.on { color: #000; border-color: transparent; }
-    .fb-toggle {
-      font-family: 'DM Sans', sans-serif; font-size: 0.75rem; font-weight: 500;
-      padding: 4px 12px; border-radius: 100px; border: 1px solid var(--border);
-      background: var(--surface2); color: var(--dim); cursor: pointer;
-      transition: all 0.15s; white-space: nowrap;
-    }
-    .fb-toggle:hover { border-color: var(--accent); color: var(--accent); }
-    .chart-wrap { position: relative; height: 340px; }
-
-    /* ── MATCHES ── */
-    .spieltag-group { margin-bottom: 2.5rem; }
-    .spieltag-label {
-      font-size: 0.68rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase;
-      color: var(--muted); margin-bottom: 10px; padding-bottom: 8px; border-bottom: 1px solid var(--border);
-    }
-    .match-list { display: flex; flex-direction: column; gap: 8px; }
-    .mc {
-      background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
-      padding: 1.1rem 1.5rem;
-      display: grid;
-      grid-template-columns: 60px 1fr 130px 1fr 60px;
-      align-items: center; gap: 16px;
-    }
-    .mc.pending { background: transparent; }
-    .mc-date { font-family: 'DM Mono', monospace; font-size: 0.72rem; color: var(--dim); }
-    .mc-team { display: flex; flex-direction: column; gap: 2px; }
-    .mc-team.win .mc-players { font-weight: 600; color: var(--text); }
-    .mc-team:not(.win) .mc-players { color: var(--dim); }
-    .mc-players { font-size: 0.95rem; }
-    .mc-score { text-align: center; }
-    .mc-score-main { font-family: 'Bebas Neue', sans-serif; font-size: 2rem; letter-spacing: 0.05em; color: var(--text); line-height: 1; }
-    .mc-score-detail { font-family: 'DM Mono', monospace; font-size: 0.72rem; color: var(--dim); margin-top: 3px; }
-    .mc-pending-label { font-size: 0.78rem; color: var(--muted); text-align: center; font-style: italic; }
-    .mc-nr { font-family: 'DM Mono', monospace; font-size: 0.68rem; color: var(--muted); text-align: right; }
-
-    @media (max-width: 768px) {
-      .bar-cell { display: none; }
-      .mc { grid-template-columns: 1fr; }
-      .mc-nr { text-align: left; }
-    }
-  </style>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
@@ -176,7 +24,7 @@
 
 <div class="hero">
   <div>
-    <div class="hero-eyebrow">Saison 2026 · Elo-Ranking</div>
+    <div class="hero-eyebrow">Saison 2026 · Rangliste</div>
     <h1>PADEL<em>LIGA</em></h1>
     <div class="hero-sub">Headsquare &nbsp;×&nbsp; Hanako &nbsp;×&nbsp; Envidual</div>
   </div>
@@ -196,13 +44,12 @@
           <tr>
             <th class="l">#</th>
             <th class="l">Spieler</th>
-            <th class="bar-cell"></th>
             <th>Spiele</th>
             <th>Siege</th>
             <th>Punkte</th>
-            <th>Diff.</th>
+            <th>G:V Spiele</th>
+            <th>Diff. Sätze</th>
             <th>Elo</th>
-            <th>±</th>
           </tr>
         </thead>
         <tbody id="rl-body"></tbody>
@@ -255,11 +102,10 @@ function getPlayerStats(player) {
     m.sieger !== null &&
     (m.team1.spieler.includes(player.name) || m.team2.spieler.includes(player.name))
   );
-  let siege = 0, punkte = 0, satzDiff = 0;
+  let siege = 0, punkte = 0, satzDiff = 0, myGames = 0, oppGames = 0;
   played.forEach(m => {
     const inT1 = m.team1.spieler.includes(player.name);
     const won = (inT1 && m.sieger === 1) || (!inT1 && m.sieger === 2);
-    // Punkte: 2:0 = 3Pkt, 2:1 = 2Pkt, 1:2 = 1Pkt, 0:2 = 0Pkt
     const [s1, s2] = m.saetze.split(':').map(Number);
     const mySaetze = inT1 ? s1 : s2;
     const oppSaetze = inT1 ? s2 : s1;
@@ -269,8 +115,23 @@ function getPlayerStats(player) {
     else punkte += 0;
     satzDiff += mySaetze - oppSaetze;
     if (won) siege++;
+    // Parse ergebnis for game scores, ignore tiebreak (e.g. "6:3, 6:2" or "1:6, 6:3 – 6:10")
+    const satzParts = m.ergebnis.split(',');
+    satzParts.forEach(part => {
+      // skip tiebreak parts (contain – or numbers > 7)
+      const clean = part.trim().replace('–', '').trim();
+      const match = clean.match(/^(\d+):(\d+)$/);
+      if (match) {
+        const g1 = parseInt(match[1]), g2 = parseInt(match[2]);
+        if (g1 <= 7 && g2 <= 7) { // regular set scores only
+          myGames  += inT1 ? g1 : g2;
+          oppGames += inT1 ? g2 : g1;
+        }
+      }
+    });
   });
-  return { spiele: played.length, siege, punkte, satzDiff };
+  const spieleGV = played.length > 0 ? `${myGames}:${oppGames}` : '—';
+  return { spiele: played.length, siege, punkte, satzDiff, spieleGV };
 }
 
 function renderRanking() {
@@ -282,26 +143,20 @@ function renderRanking() {
     b.elo - a.elo
   );
 
-  const maxElo = Math.max(...PADEL_DATA.players.map(p => p.elo));
-  const minElo = 800;
   document.getElementById('rl-meta').textContent = withStats.length + ' Spieler';
 
   document.getElementById('rl-body').innerHTML = withStats.map((p, i) => {
-    const pct = Math.max(0, Math.round(((p.elo - minElo) / (maxElo - minElo)) * 100));
-    const hist = p.history;
-    const delta = hist.length > 1 ? p.elo - hist[hist.length-2].elo : 0;
-    const dStr = delta > 0 ? `<span class="pos">+${delta}</span>` : delta < 0 ? `<span class="neg">${delta}</span>` : `<span class="neu">—</span>`;
-    const diff = p.stats.satzDiff >= 0 ? `+${p.stats.satzDiff}` : `${p.stats.satzDiff}`;
+    const satzDiffStr = p.stats.spiele > 0 ? (p.stats.satzDiff >= 0 ? `+${p.stats.satzDiff}` : `${p.stats.satzDiff}`) : '—';
+    const satzDiffClass = p.stats.satzDiff > 0 ? 'pos' : p.stats.satzDiff < 0 ? 'neg' : 'neu';
     return `<tr class="r${Math.min(i+1,4)}">
       <td class="rn l">${i+1}</td>
       <td class="l"><span class="pname">${p.name}</span><span class="firma-badge firma-${p.firma}">${p.firma}</span></td>
-      <td class="bar-cell"><div class="bar-wrap"><div class="bar-fill" style="width:${pct}%"></div></div></td>
       <td class="num-val">${p.stats.spiele}</td>
       <td class="num-val">${p.stats.siege}</td>
-      <td class="num-val">${p.stats.punkte}</td>
-      <td class="num-val">${p.stats.spiele > 0 ? diff : '—'}</td>
+      <td class="punkte-val">${p.stats.punkte}</td>
+      <td class="num-val">${p.stats.spiele > 0 ? p.stats.spieleGV : '—'}</td>
+      <td class="num-val"><span class="${p.stats.spiele > 0 ? satzDiffClass : 'neu'}">${satzDiffStr}</span></td>
       <td class="elo-val">${p.elo}</td>
-      <td class="elo-delta">${dStr}</td>
     </tr>`;
   }).join('');
 }

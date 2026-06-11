@@ -103,6 +103,6 @@ const PADEL_DATA = {
     // SPIELTAG 7 – Ausgleichsspieltag
     { id: "spiel25", spieltag: 7, datum: "2026-08-14", team1: { spieler: ["Niklas K.",   "Chris M."]    }, team2: { spieler: ["Agnes K.",     "Andreas L."]}, ergebnis: null, saetze: null, sieger: null },
     { id: "spiel26", spieltag: 7, datum: "2026-08-14", team1: { spieler: ["Florian Z.",  "Raphael H."]  }, team2: { spieler: ["Marcel M.",    "Luca W."]   }, ergebnis: null, saetze: null, sieger: null },
-    { id: "spiel27", spieltag: 7, datum: "2026-08-14", team1: { spieler: ["Leonie R.",   "Lukas P."]    }, team2: { spieler: ["Martin B.",    "?"]         }, ergebnis: null, saetze: null, sieger: null }
+    { id: "spiel27", spieltag: 7, datum: "2026-08-14", team1: { spieler: ["Leonie R.",   "Lukas P."]    }, team2: { spieler: ["Greta P.",    "Martin B."]  }, ergebnis: null, saetze: null, sieger: null }
   ]
 };

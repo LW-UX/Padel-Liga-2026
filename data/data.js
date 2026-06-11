@@ -76,7 +76,7 @@ const PADEL_DATA = {
     { id: "spiel3",  spieltag: 1, datum: "2026-05-22", team1: { spieler: ["Martin B.",   "Chris M."]    }, team2: { spieler: ["Marcel M.",    "Irene W."]  }, ergebnis: null, saetze: null, sieger: null },
     { id: "spiel4",  spieltag: 1, datum: "2026-05-13", team1: { spieler: ["Ludwig W.",   "Raphael H."]  }, team2: { spieler: ["Florian Z.",   "Niklas K."] }, ergebnis: "6:3, 6:2", saetze: "2:0", sieger: 1 },
     // SPIELTAG 2
-    { id: "spiel5",  spieltag: 2, datum: "2026-06-10", team1: { spieler: ["Lukas P.",    "Martin B."]   }, team2: { spieler: ["Luca W.",      "Andreas L."]}, ergebnis: null, saetze: null, sieger: null },
+    { id: "spiel5",  spieltag: 2, datum: "2026-06-10", team1: { spieler: ["Lukas P.",    "Martin B."]   }, team2: { spieler: ["Luca W.",      "Andreas L."]}, ergebnis: "0:6, 4:6", saetze: "0:2", sieger: 2 },
     { id: "spiel6",  spieltag: 2, datum: "2026-05-19", team1: { spieler: ["Ludwig W.",   "Cristian B."] }, team2: { spieler: ["Niklas K.",    "Greta P."]  }, ergebnis: "7:5, 6:1", saetze: "2:0", sieger: 1 },
     { id: "spiel7",  spieltag: 2, datum: "2026-06-18", team1: { spieler: ["Christoph L.","Raphael H."]  }, team2: { spieler: ["Marco M.",     "Marcel M."] }, ergebnis: null, saetze: null, sieger: null },
     { id: "spiel8",  spieltag: 2, datum: "2026-06-05", team1: { spieler: ["Chris M.",    "Jonas L."]    }, team2: { spieler: ["Irene W.",     "Leonie R."] }, ergebnis: null, saetze: null, sieger: null },

@@ -253,11 +253,14 @@ function applyHover(idx) {
   chart.data.datasets.forEach((ds, i) => {
     if (idx === null || i === idx) {
       ds.borderColor = COLORS[i];
+      ds.pointBackgroundColor = COLORS[i];
+      ds.pointBorderColor = COLORS[i];
       ds.borderWidth = idx === null ? 2 : 3;
       ds.borderOpacity = 1;
     } else {
       ds.borderColor = '#333333';
       ds.pointBackgroundColor = '#333333';
+      ds.pointBorderColor = '#333333';
       ds.borderWidth = 1;
     }
   });

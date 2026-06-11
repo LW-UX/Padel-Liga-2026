@@ -213,7 +213,10 @@ function initChart() {
   const ctx = document.getElementById('eloChart').getContext('2d');
   const datasets = PADEL_DATA.players.map((p, i) => ({
     label: p.name,
-    data: allDates.map(d => { const pts = p.history.filter(h => h.date <= d); return pts.length ? pts[pts.length-1].elo : null; }),
+    data: allDates.map(d => {
+      const exact = p.history.find(h => h.date === d);
+      return exact ? exact.elo : null;
+    }),    
     borderColor: COLORS[i],
     backgroundColor: 'transparent',
     borderWidth: 2,
@@ -254,6 +257,7 @@ function applyHover(idx) {
       ds.borderOpacity = 1;
     } else {
       ds.borderColor = '#333333';
+      ds.pointBackgroundColor = '#333333';
       ds.borderWidth = 1;
     }
   });

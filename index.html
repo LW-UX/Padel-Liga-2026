@@ -110,19 +110,17 @@ function getPlayerStats(player) {
     else if (mySaetze === 2 && oppSaetze === 1) punkte += 2;
     else if (mySaetze === 1 && oppSaetze === 2) punkte += 1;
     else punkte += 0;
-    satzDiff += mySaetze - oppSaetze;
     if (won) siege++;
-    // Parse ergebnis for game scores, ignore tiebreak (e.g. "6:3, 6:2" or "1:6, 6:3 – 6:10")
     const satzParts = m.ergebnis.split(',');
     satzParts.forEach(part => {
-      // skip tiebreak parts (contain – or numbers > 7)
       const clean = part.trim().replace('–', '').trim();
       const match = clean.match(/^(\d+):(\d+)$/);
       if (match) {
         const g1 = parseInt(match[1]), g2 = parseInt(match[2]);
-        if (g1 <= 7 && g2 <= 7) { // regular set scores only
+        if (g1 <= 7 && g2 <= 7) {
           myGames  += inT1 ? g1 : g2;
           oppGames += inT1 ? g2 : g1;
+          satzDiff += (inT1 ? g1 : g2) - (inT1 ? g2 : g1);
         }
       }
     });
@@ -260,6 +258,17 @@ function applyHover(idx) {
     }
   });
   chart.update('none');
+
+  // Auch Filter-Buttons ausgrauen
+  document.querySelectorAll('#filter-row .fb').forEach((btn, i) => {
+    if (idx === null || i === idx) {
+      btn.style.background = activeP.has(PADEL_DATA.players[i].id) ? COLORS[i] : '';
+      btn.style.opacity = '1';
+    } else {
+      btn.style.background = '#333';
+      btn.style.opacity = '0.4';
+    }
+  });
 }
 
 function renderFilter() {

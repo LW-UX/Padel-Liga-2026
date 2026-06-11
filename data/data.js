@@ -4,7 +4,7 @@ const PADEL_DATA = {
     { id: "ludwig_w",   name: "Ludwig W.",   firma: "Envidual",   elo: 1099, history: [
       { date: "2026-05-11", elo: 1200, spiel: "Start" },
       { date: "2026-05-13", elo: 1253, spiel: "Spiel 4" },
-      { date: "2026-05-19", elo: 1299, spiel: "Spiel 6" }
+      { date: "2026-05-19", elo: 1299, spiel: "Spiel 6" },
       { date: "2026-06-11", elo: 1199, spiel: "Spiel 6" }
     ]},
     { id: "jonas_l",    name: "Jonas L.",    firma: "Envidual",   elo: 1056, history: [
@@ -50,7 +50,7 @@ const PADEL_DATA = {
       { date: "2026-05-11", elo: 1000, spiel: "Start" }
     ]},
     { id: "marco_m",    name: "Marco M.",    firma: "Headsquare", elo: 1000, history: [
-      { date: "2026-05-11", elo: 1000, spiel: "Start" }
+      { date: "2026-05-11", elo: 1000, spiel: "Start" },
       { date: "2026-06-11", elo: 1100, spiel: "Spiel 3" }
     ]},
     { id: "martin_b",   name: "Martin B.",   firma: "Headsquare", elo: 1000, history: [
@@ -105,6 +105,6 @@ const PADEL_DATA = {
     // SPIELTAG 7 – Ausgleichsspieltag
     { id: "spiel25", spieltag: 7, datum: "2026-08-03", team1: { spieler: ["Niklas K.",   "Chris M."]    }, team2: { spieler: ["Agnes K.",     "Andreas L."]}, ergebnis: null, saetze: null, sieger: null },
     { id: "spiel26", spieltag: 7, datum: "2026-08-03", team1: { spieler: ["Florian Z.",  "Raphael H."]  }, team2: { spieler: ["Marcel M.",    "Luca W."]   }, ergebnis: null, saetze: null, sieger: null },
-    { id: "spiel27", spieltag: 7, datum: "2026-08-03", team1: { spieler: ["Leonie R.",   "Lukas P."]    }, team2: { spieler: ["Greta P.",    "Martin B."]  }, ergebnis: null, saetze: null, sieger: null }
+    { id: "spiel27", spieltag: 7, datum: "2026-08-03", team1: { spieler: ["Leonie R.",   "Lukas P."]    }, team2: { spieler: ["Greta P.",     "Martin B."] }, ergebnis: null, saetze: null, sieger: null }
   ]
 };

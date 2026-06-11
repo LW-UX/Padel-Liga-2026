@@ -47,7 +47,7 @@
             <th>Siege</th>
             <th>Punkte</th>
             <th>G:V Spiele</th>
-            <th>Diff. Sätze</th>
+            <th>Diff.</th>
             <th>Elo</th>
           </tr>
         </thead>
@@ -99,7 +99,7 @@ function getPlayerStats(player) {
     m.sieger !== null &&
     (m.team1.spieler.includes(player.name) || m.team2.spieler.includes(player.name))
   );
-  let siege = 0, punkte = 0, satzDiff = 0, myGames = 0, oppGames = 0;
+  let siege = 0, punkte = 0, spielDiff = 0, myGames = 0, oppGames = 0;
   played.forEach(m => {
     const inT1 = m.team1.spieler.includes(player.name);
     const won = (inT1 && m.sieger === 1) || (!inT1 && m.sieger === 2);
@@ -120,29 +120,29 @@ function getPlayerStats(player) {
         if (g1 <= 7 && g2 <= 7) {
           myGames  += inT1 ? g1 : g2;
           oppGames += inT1 ? g2 : g1;
-          satzDiff += (inT1 ? g1 : g2) - (inT1 ? g2 : g1);
+          spielDiff += (inT1 ? g1 : g2) - (inT1 ? g2 : g1);
         }
       }
     });
   });
   const spieleGV = played.length > 0 ? `${myGames}:${oppGames}` : '—';
-  return { spiele: played.length, siege, punkte, satzDiff, spieleGV };
+  return { spiele: played.length, siege, punkte, spielDiff, spieleGV };
 }
 
 function renderRanking() {
-  // Sort by Punkte desc, then SatzDiff desc, then Elo desc
+  // Sort by Punkte desc, then SpielDiff desc, then Elo desc
   const withStats = PADEL_DATA.players.map(p => ({ ...p, stats: getPlayerStats(p) }));
   withStats.sort((a,b) =>
     b.stats.punkte - a.stats.punkte ||
-    b.stats.satzDiff - a.stats.satzDiff ||
+    b.stats.spielDiff - a.stats.spielDiff ||
     b.elo - a.elo
   );
 
   document.getElementById('rl-meta').textContent = withStats.length + ' Spieler';
 
   document.getElementById('rl-body').innerHTML = withStats.map((p, i) => {
-    const satzDiffStr = p.stats.spiele > 0 ? (p.stats.satzDiff >= 0 ? `+${p.stats.satzDiff}` : `${p.stats.satzDiff}`) : '—';
-    const satzDiffClass = p.stats.satzDiff > 0 ? 'pos' : p.stats.satzDiff < 0 ? 'neg' : 'neu';
+    const spielDiffStr = p.stats.spiele > 0 ? (p.stats.spielDiff >= 0 ? `+${p.stats.spielDiff}` : `${p.stats.spielDiff}`) : '—';
+    const spielDiffClass = p.stats.spielDiff > 0 ? 'pos' : p.stats.spielDiff < 0 ? 'neg' : 'neu';
     return `<tr class="r${Math.min(i+1,4)}">
       <td class="rn l">${i+1}</td>
       <td class="l"><span class="pname">${p.name}</span><span class="firma-badge firma-${p.firma}">${p.firma}</span></td>
@@ -150,7 +150,7 @@ function renderRanking() {
       <td class="num-val">${p.stats.siege}</td>
       <td class="punkte-val">${p.stats.punkte}</td>
       <td class="num-val">${p.stats.spiele > 0 ? p.stats.spieleGV : '—'}</td>
-      <td class="num-val"><span class="${p.stats.spiele > 0 ? satzDiffClass : 'neu'}">${satzDiffStr}</span></td>
+      <td class="num-val"><span class="${p.stats.spiele > 0 ? spielDiffClass : 'neu'}">${spielDiffStr}</span></td>
       <td class="elo-val">${p.elo}</td>
     </tr>`;
   }).join('');

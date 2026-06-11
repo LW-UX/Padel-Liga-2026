@@ -73,7 +73,7 @@ const PADEL_DATA = {
 
   matches: [
     // SPIELTAG 1
-    { id: "spiel1",  spieltag: 1, datum: "2026-06-11", team1: { spieler: ["Greta P.",    "Agnes K."]    }, team2: { spieler: ["Christoph L.", "Marco M."]  }, ergebnis: null, saetze: null, sieger: null },
+    { id: "spiel1",  spieltag: 1, datum: "2026-06-11", team1: { spieler: ["Greta P.",    "Agnes K."]    }, team2: { spieler: ["Christoph L.", "Marco M."]  }, ergebnis: "1:6, 3:6", saetze: "0:2", sieger: 2 },
     { id: "spiel2",  spieltag: 1, datum: "2026-05-20", team1: { spieler: ["Leonie R.",   "Cristian B."] }, team2: { spieler: ["Jonas L.",     "Luca W."]   }, ergebnis: "2:6, 0:6", saetze: "0:2", sieger: 2 },
     { id: "spiel3",  spieltag: 1, datum: "2026-05-11", team1: { spieler: ["Martin B.",   "Chris M."]    }, team2: { spieler: ["Marcel M.",    "Irene W."]  }, ergebnis: null, saetze: null, sieger: null },
     { id: "spiel4",  spieltag: 1, datum: "2026-05-13", team1: { spieler: ["Ludwig W.",   "Raphael H."]  }, team2: { spieler: ["Florian Z.",   "Niklas K."] }, ergebnis: "6:3, 6:2", saetze: "2:0", sieger: 1 },

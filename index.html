@@ -54,8 +54,9 @@
         </thead>
         <tbody id="rl-body"></tbody>
       </table>
+      <div class="sh-meta">Sortierung: Punkte · Siege · Spiel-Differenz · gewonnene Sätze</div>
     </div>
-    <div class="sh">
+    <div class="sh" style="margin-top: 2.5rem;">
       <div class="sh-title">FIRMEN-RANGLISTE</div>
       <div class="sh-meta" id="fr-meta"></div>
     </div>
@@ -75,6 +76,7 @@
         </thead>
         <tbody id="fr-body"></tbody>
       </table>
+      <div class="sh-meta">Sortierung: Punkte pro Teilnehmer · Spiel-Differenz</div>
     </div>
   </section>
 
@@ -121,16 +123,17 @@ function getPlayerStats(player) {
     m.sieger !== null &&
     (m.team1.spieler.includes(player.name) || m.team2.spieler.includes(player.name))
   );
-  let siege = 0, punkte = 0, spielDiff = 0, myGames = 0, oppGames = 0;
+  let siege = 0, punkte = 0, spielDiff = 0, myGames = 0, oppGames = 0, saetzeDiff = 0;
   played.forEach(m => {
     const inT1 = m.team1.spieler.includes(player.name);
     const won = (inT1 && m.sieger === 1) || (!inT1 && m.sieger === 2);
     const [s1, s2] = m.saetze.split(':').map(Number);
-    const mySaetze = inT1 ? s1 : s2;
-    const oppSaetze = inT1 ? s2 : s1;
-    if (mySaetze === 2 && oppSaetze === 0) punkte += 3;
-    else if (mySaetze === 2 && oppSaetze === 1) punkte += 2;
-    else if (mySaetze === 1 && oppSaetze === 2) punkte += 1;
+    const mySetCount = inT1 ? s1 : s2;
+    const oppSetCount = inT1 ? s2 : s1;
+    saetzeDiff += mySetCount - oppSetCount;
+    if (mySetCount === 2 && oppSetCount === 0) punkte += 3;
+    else if (mySetCount === 2 && oppSetCount === 1) punkte += 2;
+    else if (mySetCount === 1 && oppSetCount === 2) punkte += 1;
     if (won) siege++;
     m.ergebnis.split(',').forEach(part => {
       const clean = part.trim().replace('–', '').trim();
@@ -145,7 +148,7 @@ function getPlayerStats(player) {
       }
     });
   });
-  return { spiele: played.length, siege, punkte, spielDiff, spieleGV: played.length > 0 ? `${myGames}:${oppGames}` : '—' };
+  return { spiele: played.length, siege, punkte, spielDiff, saetzeDiff, spieleGV: played.length > 0 ? `${myGames}:${oppGames}` : '—' };
 }
 
 function renderFirmenRanking() {
@@ -155,9 +158,9 @@ function renderFirmenRanking() {
     let spiele = 0, siege = 0, punkte = 0, spielDiff = 0;
     players.forEach(p => {
       const s = getPlayerStats(p);
-      spiele   += s.spiele;
-      siege    += s.siege;
-      punkte   += s.punkte;
+      spiele    += s.spiele;
+      siege     += s.siege;
+      punkte    += s.punkte;
       spielDiff += s.spielDiff;
     });
     // Spiele werden doppelt gezählt (Teamspiel), daher halbieren
@@ -180,9 +183,9 @@ function renderFirmenRanking() {
       <td class="num-val">${f.teilnehmer}</td>
       <td class="num-val">${f.spiele}</td>
       <td class="num-val">${f.siege}</td>
-      <td class="punkte-val">${f.punkte}</td>
+      <td class="num-val">${f.punkte}</td>
       <td class="num-val"><span class="${f.spiele > 0 ? diffClass : 'neu'}">${diffStr}</span></td>
-      <td class="elo-val">${f.pktPerTN.toFixed(2)}</td>
+      <td class="punkte-val">${f.pktPerTN.toFixed(2)}</td>
     </tr>`;
   }).join('');
 }
@@ -190,9 +193,10 @@ function renderFirmenRanking() {
 function renderRanking() {
   const withStats = PADEL_DATA.players.map(p => ({ ...p, stats: getPlayerStats(p) }));
   withStats.sort((a,b) =>
-    b.stats.punkte - a.stats.punkte ||
-    b.stats.spielDiff - a.stats.spielDiff ||
-    b.elo - a.elo
+    b.stats.punkte     - a.stats.punkte     ||
+    b.stats.siege      - a.stats.siege      ||
+    b.stats.spielDiff  - a.stats.spielDiff  ||
+    b.stats.saetzeDiff - a.stats.saetzeDiff
   );
   document.getElementById('rl-meta').textContent = withStats.length + ' Spieler';
   document.getElementById('rl-body').innerHTML = withStats.map((p, i) => {
@@ -211,7 +215,7 @@ function renderRanking() {
   }).join('');
   renderFirmenRanking();
 }
-  
+
 // ── MATCHES ───────────────────────────────────────────────────────
 function renderSpiele() {
   const spieltage = [...new Set(PADEL_DATA.matches.map(m => m.spieltag))].sort((a,b)=>a-b);
@@ -259,24 +263,6 @@ const GRAY = '#444444';
 let chart = null;
 const activeP = new Set(PADEL_DATA.players.map(p => p.id));
 
-function makeDataset(p, i, color) {
-  const allDates = chart ? chart.data.labels_raw : null;
-  return {
-    label: p.name,
-    borderColor: color,
-    backgroundColor: 'transparent',
-    pointBackgroundColor: color,
-    pointBorderColor: color,
-    pointHoverBackgroundColor: color,
-    pointHoverBorderColor: color,
-    borderWidth: 2,
-    pointRadius: 4,
-    pointHoverRadius: 4,
-    tension: 0.3,
-    spanGaps: true
-  };
-}
-
 function initChart() {
   if (chart) return;
   const allDates = [...new Set(PADEL_DATA.players.flatMap(p => p.history.map(h => h.date)))].sort();
@@ -308,19 +294,19 @@ function initChart() {
       datasets
     },
     options: {
-  responsive: true,
-  maintainAspectRatio: false,
-  onHover: (event, elements) => {
-    if (elements.length > 0) {
-      applyHover(elements[0].datasetIndex);
-    } else {
-      applyHover(null);
-    }
-  },
-  interaction: { mode: 'nearest', intersect: false, axis: 'y' },
-  plugins: {
-    legend: { display: false },
-    tooltip: { enabled: false }
+      responsive: true,
+      maintainAspectRatio: false,
+      onHover: (event, elements) => {
+        if (elements.length > 0) {
+          applyHover(elements[0].datasetIndex);
+        } else {
+          applyHover(null);
+        }
+      },
+      interaction: { mode: 'nearest', intersect: false, axis: 'y' },
+      plugins: {
+        legend: { display: false },
+        tooltip: { enabled: false }
       },
       scales: {
         x: { grid: { color: '#222' }, ticks: { color: '#5a5a72', font: { family: 'DM Mono', size: 11 } } },

@@ -56,7 +56,7 @@
 
     /* ── RANKING TABLE ── */
     .ranking-wrap { overflow-x: auto; margin-bottom: 4rem; }
-    table.rt { width: 100%; border-collapse: collapse; }
+    table.rt { width: 100%; border-collapse: collapse; margin-bottom: 1rem;}
     table.rt th {
       text-align: right; font-size: 0.68rem; font-weight: 600; letter-spacing: 0.12em;
       text-transform: uppercase; color: var(--muted); padding: 10px 16px;

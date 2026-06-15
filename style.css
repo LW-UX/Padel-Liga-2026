@@ -55,7 +55,7 @@
     .sh-meta { font-family: 'DM Mono', monospace; font-size: 0.72rem; color: var(--muted); }
 
     /* ── RANKING TABLE ── */
-    .ranking-wrap { overflow-x: auto; }
+    .ranking-wrap { overflow-x: auto; margin-bottom: 4rem; }
     table.rt { width: 100%; border-collapse: collapse; }
     table.rt th {
       text-align: right; font-size: 0.68rem; font-weight: 600; letter-spacing: 0.12em;

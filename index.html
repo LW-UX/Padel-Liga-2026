@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Padel-Liga 2026</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎾</text></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -52,6 +53,27 @@
           </tr>
         </thead>
         <tbody id="rl-body"></tbody>
+      </table>
+    </div>
+    <div class="sh" style="margin-top: 2.5 rem;">
+      <div class="sh-title">FIRMEN-RANGLISTE</div>
+      <div class="sh-meta" id="fr-meta"></div>
+    </div>
+    <div class="ranking-wrap">
+      <table class="rt">
+        <thead>
+          <tr>
+            <th class="l">#</th>
+            <th class="l">Firma</th>
+            <th>Teilnehmer</th>
+            <th>Spiele</th>
+            <th>Siege</th>
+            <th>Punkte</th>
+            <th>Diff.</th>
+            <th>Pkt/TN</th>
+          </tr>
+        </thead>
+        <tbody id="fr-body"></tbody>
       </table>
     </div>
   </section>
@@ -126,6 +148,45 @@ function getPlayerStats(player) {
   return { spiele: played.length, siege, punkte, spielDiff, spieleGV: played.length > 0 ? `${myGames}:${oppGames}` : '—' };
 }
 
+function renderFirmenRanking() {
+  const firmen = ['Headsquare', 'Hanako', 'Envidual'];
+  const stats = firmen.map(firma => {
+    const players = PADEL_DATA.players.filter(p => p.firma === firma);
+    let spiele = 0, siege = 0, punkte = 0, spielDiff = 0;
+    players.forEach(p => {
+      const s = getPlayerStats(p);
+      spiele   += s.spiele;
+      siege    += s.siege;
+      punkte   += s.punkte;
+      spielDiff += s.spielDiff;
+    });
+    // Spiele werden doppelt gezählt (Teamspiel), daher halbieren
+    spiele = Math.round(spiele / 2);
+    siege  = Math.round(siege  / 2);
+    const pktPerTN = players.length > 0 ? (punkte / players.length) : 0;
+    return { firma, teilnehmer: players.length, spiele, siege, punkte, spielDiff, pktPerTN };
+  });
+  stats.sort((a, b) =>
+    b.pktPerTN  - a.pktPerTN  ||
+    b.spielDiff - a.spielDiff
+  );
+  document.getElementById('fr-meta').textContent = '3 Firmen';
+  document.getElementById('fr-body').innerHTML = stats.map((f, i) => {
+    const diffStr   = f.spiele > 0 ? (f.spielDiff >= 0 ? `+${f.spielDiff}` : `${f.spielDiff}`) : '—';
+    const diffClass = f.spielDiff > 0 ? 'pos' : f.spielDiff < 0 ? 'neg' : 'neu';
+    return `<tr class="r${i+1}">
+      <td class="rn l">${i+1}</td>
+      <td class="l"><span class="pname">${f.firma}</span><span class="firma-badge firma-${f.firma}">${f.firma}</span></td>
+      <td class="num-val">${f.teilnehmer}</td>
+      <td class="num-val">${f.spiele}</td>
+      <td class="num-val">${f.siege}</td>
+      <td class="punkte-val">${f.punkte}</td>
+      <td class="num-val"><span class="${f.spiele > 0 ? diffClass : 'neu'}">${diffStr}</span></td>
+      <td class="elo-val">${f.pktPerTN.toFixed(2)}</td>
+    </tr>`;
+  }).join('');
+}
+
 function renderRanking() {
   const withStats = PADEL_DATA.players.map(p => ({ ...p, stats: getPlayerStats(p) }));
   withStats.sort((a,b) =>
@@ -148,8 +209,9 @@ function renderRanking() {
       <td class="elo-val">${p.elo}</td>
     </tr>`;
   }).join('');
+  renderFirmenRanking();
 }
-
+  
 // ── MATCHES ───────────────────────────────────────────────────────
 function renderSpiele() {
   const spieltage = [...new Set(PADEL_DATA.matches.map(m => m.spieltag))].sort((a,b)=>a-b);

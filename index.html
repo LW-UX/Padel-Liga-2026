@@ -280,7 +280,7 @@ function renderSpiele() {
         return `<div class="mc pending">
           <div class="mc-date">${ds}</div>
           <div class="mc-team"><div class="mc-players">${m.team1.spieler.join(' & ')}</div></div>
-          <div class="mc-score">${probabilityHtml}<div class="mc-pending-label">ausstehend</div></div>
+          <div class="mc-score"><div class="mc-prob"${probabilityHtml}</div><div class="mc-pending-label">ausstehend</div></div>
           <div class="mc-team"><div class="mc-players">${m.team2.spieler.join(' & ')}</div></div>
           <div class="mc-nr">${m.id.replace('spiel','Sp.')}</div>
         </div>`;

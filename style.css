@@ -140,7 +140,7 @@
     .mc-score-main { font-family: 'Bebas Neue', sans-serif; font-size: 2rem; letter-spacing: 0.05em; color: var(--text); line-height: 1; }
     .mc-score-detail { font-family: 'DM Mono', monospace; font-size: 0.7rem; color: var(--dim); margin-top: 3px; }
     .mc-prob { font-family: 'DM Mono', monospace; font-size: 0.72rem; color: var(--muted); margin-bottom: 4px; }
-    .mc-pending-label { font-size: 0.7rem; color: var(--muted); text-align: center; font-style: italic; }
+    .mc-pending-label { font-size: 0.7rem; color: var(--muted); text-align: center; }
     .mc-nr { font-family: 'DM Mono', monospace; font-size: 0.7rem; color: var(--muted); text-align: right; }
 
     @media (max-width: 768px) {

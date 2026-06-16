@@ -152,11 +152,49 @@ function getPlayerStats(player) {
 }
 
 function getLatestPlayerElo(player) {
-  const latestHistory = (player.history || [])
-    .filter(h => h.date && Number.isFinite(Number(h.elo)))
-    .sort((a, b) => new Date(b.date) - new Date(a.date))[0];
+  const elo = getLatestPlayerEloValue(player);
+  return elo ?? '—';
+}
 
-  return latestHistory ? latestHistory.elo : '—';
+function getLatestPlayerEloValue(player) {
+  const latestHistory = (player.history || [])
+    .map((h, index) => ({ ...h, index, dateValue: new Date(h.date).getTime() }))
+    .filter(h => Number.isFinite(h.dateValue) && Number.isFinite(Number(h.elo)))
+    .sort((a, b) => b.dateValue - a.dateValue || b.index - a.index)[0];
+
+  return latestHistory ? Number(latestHistory.elo) : null;
+}
+
+function expectedScore(playerElo, opponentElo) {
+  return 1 / (1 + Math.pow(10, (opponentElo - playerElo) / 500));
+}
+
+function expectedPlayerScore(playerElo, opponent1Elo, opponent2Elo) {
+  return (expectedScore(playerElo, opponent1Elo) + expectedScore(playerElo, opponent2Elo)) / 2;
+}
+
+function getMatchWinProbability(match) {
+  const playersByName = new Map(PADEL_DATA.players.map(p => [p.name, p]));
+  const team1 = match.team1.spieler.map(name => playersByName.get(name));
+  const team2 = match.team2.spieler.map(name => playersByName.get(name));
+
+  if (team1.some(p => !p) || team2.some(p => !p)) return null;
+
+  const team1Elos = team1.map(getLatestPlayerEloValue);
+  const team2Elos = team2.map(getLatestPlayerEloValue);
+
+  if ([...team1Elos, ...team2Elos].some(elo => elo === null)) return null;
+
+  const team1Expected = (
+    expectedPlayerScore(team1Elos[0], team2Elos[0], team2Elos[1]) +
+    expectedPlayerScore(team1Elos[1], team2Elos[0], team2Elos[1])
+  ) / 2;
+  const team1Probability = Math.round(team1Expected * 100);
+
+  return {
+    team1: team1Probability,
+    team2: 100 - team1Probability
+  };
 }
 
 function renderFirmenRanking() {
@@ -235,10 +273,14 @@ function renderSpiele() {
       const d = new Date(m.datum);
       const ds = d.toLocaleDateString('de-DE', {day:'2-digit', month:'2-digit'});
       if (m.sieger === null) {
+        const probability = getMatchWinProbability(m);
+        const probabilityHtml = probability
+          ? `<div class="mc-prob">${probability.team1}% : ${probability.team2}%</div>`
+          : '';
         return `<div class="mc pending">
           <div class="mc-date">${ds}</div>
           <div class="mc-team"><div class="mc-players">${m.team1.spieler.join(' & ')}</div></div>
-          <div class="mc-score"><div class="mc-pending-label">ausstehend</div></div>
+          <div class="mc-score">${probabilityHtml}<div class="mc-pending-label">ausstehend</div></div>
           <div class="mc-team"><div class="mc-players">${m.team2.spieler.join(' & ')}</div></div>
           <div class="mc-nr">${m.id.replace('spiel','Sp.')}</div>
         </div>`;

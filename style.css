@@ -31,7 +31,7 @@
     nav { display: flex; gap: 2px; }
     nav button {
       background: none; border: none; color: var(--muted); font-family: 'DM Sans', sans-serif;
-      font-size: 0.82rem; font-weight: 500; padding: 6px 14px; border-radius: 6px;
+      font-size: 0.85rem; font-weight: 500; padding: 6px 14px; border-radius: 6px;
       cursor: pointer; transition: all 0.15s;
     }
     nav button:hover { color: var(--text); background: var(--surface2); }
@@ -39,7 +39,7 @@
 
     /* ── HERO ── */
     .hero { padding: 3rem 2rem 2rem; max-width: 1100px; margin: 0 auto; }
-    .hero-eyebrow { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); margin-bottom: 1rem; }
+    .hero-eyebrow { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); margin-bottom: 1rem; }
     .hero h1 { font-family: 'Bebas Neue', sans-serif; font-size: clamp(4rem, 10vw, 8rem); line-height: 0.9; letter-spacing: 0.02em; }
     .hero h1 em { color: var(--accent); font-style: normal; }
     .hero-sub { color: var(--dim); font-size: 0.9rem; font-weight: 300; margin-top: 1rem; }
@@ -52,7 +52,7 @@
     /* ── SECTION HEADER ── */
     .sh { display: flex; align-items: baseline; gap: 12px; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border); }
     .sh-title { font-family: 'Bebas Neue', sans-serif; font-size: 2rem; letter-spacing: 0.05em; }
-    .sh-meta { font-family: 'DM Mono', monospace; font-size: 0.72rem; color: var(--muted); }
+    .sh-meta { font-family: 'DM Mono', monospace; font-size: 0.85rem; color: var(--muted); }
 
     /* ── RANKING TABLE ── */
     .ranking-wrap { overflow-x: auto; margin-bottom: 4rem; }
@@ -132,19 +132,19 @@
     }
     .mc.pending { background: transparent; }
     .mc-meta { display: flex; align-items: center; gap: 14px; white-space: nowrap; }
-    .mc-date { font-family: 'DM Mono', monospace; font-size: 0.7rem; color: var(--dim); }
+    .mc-date { font-family: 'DM Mono', monospace; font-size: 0.85rem; color: var(--dim); }
     .mc-team { display: flex; flex-direction: column; gap: 2px; }
     .mc-team-2 { text-align: right; align-items: flex-end; }
     .mc-team.win .mc-players { font-weight: 600; color: var(--text); }
     .mc-team:not(.win) .mc-players { color: var(--dim); }
-    .mc-players { font-size: 1rem; }
+    .mc-players { font-size: 1.15rem; }
     .mc-player-sep { margin: 0 0.3em; }
     .mc-score { text-align: center; }
     .mc-score-main { font-family: 'Bebas Neue', sans-serif; font-size: 2rem; letter-spacing: 0.05em; color: var(--text); line-height: 1; }
-    .mc-score-detail { font-family: 'DM Mono', monospace; font-size: 0.7rem; color: var(--dim); margin-top: 3px; }
-    .mc-prob { font-family: 'DM Mono', monospace; font-size: 0.72rem; color: var(--muted); margin-bottom: 4px; }
-    .mc-pending-label { font-size: 0.7rem; color: var(--muted); text-align: center; }
-    .mc-nr { font-family: 'DM Mono', monospace; font-size: 0.7rem; color: var(--muted); text-align: right; }
+    .mc-score-detail { font-family: 'DM Mono', monospace; font-size: 0.85rem; color: var(--dim); margin-top: 3px; }
+    .mc-prob { font-family: 'DM Mono', monospace; font-size: 0.85rem; color: var(--muted); margin-bottom: 4px; }
+    .mc-pending-label { font-size: 0.85rem; color: var(--muted); text-align: center; }
+    .mc-nr { font-family: 'DM Mono', monospace; font-size: 0.85rem; color: var(--muted); text-align: right; }
 
     @media (max-width: 768px) {
       header { padding: 0 0.9rem; }
@@ -162,10 +162,10 @@
       .mc-team-1 { grid-area: team1; min-width: 0; }
       .mc-score { grid-area: score; min-width: 78px; }
       .mc-team-2 { grid-area: team2; min-width: 0; }
-      .mc-players { display: flex; flex-direction: column; gap: 2px; font-size: 0.9rem; line-height: 1.16; }
+      .mc-players { display: flex; flex-direction: column; gap: 2px; font-size: 1.1rem; line-height: 1.16; }
       .mc-player-sep { display: none; }
-      .mc-score-main { font-size: 1.8rem; }
-      .mc-score-detail { font-size: 0.62rem; }
-      .mc-prob { font-size: 0.62rem; white-space: nowrap; }
+      .mc-score-main { font-size: 2rem; }
+      .mc-score-detail { font-size: 0.85rem; }
+      .mc-prob { font-size: 0.85rem; white-space: nowrap; }
       .mc-nr { text-align: left; }
     }

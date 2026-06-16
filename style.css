@@ -193,7 +193,38 @@
     .mini-rank-row.r2 .mini-rank-pos { color: #bbb; font-weight: 700; }
     .mini-rank-row.r3 .mini-rank-pos { color: #c97b2e; font-weight: 700; }
     .mini-rank-row.r4 .mini-rank-pos { color: var(--muted); font-weight: 700; }
-    .mini-match-teams { color: var(--text); margin-top: 0.25rem; line-height: 1.35; }
+    .mini-match-meta {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 0.65rem;
+    }
+    .mini-match-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+      gap: 10px;
+      align-items: center;
+    }
+    .mini-match-team {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      color: var(--text);
+      font-weight: 600;
+      line-height: 1.15;
+      min-width: 0;
+    }
+    .mini-match-team .mc-player-sep { display: none; }
+    .mini-match-team-2 {
+      text-align: right;
+      align-items: flex-end;
+    }
+    .mini-match-prob {
+      font-family: 'DM Mono', monospace;
+      color: var(--muted);
+      font-size: 0.78rem;
+      white-space: nowrap;
+      text-align: center;
+    }
     .empty-state { color: var(--muted); font-size: 0.9rem; }
 
     .info-layout {

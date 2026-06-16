@@ -392,9 +392,18 @@ function renderHome() {
     ? nextMatches.map(m => {
       const d = new Date(m.datum);
       const ds = d.toLocaleDateString('de-DE', {day:'2-digit', month:'2-digit'});
+      const probability = getMatchWinProbability(m);
+      const probabilityHtml = probability ? `${probability.team1}% : ${probability.team2}%` : '—';
       return `<div class="mini-match-row">
-        <div class="mini-match-meta">${m.id.replace('spiel','Spiel ')} · ${ds}</div>
-        <div class="mini-match-teams">${m.team1.spieler.join(' & ')} vs. ${m.team2.spieler.join(' & ')}</div>
+        <div class="mini-match-meta">
+          <span>${m.id.replace('spiel','Spiel ')}</span>
+          <span>${ds}</span>
+        </div>
+        <div class="mini-match-grid">
+          <div class="mini-match-team mini-match-team-1">${renderTeamPlayers(m.team1.spieler)}</div>
+          <div class="mini-match-prob">${probabilityHtml}</div>
+          <div class="mini-match-team mini-match-team-2">${renderTeamPlayers(m.team2.spieler)}</div>
+        </div>
       </div>`;
     }).join('')
     : '<div class="empty-state">Keine zukünftigen Spiele geplant.</div>';

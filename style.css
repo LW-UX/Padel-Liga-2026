@@ -333,6 +333,7 @@
     }
     .fb-toggle:hover { border-color: var(--accent); color: var(--accent); }
     .chart-wrap { position: relative; height: 580px; }
+    .placement-chart-wrap { position: relative; height: 520px; }
 
     /* ── MATCHES ── */
     .spieltag-group { margin-bottom: 2.5rem; }
@@ -369,8 +370,7 @@
       header .logo { display: none; }
       header nav { justify-content: center; width: 100%; }
       .hero { padding: 1.25rem 0.75rem 1.25rem; }
-      .hero-season,
-      .hero-orgs { display: none; }
+      .hero-season { display: none; }
       main { padding-left: 0.75rem; padding-right: 0.75rem; }
       nav button { padding: 6px 8px; font-size: 0.78rem; }
       .home-grid,

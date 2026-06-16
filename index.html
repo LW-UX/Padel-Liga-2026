@@ -128,6 +128,10 @@
       </div>
       <div class="chart-wrap"><canvas id="eloChart"></canvas></div>
     </div>
+    <div class="chart-box">
+      <div class="chart-box-title">Platzierungs-Verlauf</div>
+      <div class="placement-chart-wrap"><canvas id="placementChart"></canvas></div>
+    </div>
   </section>
 
   <!-- SPIELE -->
@@ -168,8 +172,8 @@ function nav(id, el) {
 }
 
 // ── RANKING ───────────────────────────────────────────────────────
-function getPlayerStats(player) {
-  const played = PADEL_DATA.matches.filter(m =>
+function getPlayerStats(player, matches = PADEL_DATA.matches) {
+  const played = matches.filter(m =>
     m.sieger !== null &&
     (m.team1.spieler.includes(player.name) || m.team2.spieler.includes(player.name))
   );
@@ -287,13 +291,7 @@ function renderFirmenRanking() {
 }
 
 function renderRanking() {
-  const withStats = PADEL_DATA.players.map(p => ({ ...p, stats: getPlayerStats(p) }));
-  withStats.sort((a,b) =>
-    b.stats.punkte     - a.stats.punkte     ||
-    b.stats.siege      - a.stats.siege      ||
-    b.stats.spielDiff  - a.stats.spielDiff  ||
-    b.stats.saetzeDiff - a.stats.saetzeDiff
-  );
+  const withStats = getRankedPlayers();
   document.getElementById('rl-meta').textContent = withStats.length + ' Spieler';
   document.getElementById('rl-body').innerHTML = withStats.map((p, i) => {
     const spielDiffStr = p.stats.spiele > 0 ? (p.stats.spielDiff >= 0 ? `+${p.stats.spielDiff}` : `${p.stats.spielDiff}`) : '—';
@@ -312,8 +310,8 @@ function renderRanking() {
   renderFirmenRanking();
 }
 
-function getRankedPlayers() {
-  const withStats = PADEL_DATA.players.map(p => ({ ...p, stats: getPlayerStats(p) }));
+function getRankedPlayers(matches = PADEL_DATA.matches) {
+  const withStats = PADEL_DATA.players.map(p => ({ ...p, stats: getPlayerStats(p, matches) }));
   withStats.sort((a,b) =>
     b.stats.punkte     - a.stats.punkte     ||
     b.stats.siege      - a.stats.siege      ||
@@ -564,6 +562,7 @@ const COLORS = ['#d4f53a','#3af5b4','#3a8ff5','#f5a03a','#f53ab4','#a03af5','#f5
 const GRAY = '#444444';
 
 let chart = null;
+let placementChart = null;
 const activeP = new Set(PADEL_DATA.players.map(p => p.id));
 
 function parseDateValue(date) {
@@ -633,8 +632,47 @@ function getPlayerSeries(player, dateKeys) {
   return dateKeys.map(date => historyByDate.get(date) ?? null);
 }
 
+function getPlacementSeries() {
+  const matchDays = [...new Set(PADEL_DATA.matches.map(m => m.spieltag))].sort((a, b) => a - b);
+  const placementsByPlayer = new Map(PADEL_DATA.players.map(p => [p.name, []]));
+
+  matchDays.forEach(spieltag => {
+    const matchesUntilDay = PADEL_DATA.matches.filter(m => m.sieger !== null && m.spieltag <= spieltag);
+    const ranked = getRankedPlayers(matchesUntilDay);
+    ranked.forEach((player, index) => {
+      placementsByPlayer.get(player.name).push(index + 1);
+    });
+  });
+
+  return { matchDays, placementsByPlayer };
+}
+
+const placementLabelPlugin = {
+  id: 'placementLabelPlugin',
+  afterDatasetsDraw(chartInstance) {
+    const { ctx, chartArea } = chartInstance;
+    ctx.save();
+    ctx.font = '600 11px DM Sans';
+    ctx.textBaseline = 'middle';
+
+    chartInstance.data.datasets.forEach((dataset, datasetIndex) => {
+      const meta = chartInstance.getDatasetMeta(datasetIndex);
+      if (!meta.data.length) return;
+
+      const point = meta.data[meta.data.length - 1];
+      ctx.fillStyle = dataset.borderColor;
+      ctx.fillText(dataset.label, Math.min(point.x + 8, chartArea.right + 8), point.y);
+    });
+
+    ctx.restore();
+  }
+};
+
 function initChart() {
-  if (chart) return;
+  if (chart) {
+    initPlacementChart();
+    return;
+  }
   const allDates = getChartDateKeys();
 
   const datasets = PADEL_DATA.players.map((p, i) => ({
@@ -685,7 +723,70 @@ function initChart() {
       }
     }
   });
+  initPlacementChart();
   renderFilter();
+}
+
+function initPlacementChart() {
+  if (placementChart) return;
+  const { matchDays, placementsByPlayer } = getPlacementSeries();
+  const maxPlace = PADEL_DATA.players.length;
+  const datasets = PADEL_DATA.players.map((p, i) => ({
+    label: p.name,
+    data: placementsByPlayer.get(p.name),
+    borderColor: COLORS[i],
+    backgroundColor: 'transparent',
+    pointBackgroundColor: COLORS[i],
+    pointBorderColor: COLORS[i],
+    borderWidth: 2,
+    pointRadius: 3,
+    pointHoverRadius: 4,
+    tension: 0.25
+  }));
+
+  const ctx = document.getElementById('placementChart').getContext('2d');
+  placementChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: matchDays.map(day => `ST ${day}`),
+      datasets
+    },
+    plugins: [placementLabelPlugin],
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      layout: { padding: { right: 90 } },
+      interaction: { mode: 'nearest', intersect: false, axis: 'xy' },
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            label: context => `${context.dataset.label}: Platz ${context.parsed.y}`
+          }
+        }
+      },
+      scales: {
+        x: {
+          title: { display: true, text: 'Spieltag', color: '#a2a2b7', font: { family: 'DM Sans', size: 12, weight: '600' } },
+          grid: { color: '#222' },
+          ticks: { color: '#5a5a72', font: { family: 'DM Mono', size: 11 } }
+        },
+        y: {
+          reverse: true,
+          min: 1,
+          max: maxPlace,
+          title: { display: true, text: 'Platz', color: '#a2a2b7', font: { family: 'DM Sans', size: 12, weight: '600' } },
+          grid: { color: '#222' },
+          ticks: {
+            stepSize: 1,
+            color: '#5a5a72',
+            font: { family: 'DM Mono', size: 11 },
+            callback: value => Number.isInteger(value) ? value : ''
+          }
+        }
+      }
+    }
+  });
 }
 
 function applyHover(idx) {

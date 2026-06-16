@@ -60,7 +60,7 @@
     /* ── HOME / INFO WIDGETS ── */
     .home-grid {
       display: grid;
-      grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.25fr) minmax(280px, 0.95fr);
+      grid-template-columns: minmax(0, 1fr) minmax(320px, 1.5fr);
       gap: 18px;
       align-items: start;
     }
@@ -111,6 +111,17 @@
       border-radius: 8px;
       padding: 0.9rem;
     }
+    .widget-articles .article-card {
+      background: transparent;
+      border: 0;
+      padding: 0;
+    }
+    .widget-articles .article-card h3 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2.4rem;
+      letter-spacing: 0.04em;
+      margin-bottom: 0.6rem;
+    }
     .article-card h3 { font-size: 1rem; margin-bottom: 0.35rem; }
     .article-card p,
     .info-card p { color: var(--dim); line-height: 1.5; margin-bottom: 0.8rem; }
@@ -138,7 +149,7 @@
     }
     .mini-rank-name { font-weight: 600; }
     .mini-rank-points { color: var(--accent); font-weight: 700; }
-    .mini-match-teams { color: var(--dim); margin-top: 0.25rem; line-height: 1.35; }
+    .mini-match-teams { color: var(--text); margin-top: 0.25rem; line-height: 1.35; }
     .empty-state { color: var(--muted); font-size: 0.9rem; }
 
     .info-layout {

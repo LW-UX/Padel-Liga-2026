@@ -11,7 +11,7 @@ const PADEL_INFO = {
     {
       title: "Spielregeln",
       intro: "Die im Folgenden aufgezählten Regeln stellen nur einen Auszug aus dem gesamten Regelwerk dar.",
-      link: { label: "Vollständiges Regelwerk", href: "https://de.wikipedia.org/wiki/Padel#Kritik" },
+      link: { label: "Vollständiges Regelwerk", href: "https://de.wikipedia.org/wiki/Padel" },
       groups: [
         {
           title: "Aufschlag, Seitenwahl und Wechsel",
@@ -113,6 +113,9 @@ const PADEL_INFO = {
         ["Verlierer im Match-Tie-Break", "1", "1:1 - 3:10"],
         ["Verlierer", "0", "0:2"]
       ],
+      paragraphs: [
+        "Für die Tabelle werden nachstehende Kriterien in der aufgeführten Reihenfolge zur Ermittlung der Platzierung herangezogen:"
+      ],
       items: [
         "Anzahl Punkte",
         "Anzahl Siege",
@@ -125,36 +128,50 @@ const PADEL_INFO = {
   articles: [
     {
       spieltag: 1,
+      startDate: null,
+      endDate: null,
       title: "Spieltag 1",
       teaser: "Artikel folgt."
     },
     {
       spieltag: 2,
+      startDate: null,
+      endDate: null,
       title: "Spieltag 2",
       teaser: "Artikel folgt."
     },
     {
       spieltag: 3,
+      startDate: null,
+      endDate: null,
       title: "Spieltag 3",
       teaser: "Artikel folgt."
     },
     {
       spieltag: 4,
+      startDate: null,
+      endDate: null,
       title: "Spieltag 4",
       teaser: "Artikel folgt."
     },
     {
       spieltag: 5,
+      startDate: null,
+      endDate: null,
       title: "Spieltag 5",
       teaser: "Artikel folgt."
     },
     {
       spieltag: 6,
+      startDate: null,
+      endDate: null,
       title: "Spieltag 6",
       teaser: "Artikel folgt."
     },
     {
       spieltag: 7,
+      startDate: null,
+      endDate: null,
       title: "Spieltag 7",
       teaser: "Artikel folgt."
     }

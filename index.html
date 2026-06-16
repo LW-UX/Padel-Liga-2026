@@ -18,6 +18,7 @@
 <header>
   <button class="logo" onclick="nav('start')">PADEL·LIGA <span>2026</span></button>
   <nav>
+    <button class="active" data-section="start" onclick="nav('start',this)">Home</button>
     <button data-section="rangliste" onclick="nav('rangliste',this)">Rangliste</button>
     <button data-section="spiele" onclick="nav('spiele',this)">Spiele</button>
     <button data-section="verlauf" onclick="nav('verlauf',this)">Verlauf</button>
@@ -37,18 +38,9 @@
   <!-- START -->
   <section id="start" class="section active">
     <div class="home-grid">
-      <article class="widget widget-short">
-        <div class="widget-label">Kurzinfos</div>
-        <h2>So funktioniert die Liga</h2>
-        <ul id="home-short-info" class="clean-list"></ul>
-        <button class="text-link" onclick="nav('infos')">Alle Infos</button>
-      </article>
-
       <article class="widget widget-articles">
-        <div class="widget-label">Artikel</div>
-        <h2>Spieltag-Updates</h2>
-        <div id="home-articles" class="article-list"></div>
-        <button class="text-link" onclick="nav('infos')">Alle Artikel</button>
+        <div id="home-articles"></div>
+        <button class="text-link" onclick="nav('infos')">Alle alten Artikel</button>
       </article>
 
       <div class="home-side">
@@ -62,6 +54,13 @@
           <div class="widget-label">Nächste Spiele</div>
           <div id="home-next-matches"></div>
           <button class="text-link" onclick="nav('spiele')">Zum Spielplan</button>
+        </article>
+
+        <article class="widget widget-short">
+          <div class="widget-label">Kurzinfos</div>
+          <h2>So funktioniert die Liga</h2>
+          <ul id="home-short-info" class="clean-list"></ul>
+          <button class="text-link" onclick="nav('infos')">Alle Infos</button>
         </article>
       </div>
     </div>
@@ -331,18 +330,32 @@ function renderTeamPlayers(players) {
   `).join('');
 }
 
+function getCurrentArticle() {
+  const todayKey = toDateKey(new Date());
+  const current = PADEL_INFO.articles.find(article => {
+    if (!article.startDate && !article.endDate) return false;
+    const start = article.startDate || '0000-01-01';
+    const end = article.endDate || '9999-12-31';
+    return start <= todayKey && todayKey <= end;
+  });
+
+  return current || PADEL_INFO.articles[0];
+}
+
+function renderArticleCard(article) {
+  return `<article class="article-card">
+    <div class="article-kicker">Spieltag ${article.spieltag}</div>
+    <h3>${article.title}</h3>
+    <p>${article.teaser}</p>
+  </article>`;
+}
+
 function renderHome() {
   document.getElementById('home-short-info').innerHTML = PADEL_INFO.shortInfo
     .map(item => `<li>${item}</li>`)
     .join('');
 
-  document.getElementById('home-articles').innerHTML = PADEL_INFO.articles
-    .map(article => `<article class="article-card">
-      <div class="article-kicker">Spieltag ${article.spieltag}</div>
-      <h3>${article.title}</h3>
-      <p>${article.teaser}</p>
-    </article>`)
-    .join('');
+  document.getElementById('home-articles').innerHTML = renderArticleCard(getCurrentArticle());
 
   document.getElementById('home-ranking').innerHTML = getRankedPlayers().slice(0, 4)
     .map((p, i) => `<div class="mini-rank-row">
@@ -364,7 +377,7 @@ function renderHome() {
       const ds = d.toLocaleDateString('de-DE', {day:'2-digit', month:'2-digit'});
       return `<div class="mini-match-row">
         <div class="mini-match-meta">${m.id.replace('spiel','Spiel ')} · ${ds}</div>
-        <div class="mini-match-teams">${m.team1.spieler.join(' / ')} vs. ${m.team2.spieler.join(' / ')}</div>
+        <div class="mini-match-teams">${m.team1.spieler.join(' & ')} vs. ${m.team2.spieler.join(' & ')}</div>
       </div>`;
     }).join('')
     : '<div class="empty-state">Keine zukünftigen Spiele geplant.</div>';
@@ -410,11 +423,7 @@ function renderInfos() {
     `<article class="info-card">
       <h2>Artikel</h2>
       <div class="article-list info-article-list">
-        ${PADEL_INFO.articles.map(article => `<article class="article-card">
-          <div class="article-kicker">Spieltag ${article.spieltag}</div>
-          <h3>${article.title}</h3>
-          <p>${article.teaser}</p>
-        </article>`).join('')}
+        ${PADEL_INFO.articles.map(renderArticleCard).join('')}
       </div>
     </article>`
   ].join('');

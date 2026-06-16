@@ -127,15 +127,18 @@
       background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
       padding: 1.1rem 1.5rem;
       display: grid;
-      grid-template-columns: 60px 1fr 130px 1fr 60px;
+      grid-template-columns: 92px 1fr 130px 1fr;
       align-items: center; gap: 16px;
     }
     .mc.pending { background: transparent; }
+    .mc-meta { display: flex; align-items: center; gap: 12px; }
     .mc-date { font-family: 'DM Mono', monospace; font-size: 0.7rem; color: var(--dim); }
     .mc-team { display: flex; flex-direction: column; gap: 2px; }
+    .mc-team-2 { text-align: right; align-items: flex-end; }
     .mc-team.win .mc-players { font-weight: 600; color: var(--text); }
     .mc-team:not(.win) .mc-players { color: var(--dim); }
     .mc-players { font-size: 1rem; }
+    .mc-player-sep { margin: 0 0.3em; }
     .mc-score { text-align: center; }
     .mc-score-main { font-family: 'Bebas Neue', sans-serif; font-size: 2rem; letter-spacing: 0.05em; color: var(--text); line-height: 1; }
     .mc-score-detail { font-family: 'DM Mono', monospace; font-size: 0.7rem; color: var(--dim); margin-top: 3px; }
@@ -144,6 +147,25 @@
     .mc-nr { font-family: 'DM Mono', monospace; font-size: 0.7rem; color: var(--muted); text-align: right; }
 
     @media (max-width: 768px) {
-      .mc { grid-template-columns: 1fr; }
+      header { padding: 0 0.9rem; }
+      .hero { padding-left: 0.75rem; padding-right: 0.75rem; }
+      main { padding-left: 0.75rem; padding-right: 0.75rem; }
+      .mc {
+        grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+        grid-template-areas:
+          "meta meta meta"
+          "team1 score team2";
+        gap: 18px 10px;
+        padding: 1rem 0.95rem;
+      }
+      .mc-meta { grid-area: meta; justify-content: space-between; }
+      .mc-team-1 { grid-area: team1; min-width: 0; }
+      .mc-score { grid-area: score; min-width: 78px; }
+      .mc-team-2 { grid-area: team2; min-width: 0; }
+      .mc-players { display: flex; flex-direction: column; gap: 2px; font-size: 0.9rem; line-height: 1.16; }
+      .mc-player-sep { display: none; }
+      .mc-score-main { font-size: 1.8rem; }
+      .mc-score-detail { font-size: 0.62rem; }
+      .mc-prob { font-size: 0.62rem; white-space: nowrap; }
       .mc-nr { text-align: left; }
     }

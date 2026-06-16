@@ -262,6 +262,13 @@ function renderRanking() {
   renderFirmenRanking();
 }
 
+function renderTeamPlayers(players) {
+  return players.map((player, index) => `
+    ${index > 0 ? '<span class="mc-player-sep">&amp;</span>' : ''}
+    <span class="mc-player-name">${player}</span>
+  `).join('');
+}
+
 // ── MATCHES ───────────────────────────────────────────────────────
 function renderSpiele() {
   const spieltage = [...new Set(PADEL_DATA.matches.map(m => m.spieltag))].sort((a,b)=>a-b);
@@ -278,34 +285,38 @@ function renderSpiele() {
           ? `<div class="mc-prob">${probability.team1}% : ${probability.team2}%</div>`
           : '';
         return `<div class="mc pending">
-          <div class="mc-nr">${m.id.replace('spiel','Spiel ')}</div>
-          <div class="mc-date">${ds}</div>
-          <div class="mc-team">
-            <div class="mc-players">${m.team1.spieler.join(' & ')}</div>
+          <div class="mc-meta">
+            <span class="mc-nr">${m.id.replace('spiel','Sp. ')}</span>
+            <span class="mc-date">${ds}</span>
+          </div>
+          <div class="mc-team mc-team-1">
+            <div class="mc-players">${renderTeamPlayers(m.team1.spieler)}</div>
           </div>
           <div class="mc-score">
-            <div class="mc-prob">${probabilityHtml}</div>
+            ${probabilityHtml}
             <div class="mc-pending-label">ausstehend</div>
           </div>
-          <div class="mc-team">
-            <div class="mc-players">${m.team2.spieler.join(' & ')}</div>
+          <div class="mc-team mc-team-2">
+            <div class="mc-players">${renderTeamPlayers(m.team2.spieler)}</div>
           </div>
         </div>`;
       }
       const t1w = m.sieger === 1, t2w = m.sieger === 2;
       const [s1, s2] = m.saetze.split(':');
       return `<div class="mc played">
-        <div class="mc-nr">${m.id.replace('spiel','Spiel ')}</div>
-        <div class="mc-date">${ds}</div>
-        <div class="mc-team ${t1w?'win':''}">
-          <div class="mc-players">${m.team1.spieler.join(' & ')}</div>
+        <div class="mc-meta">
+          <span class="mc-nr">${m.id.replace('spiel','Sp. ')}</span>
+          <span class="mc-date">${ds}</span>
+        </div>
+        <div class="mc-team mc-team-1 ${t1w?'win':''}">
+          <div class="mc-players">${renderTeamPlayers(m.team1.spieler)}</div>
         </div>
         <div class="mc-score">
           <div class="mc-score-main">${s1}:${s2}</div>
           <div class="mc-score-detail">${m.ergebnis}</div>
         </div>
-        <div class="mc-team ${t2w?'win':''}">
-          <div class="mc-players">${m.team2.spieler.join(' & ')}</div>
+        <div class="mc-team mc-team-2 ${t2w?'win':''}">
+          <div class="mc-players">${renderTeamPlayers(m.team2.spieler)}</div>
         </div>
       </div>`;
     }).join('');

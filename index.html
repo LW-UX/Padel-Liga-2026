@@ -151,6 +151,14 @@ function getPlayerStats(player) {
   return { spiele: played.length, siege, punkte, spielDiff, saetzeDiff, spieleGV: played.length > 0 ? `${myGames}:${oppGames}` : '—' };
 }
 
+function getLatestPlayerElo(player) {
+  const latestHistory = (player.history || [])
+    .filter(h => h.date && Number.isFinite(Number(h.elo)))
+    .sort((a, b) => new Date(b.date) - new Date(a.date))[0];
+
+  return latestHistory ? latestHistory.elo : '—';
+}
+
 function renderFirmenRanking() {
   const firmen = ['Headsquare', 'Hanako', 'Envidual'];
   const stats = firmen.map(firma => {
@@ -210,7 +218,7 @@ function renderRanking() {
       <td class="punkte-val">${p.stats.punkte}</td>
       <td class="num-val">${p.stats.spiele > 0 ? p.stats.spieleGV : '—'}</td>
       <td class="num-val"><span class="${p.stats.spiele > 0 ? spielDiffClass : 'neu'}">${spielDiffStr}</span></td>
-      <td class="elo-val">${p.elo}</td>
+      <td class="elo-val">${getLatestPlayerElo(p)}</td>
     </tr>`;
   }).join('');
   renderFirmenRanking();

@@ -24,7 +24,7 @@ Nach jedem Spiel öffnest du `data/data.js` und aktualisierst:
 
 ### Spieler-Elo aktualisieren
 ```js
-{ id: "ludwig_w", name: "Ludwig W.", elo: 1099, history: [
+{ id: "ludwig_w", name: "Ludwig W.", history: [
   { date: "2026-05-13", elo: 1000, spiel: "Start" },
   { date: "2026-05-13", elo: 1053, spiel: "Spiel 4" },
   { date: "2026-05-19", elo: 1099, spiel: "Spiel 6" },

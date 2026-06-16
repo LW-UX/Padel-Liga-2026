@@ -60,7 +60,7 @@
     /* ── HOME / INFO WIDGETS ── */
     .home-grid {
       display: grid;
-      grid-template-columns: minmax(0, 1fr) minmax(320px, 1.5fr);
+      grid-template-columns: minmax(320px, 1.4fr) minmax(320px, 1fr);
       gap: 18px;
       align-items: start;
     }

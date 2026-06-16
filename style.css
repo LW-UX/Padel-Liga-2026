@@ -137,7 +137,7 @@
     .mc-team-2 { text-align: right; align-items: flex-end; }
     .mc-team.win .mc-players { font-weight: 600; color: var(--text); }
     .mc-team:not(.win) .mc-players { color: var(--dim); }
-    .mc-players { font-size: 1.15rem; }
+    .mc-players { font-size: 1.1rem; }
     .mc-player-sep { margin: 0 0.3em; }
     .mc-score { text-align: center; }
     .mc-score-main { font-family: 'Bebas Neue', sans-serif; font-size: 2rem; letter-spacing: 0.05em; color: var(--text); line-height: 1; }

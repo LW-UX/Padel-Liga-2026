@@ -365,8 +365,12 @@
     .mc-nr { font-family: 'DM Mono', monospace; font-size: 0.85rem; color: var(--muted); text-align: right; }
 
     @media (max-width: 768px) {
-      header { padding: 0 0.9rem; }
-      .hero { padding-left: 0.75rem; padding-right: 0.75rem; }
+      header { justify-content: center; padding: 0 0.75rem; }
+      header .logo { display: none; }
+      header nav { justify-content: center; width: 100%; }
+      .hero { padding: 1.25rem 0.75rem 1.25rem; }
+      .hero-season,
+      .hero-orgs { display: none; }
       main { padding-left: 0.75rem; padding-right: 0.75rem; }
       nav button { padding: 6px 8px; font-size: 0.78rem; }
       .home-grid,
@@ -374,7 +378,7 @@
       .home-grid { gap: 12px; }
       .home-article-preview {
         position: relative;
-        max-height: 560px;
+        max-height: 420px;
         overflow: hidden;
       }
       .home-article-preview::after {

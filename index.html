@@ -28,7 +28,7 @@
 
 <div class="hero">
   <div>
-    <div class="hero-eyebrow">Saison 2026 &nbsp;·&nbsp; Headsquare &nbsp;×&nbsp; Hanako &nbsp;×&nbsp; Envidual</div>
+    <div class="hero-eyebrow"><span class="hero-season">Saison </span>2026<span class="hero-orgs"> &nbsp;·&nbsp; Headsquare &nbsp;×&nbsp; Hanako &nbsp;×&nbsp; Envidual</span></div>
     <h1>PADEL<em>LIGA</em></h1>
   </div>
 </div>
@@ -343,10 +343,10 @@ function getCurrentArticle() {
 }
 
 function renderArticleCard(article) {
+  const meta = article.meta || `Spieltag ${article.spieltag}`;
   return `<article class="article-card">
-    <div class="article-kicker">Spieltag ${article.spieltag}</div>
+    <div class="article-meta">${meta}</div>
     <h3>${article.title}</h3>
-    ${article.meta ? `<div class="article-meta">${article.meta}</div>` : ''}
     ${article.teaser ? `<p>${article.teaser}</p>` : ''}
     ${article.body ? `<div class="article-body">${article.body.map(renderArticleBlock).join('')}</div>` : ''}
   </article>`;

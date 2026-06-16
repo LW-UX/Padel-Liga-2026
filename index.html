@@ -346,8 +346,22 @@ function renderArticleCard(article) {
   return `<article class="article-card">
     <div class="article-kicker">Spieltag ${article.spieltag}</div>
     <h3>${article.title}</h3>
-    <p>${article.teaser}</p>
+    ${article.meta ? `<div class="article-meta">${article.meta}</div>` : ''}
+    ${article.teaser ? `<p>${article.teaser}</p>` : ''}
+    ${article.body ? `<div class="article-body">${article.body.map(renderArticleBlock).join('')}</div>` : ''}
   </article>`;
+}
+
+function renderArticleBlock(block) {
+  if (block.type === 'h') return `<h4>${block.text}</h4>`;
+  if (block.type === 'match') return `<div class="article-match">${block.text}</div>`;
+  if (block.type === 'quote') {
+    return `<blockquote>
+      <p>${block.text}</p>
+      <cite>${block.author}</cite>
+    </blockquote>`;
+  }
+  return `<p>${block.text}</p>`;
 }
 
 function renderHome() {
@@ -355,7 +369,12 @@ function renderHome() {
     .map(item => `<li>${item}</li>`)
     .join('');
 
-  document.getElementById('home-articles').innerHTML = renderArticleCard(getCurrentArticle());
+  document.getElementById('home-articles').innerHTML = `
+    <div class="home-article-preview" id="home-article-preview">
+      ${renderArticleCard(getCurrentArticle())}
+    </div>
+    <button class="text-link article-readmore" id="article-readmore" onclick="expandHomeArticle()">Weiterlesen</button>
+  `;
 
   document.getElementById('home-ranking').innerHTML = getRankedPlayers().slice(0, 4)
     .map((p, i) => `<div class="mini-rank-row">
@@ -381,6 +400,11 @@ function renderHome() {
       </div>`;
     }).join('')
     : '<div class="empty-state">Keine zukünftigen Spiele geplant.</div>';
+}
+
+function expandHomeArticle() {
+  document.getElementById('home-article-preview').classList.add('expanded');
+  document.getElementById('article-readmore').style.display = 'none';
 }
 
 function renderInfoSection(section) {

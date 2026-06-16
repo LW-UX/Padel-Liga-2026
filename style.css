@@ -125,6 +125,45 @@
     .article-card h3 { font-size: 1rem; margin-bottom: 0.35rem; }
     .article-card p,
     .info-card p { color: var(--dim); line-height: 1.5; margin-bottom: 0.8rem; }
+    .article-meta {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.78rem;
+      color: var(--muted);
+      letter-spacing: 0.04em;
+      margin-bottom: 1rem;
+      text-transform: uppercase;
+    }
+    .article-body { margin-top: 1rem; }
+    .article-body h4 {
+      color: var(--text);
+      font-size: 1.05rem;
+      line-height: 1.25;
+      margin: 1.6rem 0 0.5rem;
+    }
+    .article-match {
+      font-style: italic;
+      color: var(--muted);
+      margin-bottom: 0.9rem;
+    }
+    .article-body blockquote {
+      border-left: 3px solid var(--accent);
+      margin: 1rem 0;
+      padding: 0.2rem 0 0.2rem 1rem;
+    }
+    .article-body blockquote p {
+      color: var(--text);
+      font-size: 1.02rem;
+      font-style: italic;
+      margin-bottom: 0.35rem;
+    }
+    .article-body cite {
+      color: var(--muted);
+      font-family: 'DM Mono', monospace;
+      font-size: 0.75rem;
+      font-style: normal;
+    }
+    .article-body cite::before { content: "- "; }
+    .article-readmore { display: none; }
     .mini-rank-row,
     .mini-match-row {
       border-bottom: 1px solid var(--border);
@@ -281,6 +320,28 @@
       .info-layout,
       .info-article-list { grid-template-columns: 1fr; }
       .home-grid { gap: 12px; }
+      .home-article-preview {
+        position: relative;
+        max-height: 560px;
+        overflow: hidden;
+      }
+      .home-article-preview::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: 96px;
+        background: linear-gradient(to bottom, rgba(41,41,41,0), var(--surface));
+        pointer-events: none;
+      }
+      .home-article-preview.expanded {
+        max-height: none;
+      }
+      .home-article-preview.expanded::after {
+        display: none;
+      }
+      .article-readmore { display: inline-flex; }
       .info-layout > .info-card { position: static; }
       .widget,
       .info-card { padding: 1rem; }

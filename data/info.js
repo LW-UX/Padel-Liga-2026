@@ -142,10 +142,52 @@ const PADEL_INFO = {
     },
     {
       spieltag: 3,
-      startDate: null,
-      endDate: null,
-      title: "Spieltag 3",
-      teaser: "Artikel folgt."
+      startDate: "2026-06-08",
+      endDate: "2026-06-19",
+      title: "Die Liga zeigt Zähne",
+      meta: "PADEL-LIGA 2026 · SPIELTAG 3 · 8. JUNI - 19. JUNI 2026",
+      teaser: "Zwei Spieltage sind absolviert, der dritte steht in den Startlöchern. Die Tabelle nimmt Formen an, doch für viele beginnt die Liga jetzt erst richtig.",
+      body: [
+        { type: "p", text: "Zwei Spieltage sind absolviert, der dritte steht in den Startlöchern. Die aktuelle Bilanz lautet: Von acht Spielen der ersten beiden Spieltage sind vier gespielt." },
+        { type: "p", text: "Und trotzdem: Die Tabelle nimmt Formen an. Ludwig W thront mit sechs Punkten an der Spitze. Jonas L hat letzten Mittwoch nachgelegt. Gleichzeitig stehen sieben von achtzehn SpielerInnen noch bei null - kein Spiel, kein Punkt, kein Satz. Für sie ist die Liga bisher ein Versprechen, das noch eingelöst werden muss. Spieltag 3 soll das ändern." },
+
+        { type: "h", text: "Spiel 9 - Presseboykott trifft Kampfansage" },
+        { type: "match", text: "Cristian B & Chris M vs. Raphael H & Leonie R" },
+        { type: "p", text: "Man erinnert sich: Vor Spieltag 1 war Leonie R die Spielerin mit der vielleicht kühnsten Prognose der gesamten Liga. \"Ich werde das Turnier gewinnen. Also gewinne ich auch das erste Spiel. So einfach ist das.\" Es folgte eine 0:2-Niederlage. Die Konsequenz? Leonie R steht nun auf Kriegsfuß mit der Presse:" },
+        { type: "quote", text: "Ich sage gar nichts mehr.", author: "Leonie R" },
+        { type: "p", text: "Der Presseboykott steht. Ihr Partner Raphael H, Platz 4 in der Tabelle mit drei Punkten und einer Satzdifferenz von +7, ist da deutlich gesprächsfreudiger:" },
+        { type: "quote", text: "Was willst hören? Wie hoch ich gewinne? Am Spieltag 3 wird bei mir wieder taktisch gearbeitet, notfalls auch sportlich.", author: "Raphael H" },
+        { type: "p", text: "Auf der anderen Seite des Netzes: Cristian B, der trotz geprellter Rippen bereits Spiel 6 gewonnen hat, und Chris M, der noch auf sein erstes Ligaspiel wartet. Für beide Teams kann dieses Spiel die Richtung vorgeben, ob es weiter nach oben oder unten geht." },
+
+        { type: "h", text: "Spiel 10 - Das unbeschriebene Blatt gegen den Tabellenführer" },
+        { type: "match", text: "Agnes K & Lukas P vs. Ludwig W & Marco M" },
+        { type: "p", text: "Es ist das Spiel der Gegensätze. Auf der einen Seite das bisher geheimnisvollste Team des Turniers. Über Lukas P hallen heldengleiche Loblieder durch die Firmengänge. Der Mann gilt als einer der heißesten Titelanwärter. Über Agnes K lässt sich dagegen wenig Belastbares sagen. Was beide eint: Sie haben noch keinen einzigen Punkt gesammelt, ihr Arbeitsnachweis steht aus." },
+        { type: "p", text: "Auf der anderen Seite: Ludwig W: Tabellenführer, zwei Spiele, zwei Siege, sechs Punkte, die beste Satzdifferenz der Liga mit +14. Neben ihm Marco M, der sich betont gelassen gibt:" },
+        { type: "quote", text: "Ja, der Lukas soll schon sehr, sehr gut sein. Da wird einiges kommen. Über Agnes kann man wenig sagen. Aber das sollten wir gemeinsam schon packen.", author: "Marco M" },
+        { type: "p", text: "Kann der Tabellenführer und sein noch punktloser Partner die Favoritenrolle bestätigen oder startet das unbeschriebene Blatt mit einem Sieg in die Saison? Spiel 10 könnte das Spiel des Spieltags werden." },
+
+        { type: "h", text: "Spiel 11 - Anfängerin gegen Kampfansage" },
+        { type: "match", text: "Christoph L & Florian Z vs. Luca W & Irene W" },
+        { type: "p", text: "Spiel 11 bringt eine besondere Ausgangslage mit sich. Irene W ist verletzt und fällt zunächst aus. Erst in der zweiten Woche des Spieltags kann sie starten, und dann warten gleich drei nachzuholende Partien auf sie. Die Frage, die sich alle stellen: Resultiert daraus eine Überbelastung direkt aus der Verletzung heraus oder spielt sie sich in einen Rausch?" },
+        { type: "p", text: "Auf Nachfrage dieser Redaktion lässt sich Irene nicht wirklich zu einem Statement verleiten:" },
+        { type: "quote", text: "Das werden wir sehen.", author: "Irene W" },
+        { type: "p", text: "Was man wissen muss: Irene ist blutiger Anfänger. Nach dem Sommerfest letzten Jahres wird sie erst zum zweiten Mal überhaupt einen Padelschläger in der Hand halten. An ihrer Seite steht Luca W, Platz 3 der Tabelle, ein Sieg, drei Punkte, die drittbeste Satzdifferenz der Liga. Kann er die Unerfahrenheit seiner Partnerin kompensieren?" },
+        { type: "p", text: "Gegner Florian Z hat sich jedenfalls seine Meinung längst gebildet und formuliert seine Prognose mit einer Klarheit, die an Gnadenlosigkeit grenzt:" },
+        { type: "quote", text: "Wir werden sie vernichten. Bei meinem ersten Padelspiel hab ich Erfahrung gesammelt, jetzt die Punkte.", author: "Florian Z" },
+        { type: "p", text: "Zur Erinnerung: Florian Z steht nach seinem ersten Spiel selbst noch bei null Punkten und einer Satzdifferenz von -7. Die Kampfansage ist also durchaus mutig. Gemeinsam mit Christoph L, ebenfalls noch punktlos, hat dieses Team nichts zu verlieren. Und genau das macht es gefährlich." },
+
+        { type: "h", text: "Spiel 12 - Bereits gespielt: Tie-Break-Drama zum Spieltagsauftakt" },
+        { type: "match", text: "Greta P & Andreas L vs. Marcel M & Jonas L | Ergebnis: 1:6, 6:3, Match-Tie-Break 6:10" },
+        { type: "p", text: "Auch Spieltag 3 hat bereits ein erstes Ergebnis - und was für eines. Im Spiel des letzten Mittwochs lieferten sich Greta P und Andreas L auf der einen Seite und Marcel M und Jonas L auf der anderen ein Match, das die gesamte Dramatik dieser Liga in drei Epochen packte." },
+        { type: "p", text: "Der erste Satz ging klar an Team 2: 6:1, Greta und Andreas waren schlicht noch nicht im Spiel. Doch statt aufzugeben, kämpften sie sich zurück. Im zweiten Satz drehten sie das Momentum, gewannen 6:3 und erzwangen den Match-Tie-Break. Dort führten sie sogar 5:6. Doch Marcel M und Jonas L behielten die Nerven und holten sich den Match-Tie-Break mit 10:6." },
+        { type: "p", text: "Andreas L blickt trotz der Niederlage positiv zurück:" },
+        { type: "quote", text: "Insgesamt bin ich zufrieden. Haben uns reingekämpft nach dem ersten Satz. Es war ein extrem ausgeglichenes Match. Match-Tie-Break ist dann halt 50:50. Aber hat Spaß gemacht.", author: "Andreas L" },
+        { type: "p", text: "Für Marcel M ist es der erste Sieg, erkämpft mit Spirit statt Technik, ganz wie er es angekündigt hatte. Und Jonas L? Festigt seinen zweiten Tabellenplatz mit jetzt fünf Punkten aus zwei Spielen. Gemeinsam bestätigen die beiden die beeindruckende Frühform von Envidual: Sechs Spiele, sechs Siege - kein anderes Unternehmen kann das von sich behaupten." },
+
+        { type: "h", text: "Blick auf die Tabelle" },
+        { type: "p", text: "Ludwig W führt die Liga an. Jonas L, Luca W und Raphael H bilden ein enges Verfolgerfeld. Sieben Spieler warten noch auf ihr erstes Spiel, für sie beginnt die Liga jetzt erst richtig. Und am Ende der Tabelle? Niklas K braucht mit null Punkten aus zwei Spielen und einer Differenz von -14 dringend eine Wende. Vielleicht klappt dies nach frisch getankter Kraft im Urlaub." },
+        { type: "p", text: "Die Tabelle nimmt Formen an und wer jetzt noch keinen Punkt hat, muss langsam anfangen zu liefern." }
+      ]
     },
     {
       spieltag: 4,

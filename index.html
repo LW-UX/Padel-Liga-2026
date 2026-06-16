@@ -10,16 +10,18 @@
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <script src="data/data.js"></script>
+  <script src="data/info.js"></script>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <header>
-  <div class="logo">PADEL·LIGA <span>2026</span></div>
+  <button class="logo" onclick="nav('start')">PADEL·LIGA <span>2026</span></button>
   <nav>
-    <button class="active" onclick="nav('rangliste',this)">Rangliste</button>
-    <button onclick="nav('verlauf',this)">Verlauf</button>
-    <button onclick="nav('spiele',this)">Spiele</button>
+    <button data-section="rangliste" onclick="nav('rangliste',this)">Rangliste</button>
+    <button data-section="spiele" onclick="nav('spiele',this)">Spiele</button>
+    <button data-section="verlauf" onclick="nav('verlauf',this)">Verlauf</button>
+    <button data-section="infos" onclick="nav('infos',this)">Infos</button>
   </nav>
 </header>
 
@@ -32,8 +34,41 @@
 
 <main>
 
+  <!-- START -->
+  <section id="start" class="section active">
+    <div class="home-grid">
+      <article class="widget widget-short">
+        <div class="widget-label">Kurzinfos</div>
+        <h2>So funktioniert die Liga</h2>
+        <ul id="home-short-info" class="clean-list"></ul>
+        <button class="text-link" onclick="nav('infos')">Alle Infos</button>
+      </article>
+
+      <article class="widget widget-articles">
+        <div class="widget-label">Artikel</div>
+        <h2>Spieltag-Updates</h2>
+        <div id="home-articles" class="article-list"></div>
+        <button class="text-link" onclick="nav('infos')">Alle Artikel</button>
+      </article>
+
+      <div class="home-side">
+        <article class="widget">
+          <div class="widget-label">Top 4</div>
+          <div id="home-ranking"></div>
+          <button class="text-link" onclick="nav('rangliste')">Zur Rangliste</button>
+        </article>
+
+        <article class="widget">
+          <div class="widget-label">Nächste Spiele</div>
+          <div id="home-next-matches"></div>
+          <button class="text-link" onclick="nav('spiele')">Zum Spielplan</button>
+        </article>
+      </div>
+    </div>
+  </section>
+
   <!-- RANGLISTE -->
-  <section id="rangliste" class="section active">
+  <section id="rangliste" class="section">
     <div class="sh">
       <div class="sh-title">RANGLISTE</div>
       <div class="sh-meta" id="rl-meta"></div>
@@ -105,6 +140,21 @@
     <div id="spielplan"></div>
   </section>
 
+  <!-- INFOS -->
+  <section id="infos" class="section">
+    <div class="sh">
+      <div class="sh-title">INFOS</div>
+      <div class="sh-meta">Regeln & Informationen</div>
+    </div>
+    <div class="info-layout">
+      <aside class="info-card">
+        <div class="widget-label">Kurzinfo</div>
+        <ul id="info-short-info" class="clean-list"></ul>
+      </aside>
+      <div id="info-sections" class="info-sections"></div>
+    </div>
+  </section>
+
 </main>
 
 <script>
@@ -113,7 +163,8 @@ function nav(id, el) {
   document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
   document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
   document.getElementById(id).classList.add('active');
-  el.classList.add('active');
+  const activeButton = el || document.querySelector(`nav button[data-section="${id}"]`);
+  if (activeButton) activeButton.classList.add('active');
   if (id === 'verlauf') initChart();
 }
 
@@ -262,11 +313,111 @@ function renderRanking() {
   renderFirmenRanking();
 }
 
+function getRankedPlayers() {
+  const withStats = PADEL_DATA.players.map(p => ({ ...p, stats: getPlayerStats(p) }));
+  withStats.sort((a,b) =>
+    b.stats.punkte     - a.stats.punkte     ||
+    b.stats.siege      - a.stats.siege      ||
+    b.stats.spielDiff  - a.stats.spielDiff  ||
+    b.stats.saetzeDiff - a.stats.saetzeDiff
+  );
+  return withStats;
+}
+
 function renderTeamPlayers(players) {
   return players.map((player, index) => `
     ${index > 0 ? '<span class="mc-player-sep">&amp;</span>' : ''}
     <span class="mc-player-name">${player}</span>
   `).join('');
+}
+
+function renderHome() {
+  document.getElementById('home-short-info').innerHTML = PADEL_INFO.shortInfo
+    .map(item => `<li>${item}</li>`)
+    .join('');
+
+  document.getElementById('home-articles').innerHTML = PADEL_INFO.articles
+    .map(article => `<article class="article-card">
+      <div class="article-kicker">Spieltag ${article.spieltag}</div>
+      <h3>${article.title}</h3>
+      <p>${article.teaser}</p>
+    </article>`)
+    .join('');
+
+  document.getElementById('home-ranking').innerHTML = getRankedPlayers().slice(0, 4)
+    .map((p, i) => `<div class="mini-rank-row">
+      <span class="mini-rank-pos">${i + 1}</span>
+      <span class="mini-rank-name">${p.name}</span>
+      <span class="mini-rank-points">${p.stats.punkte}</span>
+    </div>`)
+    .join('');
+
+  const todayKey = toDateKey(new Date());
+  const nextMatches = PADEL_DATA.matches
+    .filter(m => m.sieger === null && toDateKey(m.datum) >= todayKey)
+    .sort((a, b) => toDateKey(a.datum).localeCompare(toDateKey(b.datum)))
+    .slice(0, 3);
+
+  document.getElementById('home-next-matches').innerHTML = nextMatches.length
+    ? nextMatches.map(m => {
+      const d = new Date(m.datum);
+      const ds = d.toLocaleDateString('de-DE', {day:'2-digit', month:'2-digit'});
+      return `<div class="mini-match-row">
+        <div class="mini-match-meta">${m.id.replace('spiel','Spiel ')} · ${ds}</div>
+        <div class="mini-match-teams">${m.team1.spieler.join(' / ')} vs. ${m.team2.spieler.join(' / ')}</div>
+      </div>`;
+    }).join('')
+    : '<div class="empty-state">Keine zukünftigen Spiele geplant.</div>';
+}
+
+function renderInfoSection(section) {
+  const link = section.link
+    ? `<a href="${section.link.href}" target="_blank" rel="noopener" class="text-link inline-link">${section.link.label}</a>`
+    : '';
+  const intro = section.intro ? `<p>${section.intro} ${link}</p>` : '';
+  const paragraphs = (section.paragraphs || []).map(p => `<p>${p}</p>`).join('');
+  const groups = (section.groups || []).map(group => `<div class="info-group">
+    <h3>${group.title}</h3>
+    <ul class="clean-list">${group.items.map(item => `<li>${item}</li>`).join('')}</ul>
+  </div>`).join('');
+  const items = section.items
+    ? `<ul class="clean-list">${section.items.map(item => `<li>${item}</li>`).join('')}</ul>`
+    : '';
+  const table = section.table
+    ? `<div class="info-table-wrap"><table class="info-table">${section.table.map((row, index) => `
+      <tr>${row.map(cell => index === 0 ? `<th>${cell}</th>` : `<td>${cell}</td>`).join('')}</tr>
+    `).join('')}</table></div>`
+    : '';
+  const note = section.note ? `<p class="info-note">${section.note}</p>` : '';
+
+  return `<article class="info-card">
+    <h2>${section.title}</h2>
+    ${intro}
+    ${paragraphs}
+    ${groups}
+    ${table}
+    ${items}
+    ${note}
+  </article>`;
+}
+
+function renderInfos() {
+  document.getElementById('info-short-info').innerHTML = PADEL_INFO.shortInfo
+    .map(item => `<li>${item}</li>`)
+    .join('');
+  document.getElementById('info-sections').innerHTML = [
+    ...PADEL_INFO.sections.map(renderInfoSection),
+    `<article class="info-card">
+      <h2>Artikel</h2>
+      <div class="article-list info-article-list">
+        ${PADEL_INFO.articles.map(article => `<article class="article-card">
+          <div class="article-kicker">Spieltag ${article.spieltag}</div>
+          <h3>${article.title}</h3>
+          <p>${article.teaser}</p>
+        </article>`).join('')}
+      </div>
+    </article>`
+  ].join('');
 }
 
 // ── MATCHES ───────────────────────────────────────────────────────
@@ -286,7 +437,7 @@ function renderSpiele() {
           : '';
         return `<div class="mc pending">
           <div class="mc-meta">
-            <span class="mc-nr">${m.id.replace('spiel','SPIEL ')}</span>
+            <span class="mc-nr">${m.id.replace('spiel','Spiel ')}</span>
             <span class="mc-date">${ds}</span>
           </div>
           <div class="mc-team mc-team-1">
@@ -305,7 +456,7 @@ function renderSpiele() {
       const [s1, s2] = m.saetze.split(':');
       return `<div class="mc played">
         <div class="mc-meta">
-          <span class="mc-nr">${m.id.replace('spiel','SPIEL ')}</span>
+          <span class="mc-nr">${m.id.replace('spiel','Spiel ')}</span>
           <span class="mc-date">${ds}</span>
         </div>
         <div class="mc-team mc-team-1 ${t1w?'win':''}">
@@ -513,8 +664,10 @@ function toggleAll(on) {
 }
 
 // ── INIT ──────────────────────────────────────────────────────────
+renderHome();
 renderRanking();
 renderSpiele();
+renderInfos();
 </script>
 </body>
 </html>

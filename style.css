@@ -26,7 +26,10 @@
       display: flex; align-items: center; justify-content: space-between;
       padding: 0 2rem; height: 60px;
     }
-    .logo { font-family: 'Bebas Neue', sans-serif; font-size: 1.5rem; letter-spacing: 0.08em; color: var(--accent); }
+    .logo {
+      background: none; border: 0; padding: 0; cursor: pointer;
+      font-family: 'Bebas Neue', sans-serif; font-size: 1.5rem; letter-spacing: 0.08em; color: var(--accent);
+    }
     .logo span { color: var(--dim); font-size: 1rem; margin-left: 6px; }
     nav { display: flex; gap: 2px; }
     nav button {
@@ -53,6 +56,118 @@
     .sh { display: flex; align-items: baseline; gap: 12px; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border); }
     .sh-title { font-family: 'Bebas Neue', sans-serif; font-size: 2rem; letter-spacing: 0.05em; }
     .sh-meta { font-family: 'DM Mono', monospace; font-size: 0.85rem; color: var(--muted); }
+
+    /* ── HOME / INFO WIDGETS ── */
+    .home-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.25fr) minmax(280px, 0.95fr);
+      gap: 18px;
+      align-items: start;
+    }
+    .home-side { display: grid; gap: 18px; }
+    .widget,
+    .info-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.15rem;
+    }
+    .widget-label,
+    .article-kicker {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--muted);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 0.75rem;
+    }
+    .widget h2,
+    .info-card h2 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.8rem;
+      letter-spacing: 0.04em;
+      margin-bottom: 0.85rem;
+    }
+    .clean-list { display: grid; gap: 0.65rem; list-style: none; color: var(--dim); line-height: 1.42; }
+    .clean-list li { position: relative; padding-left: 1rem; }
+    .clean-list li::before { content: ""; position: absolute; left: 0; top: 0.62em; width: 5px; height: 5px; border-radius: 50%; background: var(--accent); }
+    .text-link {
+      display: inline-flex;
+      margin-top: 1rem;
+      background: none;
+      border: 0;
+      color: var(--accent);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+    }
+    .inline-link { margin-top: 0; }
+    .article-list { display: grid; gap: 10px; }
+    .article-card {
+      background: rgba(255,255,255,0.035);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.9rem;
+    }
+    .article-card h3 { font-size: 1rem; margin-bottom: 0.35rem; }
+    .article-card p,
+    .info-card p { color: var(--dim); line-height: 1.5; margin-bottom: 0.8rem; }
+    .mini-rank-row,
+    .mini-match-row {
+      border-bottom: 1px solid var(--border);
+      padding: 0.65rem 0;
+    }
+    .mini-rank-row {
+      display: grid;
+      grid-template-columns: 26px 1fr auto;
+      gap: 10px;
+      align-items: center;
+    }
+    .mini-rank-row:first-child,
+    .mini-match-row:first-child { padding-top: 0; }
+    .mini-rank-row:last-child,
+    .mini-match-row:last-child { border-bottom: 0; padding-bottom: 0; }
+    .mini-rank-pos,
+    .mini-rank-points,
+    .mini-match-meta {
+      font-family: 'DM Mono', monospace;
+      color: var(--muted);
+      font-size: 0.82rem;
+    }
+    .mini-rank-name { font-weight: 600; }
+    .mini-rank-points { color: var(--accent); font-weight: 700; }
+    .mini-match-teams { color: var(--dim); margin-top: 0.25rem; line-height: 1.35; }
+    .empty-state { color: var(--muted); font-size: 0.9rem; }
+
+    .info-layout {
+      display: grid;
+      grid-template-columns: minmax(220px, 0.35fr) minmax(0, 1fr);
+      gap: 18px;
+      align-items: start;
+    }
+    .info-layout > .info-card { position: sticky; top: 78px; }
+    .info-sections { display: grid; gap: 18px; }
+    .info-group { margin-top: 1rem; }
+    .info-group h3 { font-size: 1rem; margin-bottom: 0.65rem; }
+    .info-note {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.82rem;
+      color: var(--muted) !important;
+      margin-top: 1rem;
+    }
+    .info-table-wrap { overflow-x: auto; margin: 1rem 0; }
+    .info-table { width: 100%; border-collapse: collapse; }
+    .info-table th,
+    .info-table td {
+      padding: 0.65rem;
+      border-bottom: 1px solid var(--border);
+      text-align: left;
+      color: var(--dim);
+    }
+    .info-table th { color: var(--muted); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.08em; }
+    .info-article-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 
     /* ── RANKING TABLE ── */
     .ranking-wrap { overflow-x: auto; margin-bottom: 4rem; }
@@ -150,6 +265,14 @@
       header { padding: 0 0.9rem; }
       .hero { padding-left: 0.75rem; padding-right: 0.75rem; }
       main { padding-left: 0.75rem; padding-right: 0.75rem; }
+      nav button { padding: 6px 8px; font-size: 0.78rem; }
+      .home-grid,
+      .info-layout,
+      .info-article-list { grid-template-columns: 1fr; }
+      .home-grid { gap: 12px; }
+      .info-layout > .info-card { position: static; }
+      .widget,
+      .info-card { padding: 1rem; }
       .mc {
         grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
         grid-template-areas:

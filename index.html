@@ -263,16 +263,80 @@ const GRAY = '#444444';
 let chart = null;
 const activeP = new Set(PADEL_DATA.players.map(p => p.id));
 
+function parseDateValue(date) {
+  if (!date) return null;
+  if (date instanceof Date) return Number.isNaN(date.getTime()) ? null : date;
+
+  const value = String(date).trim();
+  const isoDate = value.match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/);
+  if (isoDate) {
+    const d = new Date(Number(isoDate[1]), Number(isoDate[2]) - 1, Number(isoDate[3]));
+    return Number.isNaN(d.getTime()) ? null : d;
+  }
+
+  const germanDate = value.match(/^(\d{1,2})\.(\d{1,2})\.(\d{2}|\d{4})$/);
+  if (germanDate) {
+    const year = germanDate[3].length === 2 ? `20${germanDate[3]}` : germanDate[3];
+    const d = new Date(Number(year), Number(germanDate[2]) - 1, Number(germanDate[1]));
+    return Number.isNaN(d.getTime()) ? null : d;
+  }
+
+  const d = new Date(value);
+  return Number.isNaN(d.getTime()) ? null : d;
+}
+
+function toDateKey(date) {
+  const d = parseDateValue(date);
+  if (!d) return null;
+
+  const year = d.getFullYear();
+  const month = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}
+
+function getLatestPlayedDateKey() {
+  const playedDates = PADEL_DATA.matches
+    .filter(m => m.sieger !== null)
+    .map(m => toDateKey(m.datum))
+    .filter(Boolean)
+    .sort();
+
+  return playedDates.at(-1) || null;
+}
+
+function getChartDateKeys() {
+  const latestPlayedDate = getLatestPlayedDateKey();
+  const historyDates = PADEL_DATA.players.flatMap(p =>
+    (p.history || []).map(h => toDateKey(h.date)).filter(Boolean)
+  );
+  const playedDates = PADEL_DATA.matches
+    .filter(m => m.sieger !== null)
+    .map(m => toDateKey(m.datum))
+    .filter(Boolean);
+
+  return [...new Set([...historyDates, ...playedDates])]
+    .filter(d => !latestPlayedDate || d <= latestPlayedDate)
+    .sort();
+}
+
+function getPlayerSeries(player, dateKeys) {
+  const historyByDate = new Map(
+    (player.history || [])
+      .map(h => [toDateKey(h.date), Number(h.elo)])
+      .filter(([date, elo]) => date && Number.isFinite(elo))
+  );
+
+  return dateKeys.map(date => historyByDate.get(date) ?? null);
+}
+
 function initChart() {
   if (chart) return;
-  const allDates = [...new Set(PADEL_DATA.players.flatMap(p => p.history.map(h => h.date)))].sort();
+  const allDates = getChartDateKeys();
 
   const datasets = PADEL_DATA.players.map((p, i) => ({
     label: p.name,
-    data: allDates.map(d => {
-      const exact = p.history.find(h => h.date === d);
-      return exact ? exact.elo : null;
-    }),
+    data: getPlayerSeries(p, allDates),
     borderColor: COLORS[i],
     backgroundColor: 'transparent',
     pointBackgroundColor: COLORS[i],

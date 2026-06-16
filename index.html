@@ -278,7 +278,7 @@ function renderSpiele() {
           ? `<div class="mc-prob">${probability.team1}% : ${probability.team2}%</div>`
           : '';
         return `<div class="mc pending">
-          <div class="mc-nr">${m.id.replace('spiel','Sp.')}</div>
+          <div class="mc-nr">${m.id.replace('spiel','Spiel ')}</div>
           <div class="mc-date">${ds}</div>
           <div class="mc-team">
             <div class="mc-players">${m.team1.spieler.join(' & ')}</div>
@@ -295,7 +295,7 @@ function renderSpiele() {
       const t1w = m.sieger === 1, t2w = m.sieger === 2;
       const [s1, s2] = m.saetze.split(':');
       return `<div class="mc played">
-        <div class="mc-nr">${m.id.replace('spiel','Sp.')}</div>
+        <div class="mc-nr">${m.id.replace('spiel','Spiel ')}</div>
         <div class="mc-date">${ds}</div>
         <div class="mc-team ${t1w?'win':''}">
           <div class="mc-players">${m.team1.spieler.join(' & ')}</div>

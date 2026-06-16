@@ -286,7 +286,7 @@ function renderSpiele() {
           : '';
         return `<div class="mc pending">
           <div class="mc-meta">
-            <span class="mc-nr">${m.id.replace('spiel','Sp. ')}</span>
+            <span class="mc-nr">${m.id.replace('spiel','Spiel ')}</span>
             <span class="mc-date">${ds}</span>
           </div>
           <div class="mc-team mc-team-1">
@@ -305,7 +305,7 @@ function renderSpiele() {
       const [s1, s2] = m.saetze.split(':');
       return `<div class="mc played">
         <div class="mc-meta">
-          <span class="mc-nr">${m.id.replace('spiel','Sp. ')}</span>
+          <span class="mc-nr">${m.id.replace('spiel','Spiel ')}</span>
           <span class="mc-date">${ds}</span>
         </div>
         <div class="mc-team mc-team-1 ${t1w?'win':''}">

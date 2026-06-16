@@ -278,24 +278,35 @@ function renderSpiele() {
           ? `<div class="mc-prob">${probability.team1}% : ${probability.team2}%</div>`
           : '';
         return `<div class="mc pending">
-          <div class="mc-date">${ds}</div>
-          <div class="mc-team"><div class="mc-players">${m.team1.spieler.join(' & ')}</div></div>
-          <div class="mc-score"><div class="mc-prob">${probabilityHtml}</div><div class="mc-pending-label">ausstehend</div></div>
-          <div class="mc-team"><div class="mc-players">${m.team2.spieler.join(' & ')}</div></div>
           <div class="mc-nr">${m.id.replace('spiel','Sp.')}</div>
+          <div class="mc-date">${ds}</div>
+          <div class="mc-team">
+            <div class="mc-players">${m.team1.spieler.join(' & ')}</div>
+          </div>
+          <div class="mc-score">
+            <div class="mc-prob">${probabilityHtml}</div>
+            <div class="mc-pending-label">ausstehend</div>
+          </div>
+          <div class="mc-team">
+            <div class="mc-players">${m.team2.spieler.join(' & ')}</div>
+          </div>
         </div>`;
       }
       const t1w = m.sieger === 1, t2w = m.sieger === 2;
       const [s1, s2] = m.saetze.split(':');
       return `<div class="mc played">
+        <div class="mc-nr">${m.id.replace('spiel','Sp.')}</div>
         <div class="mc-date">${ds}</div>
-        <div class="mc-team ${t1w?'win':''}"><div class="mc-players">${m.team1.spieler.join(' & ')}</div></div>
+        <div class="mc-team ${t1w?'win':''}">
+          <div class="mc-players">${m.team1.spieler.join(' & ')}</div>
+        </div>
         <div class="mc-score">
           <div class="mc-score-main">${s1}:${s2}</div>
           <div class="mc-score-detail">${m.ergebnis}</div>
         </div>
-        <div class="mc-team ${t2w?'win':''}"><div class="mc-players">${m.team2.spieler.join(' & ')}</div></div>
-        <div class="mc-nr">${m.id.replace('spiel','Sp.')}</div>
+        <div class="mc-team ${t2w?'win':''}">
+          <div class="mc-players">${m.team2.spieler.join(' & ')}</div>
+        </div>
       </div>`;
     }).join('');
     const label = st === 7 ? 'Spieltag 7 – Ausgleichsspieltag' : `Spieltag ${st}`;

@@ -625,26 +625,34 @@ function getChartDateKeys() {
 function getPlayerSeries(player, dateKeys) {
   const historyByDate = new Map(
     (player.history || [])
-      .map(h => [toDateKey(h.date), Number(h.elo)])
-      .filter(([date, elo]) => date && Number.isFinite(elo))
+      .map(h => [toDateKey(h.date), { elo: Number(h.elo), spiel: h.spiel || '' }])
+      .filter(([date, entry]) => date && Number.isFinite(entry.elo))
   );
 
-  return dateKeys.map(date => historyByDate.get(date) ?? null);
+  return {
+    eloValues: dateKeys.map(date => historyByDate.get(date)?.elo ?? null),
+    gameLabels: dateKeys.map(date => historyByDate.get(date)?.spiel ?? '')
+  };
 }
 
 function getPlacementSeries() {
   const matchDays = [...new Set(PADEL_DATA.matches.map(m => m.spieltag))].sort((a, b) => a - b);
   const placementsByPlayer = new Map(PADEL_DATA.players.map(p => [p.name, []]));
+  const playedByPlayer = new Map(PADEL_DATA.players.map(p => [p.name, []]));
 
   matchDays.forEach(spieltag => {
     const matchesUntilDay = PADEL_DATA.matches.filter(m => m.sieger !== null && m.spieltag <= spieltag);
+    const matchesAtDay = PADEL_DATA.matches.filter(m => m.sieger !== null && m.spieltag === spieltag);
     const ranked = getRankedPlayers(matchesUntilDay);
     ranked.forEach((player, index) => {
       placementsByPlayer.get(player.name).push(index + 1);
+      playedByPlayer.get(player.name).push(matchesAtDay.some(m =>
+        m.team1.spieler.includes(player.name) || m.team2.spieler.includes(player.name)
+      ));
     });
   });
 
-  return { matchDays, placementsByPlayer };
+  return { matchDays, placementsByPlayer, playedByPlayer };
 }
 
 const placementLabelPlugin = {
@@ -675,21 +683,25 @@ function initChart() {
   }
   const allDates = getChartDateKeys();
 
-  const datasets = PADEL_DATA.players.map((p, i) => ({
-    label: p.name,
-    data: getPlayerSeries(p, allDates),
-    borderColor: COLORS[i],
-    backgroundColor: 'transparent',
-    pointBackgroundColor: COLORS[i],
-    pointBorderColor: COLORS[i],
-    pointHoverBackgroundColor: COLORS[i],
-    pointHoverBorderColor: COLORS[i],
-    borderWidth: 2,
-    pointRadius: 4,
-    pointHoverRadius: 4,
-    tension: 0.3,
-    spanGaps: true
-  }));
+  const datasets = PADEL_DATA.players.map((p, i) => {
+    const series = getPlayerSeries(p, allDates);
+    return {
+      label: p.name,
+      data: series.eloValues,
+      gameLabels: series.gameLabels,
+      borderColor: COLORS[i],
+      backgroundColor: 'transparent',
+      pointBackgroundColor: COLORS[i],
+      pointBorderColor: COLORS[i],
+      pointHoverBackgroundColor: COLORS[i],
+      pointHoverBorderColor: COLORS[i],
+      borderWidth: 2,
+      pointRadius: 4,
+      pointHoverRadius: 5,
+      tension: 0.3,
+      spanGaps: true
+    };
+  });
 
   const ctx = document.getElementById('eloChart').getContext('2d');
   chart = new Chart(ctx, {
@@ -701,17 +713,22 @@ function initChart() {
     options: {
       responsive: true,
       maintainAspectRatio: false,
-      onHover: (event, elements) => {
-        if (elements.length > 0) {
-          applyHover(elements[0].datasetIndex);
-        } else {
-          applyHover(null);
-        }
-      },
-      interaction: { mode: 'nearest', intersect: false, axis: 'y' },
+      interaction: { mode: 'nearest', intersect: true },
       plugins: {
         legend: { display: false },
-        tooltip: { enabled: false }
+        tooltip: {
+          displayColors: false,
+          callbacks: {
+            title: items => items[0]?.dataset.label || '',
+            label: context => {
+              const gameLabel = context.dataset.gameLabels?.[context.dataIndex];
+              return [
+                `Elo: ${context.parsed.y}`,
+                gameLabel ? `Spiel: ${gameLabel}` : 'Spiel: Start'
+              ];
+            }
+          }
+        }
       },
       scales: {
         x: { grid: { color: '#222' }, ticks: { color: '#5a5a72', font: { family: 'DM Mono', size: 11 } } },
@@ -729,20 +746,28 @@ function initChart() {
 
 function initPlacementChart() {
   if (placementChart) return;
-  const { matchDays, placementsByPlayer } = getPlacementSeries();
+  const { matchDays, placementsByPlayer, playedByPlayer } = getPlacementSeries();
   const maxPlace = PADEL_DATA.players.length;
-  const datasets = PADEL_DATA.players.map((p, i) => ({
-    label: p.name,
-    data: placementsByPlayer.get(p.name),
-    borderColor: COLORS[i],
-    backgroundColor: 'transparent',
-    pointBackgroundColor: COLORS[i],
-    pointBorderColor: COLORS[i],
-    borderWidth: 2,
-    pointRadius: 3,
-    pointHoverRadius: 4,
-    tension: 0.25
-  }));
+  const datasets = PADEL_DATA.players.map((p, i) => {
+    const playedFlags = playedByPlayer.get(p.name);
+    return {
+      label: p.name,
+      data: placementsByPlayer.get(p.name),
+      playedFlags,
+      baseColor: COLORS[i],
+      borderColor: COLORS[i],
+      backgroundColor: 'transparent',
+      pointBackgroundColor: playedFlags.map(hasMatch => hasMatch ? COLORS[i] : GRAY),
+      pointBorderColor: playedFlags.map(hasMatch => hasMatch ? COLORS[i] : GRAY),
+      borderWidth: 2,
+      pointRadius: 3,
+      pointHoverRadius: 4,
+      tension: 0.25,
+      segment: {
+        borderColor: ctx => playedFlags[ctx.p1DataIndex] ? COLORS[i] : GRAY
+      }
+    };
+  });
 
   const ctx = document.getElementById('placementChart').getContext('2d');
   placementChart = new Chart(ctx, {
@@ -789,31 +814,6 @@ function initPlacementChart() {
   });
 }
 
-function applyHover(idx) {
-  if (!chart) return;
-  chart.data.datasets.forEach((ds, i) => {
-    const color = (idx === null || i === idx) ? COLORS[i] : GRAY;
-    const width = (idx !== null && i === idx) ? 3 : 2;
-    ds.borderColor = color;
-    ds.pointBackgroundColor = color;
-    ds.pointBorderColor = color;
-    ds.pointHoverBackgroundColor = color;
-    ds.pointHoverBorderColor = color;
-    ds.borderWidth = width;
-  });
-  chart.update('none');
-
-  document.querySelectorAll('#filter-row .fb').forEach((btn, i) => {
-    if (idx === null || i === idx) {
-      btn.style.background = activeP.has(PADEL_DATA.players[i].id) ? COLORS[i] : '';
-      btn.style.opacity = '1';
-    } else {
-      btn.style.background = GRAY;
-      btn.style.opacity = '0.35';
-    }
-  });
-}
-
 function renderFilter() {
   document.getElementById('filter-row').innerHTML = PADEL_DATA.players.map((p,i) => {
     const on = activeP.has(p.id);
@@ -821,8 +821,6 @@ function renderFilter() {
       class="fb ${on?'on':''}"
       style="${on ? `background:${COLORS[i]};` : ''}"
       onclick="toggleP('${p.id}',${i},this)"
-      onmouseenter="applyHover(${i})"
-      onmouseleave="applyHover(null)"
     >${p.name}</button>`;
   }).join('');
 }

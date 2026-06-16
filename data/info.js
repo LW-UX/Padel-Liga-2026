@@ -145,7 +145,7 @@ const PADEL_INFO = {
       startDate: "2026-06-08",
       endDate: "2026-06-19",
       title: "Die Liga zeigt Zähne",
-      meta: "PADEL-LIGA 2026 · SPIELTAG 3 · 8. JUNI - 19. JUNI 2026",
+      meta: "SPIELTAG 3  ·  8. JUNI - 19. JUNI 2026",
       teaser: "Zwei Spieltage sind absolviert, der dritte steht in den Startlöchern. Die Tabelle nimmt Formen an, doch für viele beginnt die Liga jetzt erst richtig.",
       body: [
         { type: "p", text: "Zwei Spieltage sind absolviert, der dritte steht in den Startlöchern. Die aktuelle Bilanz lautet: Von acht Spielen der ersten beiden Spieltage sind vier gespielt." },

@@ -119,7 +119,7 @@
     /* ── MATCHES ── */
     .spieltag-group { margin-bottom: 2.5rem; }
     .spieltag-label {
-      font-size: 0.7rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase;
+      font-size: 0.85rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase;
       color: var(--muted); margin-bottom: 10px; padding-bottom: 8px; border-bottom: 1px solid var(--border);
     }
     .match-list { display: flex; flex-direction: column; gap: 8px; }

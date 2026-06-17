@@ -176,10 +176,8 @@
       gap: 10px;
       align-items: center;
     }
-    .mini-rank-row:first-child,
-    .mini-match-row:first-child { padding-top: 0; }
-    .mini-rank-row:last-child,
-    .mini-match-row:last-child { border-bottom: 0; padding-bottom: 0; }
+    .mini-rank-row:first-child { padding-top: 0; }
+    .mini-rank-row:last-child { border-bottom: 0; padding-bottom: 0; }
     .mini-rank-pos,
     .mini-rank-points,
     .mini-match-meta {
@@ -196,21 +194,32 @@
     .mini-match-meta {
       display: flex;
       gap: 12px;
-      margin-bottom: 0.65rem;
+      margin-bottom: 1.35rem;
     }
     .mini-match-grid {
       display: grid;
       grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
-      gap: 10px;
+      gap: 18px;
       align-items: center;
+    }
+    .mini-match-row {
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1.05rem;
+      background: transparent;
+    }
+    #home-next-matches {
+      display: grid;
+      gap: 10px;
     }
     .mini-match-team {
       display: flex;
       flex-direction: column;
       gap: 2px;
-      color: var(--text);
+      color: var(--dim);
       font-weight: 600;
-      line-height: 1.15;
+      font-size: 1.15rem;
+      line-height: 1.16;
       min-width: 0;
     }
     .mini-match-team .mc-player-sep { display: none; }
@@ -218,12 +227,20 @@
       text-align: right;
       align-items: flex-end;
     }
-    .mini-match-prob {
+    .mini-match-status {
       font-family: 'DM Mono', monospace;
       color: var(--muted);
-      font-size: 0.78rem;
       white-space: nowrap;
       text-align: center;
+    }
+    .mini-match-prob {
+      font-size: 0.9rem;
+      margin-bottom: 0.35rem;
+    }
+    .mini-match-label {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.92rem;
+      font-weight: 600;
     }
     .empty-state { color: var(--muted); font-size: 0.9rem; }
 
@@ -377,7 +394,7 @@
       background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
       padding: 1.1rem 1.5rem;
       display: grid;
-      grid-template-columns: 145px 1fr 130px 1fr;
+      grid-template-columns: 230px 1fr 130px 1fr;
       align-items: center; gap: 24px;
     }
     .mc.pending { background: transparent; }
@@ -394,7 +411,7 @@
     .mc-score-detail { font-family: 'DM Mono', monospace; font-size: 0.85rem; color: var(--dim); margin-top: 3px; }
     .mc-prob { font-family: 'DM Mono', monospace; font-size: 0.85rem; color: var(--muted); margin-bottom: 4px; }
     .mc-pending-label { font-size: 0.85rem; color: var(--muted); text-align: center; }
-    .mc-nr { font-family: 'DM Mono', monospace; font-size: 0.85rem; color: var(--muted); text-align: right; }
+    .mc-nr { font-family: 'DM Mono', monospace; font-size: 0.85rem; color: var(--muted); text-align: left; }
 
     @media (max-width: 768px) {
       header { justify-content: center; padding: 0 0.75rem; }

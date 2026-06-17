@@ -328,6 +328,27 @@ function renderTeamPlayers(players) {
   `).join('');
 }
 
+function formatMatchTime(time) {
+  if (!time) return '';
+  const normalized = String(time).trim().replace('.', ':');
+  const match = normalized.match(/^(\d{1,2}):(\d{2})$/);
+  return match ? `${match[1].padStart(2, '0')}:${match[2]}` : normalized;
+}
+
+function formatMatchDate(match) {
+  const d = parseDateValue(match.datum);
+  const date = d
+    ? d.toLocaleDateString('de-DE', {day:'2-digit', month:'2-digit'})
+    : match.datum;
+  const time = formatMatchTime(match.uhrzeit);
+
+  return time ? `${date} ${time}` : date;
+}
+
+function formatMatchMeta(match) {
+  return `${match.id.replace('spiel','Spiel ')} | ${formatMatchDate(match)}`;
+}
+
 function getCurrentArticle() {
   const todayKey = toDateKey(new Date());
   const current = PADEL_INFO.articles.find(article => {
@@ -390,18 +411,16 @@ function renderHome() {
 
   document.getElementById('home-next-matches').innerHTML = nextMatches.length
     ? nextMatches.map(m => {
-      const d = new Date(m.datum);
-      const ds = d.toLocaleDateString('de-DE', {day:'2-digit', month:'2-digit'});
       const probability = getMatchWinProbability(m);
       const probabilityHtml = probability ? `${probability.team1}% : ${probability.team2}%` : '—';
       return `<div class="mini-match-row">
-        <div class="mini-match-meta">
-          <span>${m.id.replace('spiel','Spiel ')}</span>
-          <span>${ds}</span>
-        </div>
+        <div class="mini-match-meta">${formatMatchMeta(m)}</div>
         <div class="mini-match-grid">
           <div class="mini-match-team mini-match-team-1">${renderTeamPlayers(m.team1.spieler)}</div>
-          <div class="mini-match-prob">${probabilityHtml}</div>
+          <div class="mini-match-status">
+            <div class="mini-match-prob">${probabilityHtml}</div>
+            <div class="mini-match-label">Ausstehend</div>
+          </div>
           <div class="mini-match-team mini-match-team-2">${renderTeamPlayers(m.team2.spieler)}</div>
         </div>
       </div>`;
@@ -515,18 +534,13 @@ function renderSpiele() {
   document.getElementById('spielplan').innerHTML = spieltage.map(st => {
     const matches = PADEL_DATA.matches.filter(m => m.spieltag === st);
     const rows = matches.map(m => {
-      const d = new Date(m.datum);
-      const ds = d.toLocaleDateString('de-DE', {day:'2-digit', month:'2-digit'});
       if (m.sieger === null) {
         const probability = getMatchWinProbability(m);
         const probabilityHtml = probability
           ? `<div class="mc-prob">${probability.team1}% : ${probability.team2}%</div>`
           : '';
         return `<div class="mc pending">
-          <div class="mc-meta">
-            <span class="mc-nr">${m.id.replace('spiel','Spiel ')}</span>
-            <span class="mc-date">${ds}</span>
-          </div>
+          <div class="mc-meta"><span class="mc-nr">${formatMatchMeta(m)}</span></div>
           <div class="mc-team mc-team-1">
             <div class="mc-players">${renderTeamPlayers(m.team1.spieler)}</div>
           </div>
@@ -542,10 +556,7 @@ function renderSpiele() {
       const t1w = m.sieger === 1, t2w = m.sieger === 2;
       const [s1, s2] = m.saetze.split(':');
       return `<div class="mc played">
-        <div class="mc-meta">
-          <span class="mc-nr">${m.id.replace('spiel','Spiel ')}</span>
-          <span class="mc-date">${ds}</span>
-        </div>
+        <div class="mc-meta"><span class="mc-nr">${formatMatchMeta(m)}</span></div>
         <div class="mc-team mc-team-1 ${t1w?'win':''}">
           <div class="mc-players">${renderTeamPlayers(m.team1.spieler)}</div>
         </div>

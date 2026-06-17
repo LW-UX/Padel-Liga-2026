@@ -165,10 +165,43 @@ const PADEL_INFO = {
     },
     {
       spieltag: 2,
-      startDate: null,
-      endDate: null,
-      title: "Spieltag 2",
-      teaser: "Artikel folgt."
+      startDate: "2026-05-25",
+      endDate: "2026-06-07",
+      title: "Weiter geht's - der zweite Spieltag steht in den Startlöchern",
+      meta: "SPIELTAG 2  ·  25. MAI - 5. JUNI 2026",
+      teaser: "Die Tinte der ersten Ergebnisse ist kaum trocken, da wartet schon der zweite Spieltag. Neue Paarungen, alte Rivalitäten und ein bereits gespieltes Match prägen das nächste Kapitel.",
+      body: [
+        { type: "p", text: "Die Tinte der ersten Ergebnisse ist kaum trocken, da wartet schon der zweite Spieltag. Spieltag 1 hat gezeigt, wozu diese Liga fähig ist und Spieltag 2 legt nach. Mit neuen Paarungen, alten Rivalitäten in neuer Verkleidung und einem Spiel, das bereits gespielt ist, wird der Spieltag zum nächsten Kapitel einer Liga, die gerade erst Fahrt aufnimmt." },
+
+        { type: "h", text: "Spiel 5 - Die Tennisasse unter sich" },
+        { type: "match", text: "Lukas P & Martin B vs. Luca W & Andreas L" },
+        { type: "p", text: "Lange haben alle auf diesen Moment gewartet: Mit Spiel 5 betreten Lukas P und Andreas L endlich offiziell die Bühne der Padel-Liga. Und das Schicksal hat es gut gemeint - oder böse, je nach Perspektive. Denn die beiden aktivsten Tennisspieler der gesamten Liga stehen sich gleich in ihrer Premierenpartie gegenüber. Beide gelten intern als heiße Anwärter auf den Titel. Aber ob Tenniserfahrung auf dem Padelcourt hilft oder ein falsches Sicherheitsgefühl erzeugt, werden die Sätze zeigen." },
+        { type: "p", text: "Luca W, der in Spiel 2 des ersten Spieltags noch auf der Siegerseite stand, ist von der Brisanz dieser Begegnung sichtlich angetan:" },
+        { type: "quote", text: "Was ein Match, wenn nicht sogar das größte der ganzen Liga. POWER!", author: "Luca W" },
+        { type: "p", text: "Mehr braucht es nicht. Die Erwartungshaltung ist gesetzt." },
+
+        { type: "h", text: "Spiel 6 - Bereits gespielt: Ludwig W & Cristian B siegen 2:0" },
+        { type: "match", text: "Ludwig W & Cristian B vs. Niklas K & Greta P | Ergebnis: 7:5, 6:1" },
+        { type: "p", text: "Spieltag 2 hat bereits sein erstes Resultat. Ludwig W und Cristian B bezwangen Niklas K und Greta P mit 7:5 und 6:1 und legten damit früh ein Ausrufezeichen in der Tabelle. Was dabei kaum jemand ahnte: Cristian B spielte das gesamte Match mit geprellten Rippen - Nachwirkungen eines Fußballspiels vom Sonntag zuvor. Dass das Team gegen Ende trotzdem so dominant auftrat, unterstreicht die Klasse dieser Paarung." },
+        { type: "p", text: "Für die Unterlegenen war es kein Abend zum Vergessen, hielten sie zumindest den ersten Satz noch sehr gut mit." },
+        { type: "quote", text: "Das Spiel hat Spaß gemacht. Irgendwann war die Energie zwar weg, aber wir hatten coole Ballwechsel und man wird auf jeden Fall besser. Ein Comeback von mir kommt auf jeden Fall noch.", author: "Greta P" },
+        { type: "p", text: "Worte, die man sich merken sollte. Wer Greta unterschätzt, könnte das noch bereuen." },
+
+        { type: "h", text: "Spiel 7 - Einstige Partner, neue Rivalen" },
+        { type: "match", text: "Christoph L & Raphael H vs. Marco M & Marcel M" },
+        { type: "p", text: "Der Spieltag hat seine Geschichte: Beim Eröffnungsspiel sollen Christoph L und Marco M noch gemeinsam auf dem Platz stehen - Seite an Seite, im selben Team. Nun stehen sie sich aber erstmal als Rivalen am Netz gegenüber. Die Liga dreht die Paarungen, und plötzlich sind ehemalige Partner die härtesten Gegner." },
+        { type: "p", text: "Noch brisanter wird es durch zwei weitere Verbindungen: Raphael H und Marco M kennen sich gut vom Tenniscourt, wo sie regelmäßig gemeinsam spielen. Jetzt sind sie Gegner. Zudem spielen mit Marco und Marcel zwei Mayrs im selben Team. Ein Duell, das über die Padel-Liga hinaus eine neue Dimension bekommt. Vier Spieler, die sich alle kennen und alle gewinnen wollen. Spiel 7 dürfte eines der persönlichsten des gesamten Turniers werden." },
+
+        { type: "h", text: "Spiel 8 - Das Rematch: Jonas trifft wieder auf Leonie" },
+        { type: "match", text: "Chris M & Jonas L vs. Irene W & Leonie R" },
+        { type: "p", text: "Kaum ist Spieltag 1 durch, serviert Spieltag 2 das nächste Kapitel der spannendsten Einzelrivalität des Ligastarts: Jonas L gegen Leonie R. In Spiel 2 hatte Jonas mit seinem damaligen Partner Luca W das Duell gegen Leonie klar für sich entschieden. Jetzt neue Partner, neues Glück - oder nicht?" },
+        { type: "p", text: "Jonas gibt sich gewohnt bescheiden:" },
+        { type: "quote", text: "Für mich ist eigentlich jedes Spiel ein Easy Win von vornherein. Nachdem ich beim letzten Spiel die Leonie schon geschlagen habe, sollten wir die 2 auch in der Tasche haben.", author: "Jonas L" },
+        { type: "p", text: "Leonie R, die ihrerseits den Turniersieg bereits für sich reklamiert hat, dürfte diese Aussage mit einem Lächeln quittieren und auf dem Platz antworten wollen. Mit Irene W als neuer Partnerin an ihrer Seite bekommt das Rematch eine neue Dynamik. Ob Chris M und Jonas L die Partie tatsächlich als Formsache abhaken können, wird sich zeigen. Die Liga hat bislang eines bewiesen: Nichts ist garantiert." },
+
+        { type: "h", text: "Der zweite Spieltag läuft" },
+        { type: "p", text: "Obwohl Spiel 1 und Spiel 3 aus Spieltag 1 krankheits- und urlaubsbedingt noch ausstehen, nimmt die Liga dennoch an Fahrt auf. Die Tabelle beginnt sich zu formen, die ersten Charaktere zeigen sich und mit jedem Spiel wird klarer, wer hier wirklich für den Titel spielt." }
+      ]
     },
     {
       spieltag: 3,

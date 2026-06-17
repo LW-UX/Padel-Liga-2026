@@ -144,7 +144,7 @@
       color: var(--accent);
       display: grid;
       gap: 0.25rem;
-      margin-bottom: 1rem;
+      margin-bottom: 0.35rem;
     }
     .article-match-result {
       color: var(--muted);

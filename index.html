@@ -734,8 +734,79 @@ function getPlayerMatchContext(playerName, match) {
   return {
     partner: team.find(name => name !== playerName) || '—',
     opponents: opponents.join(' & '),
-    result: match.ergebnis || '—'
+    result: formatResultForPlayer(match.ergebnis, isTeam1)
   };
+}
+
+function formatResultForPlayer(result, isTeam1) {
+  if (!result) return '—';
+  if (isTeam1) return result;
+
+  return result.replace(/(\d+)\s*:\s*(\d+)/g, '$2:$1');
+}
+
+function escapeHtml(value) {
+  return String(value || '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+
+function getOrCreateEloTooltip(chartInstance) {
+  const parent = chartInstance.canvas.parentNode;
+  let tooltip = parent.querySelector('.elo-custom-tooltip');
+
+  if (!tooltip) {
+    tooltip = document.createElement('div');
+    tooltip.className = 'elo-custom-tooltip';
+    parent.appendChild(tooltip);
+  }
+
+  return tooltip;
+}
+
+function externalEloTooltip(context) {
+  const { chart: chartInstance, tooltip } = context;
+  const tooltipEl = getOrCreateEloTooltip(chartInstance);
+
+  if (tooltip.opacity === 0) {
+    tooltipEl.style.opacity = 0;
+    return;
+  }
+
+  const items = tooltip.dataPoints || [];
+  const title = items.find(item => item.dataset.eventTitles?.[item.dataIndex])?.dataset.eventTitles?.[items[0]?.dataIndex] || '';
+
+  tooltipEl.innerHTML = `
+    ${title ? `<div class="elo-tooltip-title">${escapeHtml(title)}</div>` : ''}
+    ${items.map(item => {
+      const delta = item.dataset.deltaLabels?.[item.dataIndex] || '';
+      const deltaClass = item.dataset.deltas?.[item.dataIndex] > 0
+        ? 'pos'
+        : item.dataset.deltas?.[item.dataIndex] < 0 ? 'neg' : 'neu';
+      const gameLabel = item.dataset.gameLabels?.[item.dataIndex] || '';
+      const matchContext = item.dataset.matchContexts?.[item.dataIndex];
+
+      return `<div class="elo-tooltip-item">
+        <div class="elo-tooltip-main">
+          <strong>${escapeHtml(item.dataset.label)}</strong>: Elo ${escapeHtml(item.parsed.y)}
+          ${delta ? `<span class="elo-tooltip-delta ${deltaClass}">${escapeHtml(delta)}</span>` : ''}
+        </div>
+        ${gameLabel ? `<div>${escapeHtml(gameLabel)}</div>` : ''}
+        ${matchContext ? `
+          <div>Partner: ${escapeHtml(matchContext.partner)}</div>
+          <div>Gegner: ${escapeHtml(matchContext.opponents)}</div>
+          <div>Ergebnis: ${escapeHtml(matchContext.result)}</div>
+        ` : ''}
+      </div>`;
+    }).join('')}
+  `;
+
+  tooltipEl.style.opacity = 1;
+  tooltipEl.style.left = `${tooltip.caretX}px`;
+  tooltipEl.style.top = `${tooltip.caretY}px`;
 }
 
 function formatEloDelta(delta) {
@@ -870,41 +941,12 @@ function initChart() {
     options: {
       responsive: true,
       maintainAspectRatio: false,
-      interaction: { mode: 'index', intersect: true },
+      interaction: { mode: 'nearest', intersect: true },
       plugins: {
         legend: { display: false },
         tooltip: {
-          displayColors: false,
-          callbacks: {
-            title: items => {
-              const item = items.find(entry => entry.dataset.eventTitles?.[entry.dataIndex]);
-              return item ? item.dataset.eventTitles[item.dataIndex] : '';
-            },
-            labelTextColor: context => {
-              const delta = context.dataset.deltas?.[context.dataIndex];
-              if (delta > 0) return '#7af53a';
-              if (delta < 0) return '#f5503a';
-              return '#ffffff';
-            },
-            label: context => {
-              const deltaLabel = context.dataset.deltaLabels?.[context.dataIndex];
-              const gameLabel = context.dataset.gameLabels?.[context.dataIndex];
-              const matchContext = context.dataset.matchContexts?.[context.dataIndex];
-              const delta = deltaLabel ? ` (${deltaLabel})` : '';
-              const lines = [
-                `${context.dataset.label}: Elo ${context.parsed.y}${delta}`,
-                gameLabel || ''
-              ].filter(Boolean);
-
-              if (matchContext) {
-                lines.push(`Partner: ${matchContext.partner}`);
-                lines.push(`Gegner: ${matchContext.opponents}`);
-                lines.push(`Ergebnis: ${matchContext.result}`);
-              }
-
-              return lines;
-            }
-          }
+          enabled: false,
+          external: externalEloTooltip
         }
       },
       scales: {

@@ -29,7 +29,16 @@
 <div class="hero">
   <div>
     <div class="hero-eyebrow"><span class="hero-season">Saison </span>2026<span class="hero-orgs"> &nbsp;·&nbsp; Headsquare &nbsp;×&nbsp; Hanako &nbsp;×&nbsp; Envidual</span></div>
-    <h1>PADEL<em>LIGA</em></h1>
+    <div class="hero-title-row">
+      <h1>PADEL<em>LIGA</em></h1>
+      <div class="viewer-picker" id="viewer-picker">
+        <button class="viewer-toggle" type="button" onclick="toggleViewerMenu()" aria-haspopup="listbox" aria-expanded="false">
+          <span class="viewer-label-full" id="viewer-label-full">Stiller Beobachter</span>
+          <span class="viewer-label-short" id="viewer-label-short">SB</span>
+        </button>
+        <div class="viewer-menu" id="viewer-menu" role="listbox"></div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -161,6 +170,98 @@
 </main>
 
 <script>
+// ── VIEWER ────────────────────────────────────────────────────────
+const VIEWER_STORAGE_KEY = 'padel-liga-viewer';
+let selectedViewerId = localStorage.getItem(VIEWER_STORAGE_KEY) || 'sb';
+
+function getPlayerInitials(name) {
+  return name
+    .replace(/\./g, '')
+    .split(/\s+/)
+    .filter(Boolean)
+    .map(part => part[0])
+    .join(' ')
+    .toUpperCase();
+}
+
+function getViewerOptions() {
+  return [
+    { id: 'sb', name: 'Stiller Beobachter', short: 'SB' },
+    ...PADEL_DATA.players.map(player => ({
+      id: player.id,
+      name: player.name,
+      short: getPlayerInitials(player.name)
+    }))
+  ];
+}
+
+function getSelectedViewer() {
+  return getViewerOptions().find(option => option.id === selectedViewerId) || getViewerOptions()[0];
+}
+
+function isParticipantView() {
+  return selectedViewerId !== 'sb';
+}
+
+function isSelectedPlayer(playerName) {
+  return isParticipantView() && getSelectedViewer().name === playerName;
+}
+
+function isViewerMatch(match) {
+  return isParticipantView() &&
+    [...match.team1.spieler, ...match.team2.spieler].includes(getSelectedViewer().name);
+}
+
+function toggleViewerMenu() {
+  const picker = document.getElementById('viewer-picker');
+  const isOpen = picker.classList.toggle('open');
+  document.querySelector('.viewer-toggle').setAttribute('aria-expanded', String(isOpen));
+}
+
+function closeViewerMenu() {
+  const picker = document.getElementById('viewer-picker');
+  if (!picker) return;
+  picker.classList.remove('open');
+  picker.querySelector('.viewer-toggle')?.setAttribute('aria-expanded', 'false');
+}
+
+function selectViewer(id) {
+  selectedViewerId = id;
+  localStorage.setItem(VIEWER_STORAGE_KEY, selectedViewerId);
+  updateViewerPicker();
+  renderHome();
+  renderRanking();
+  renderSpiele();
+  closeViewerMenu();
+}
+
+function updateViewerPicker() {
+  const selected = getSelectedViewer();
+  document.getElementById('viewer-label-full').textContent = selected.name;
+  document.getElementById('viewer-label-short').textContent = selected.short;
+  document.getElementById('viewer-menu').innerHTML = getViewerOptions().map(option => `
+    <button
+      type="button"
+      class="viewer-option ${option.id === selectedViewerId ? 'active' : ''}"
+      role="option"
+      aria-selected="${option.id === selectedViewerId}"
+      onclick="selectViewer('${option.id}')"
+    >
+      <span>${option.name}</span>
+      <span>${option.short}</span>
+    </button>
+  `).join('');
+}
+
+document.addEventListener('click', event => {
+  const picker = document.getElementById('viewer-picker');
+  if (picker && !picker.contains(event.target)) closeViewerMenu();
+});
+
+document.addEventListener('keydown', event => {
+  if (event.key === 'Escape') closeViewerMenu();
+});
+
 // ── NAV ───────────────────────────────────────────────────────────
 function nav(id, el) {
   document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
@@ -297,7 +398,7 @@ function renderRanking() {
   document.getElementById('rl-body').innerHTML = withStats.map((p, i) => {
     const spielDiffStr = p.stats.spiele > 0 ? (p.stats.spielDiff >= 0 ? `+${p.stats.spielDiff}` : `${p.stats.spielDiff}`) : '—';
     const spielDiffClass = p.stats.spielDiff > 0 ? 'pos' : p.stats.spielDiff < 0 ? 'neg' : 'neu';
-    return `<tr class="r${Math.min(i+1,4)}">
+    return `<tr class="r${Math.min(i+1,4)} ${isSelectedPlayer(p.name) ? 'viewer-highlight' : ''}">
       <td class="rn l">${i+1}</td>
       <td class="l"><span class="pname">${p.name}</span><span class="firma-badge firma-${p.firma}"><span class="firma-full">${p.firma}</span><span class="firma-short">${firmaShort[p.firma] || p.firma}</span></span></td>
       <td class="num-val">${p.stats.spiele}</td>
@@ -325,7 +426,7 @@ function getRankedPlayers(matches = PADEL_DATA.matches) {
 function renderTeamPlayers(players) {
   return players.map((player, index) => `
     ${index > 0 ? '<span class="mc-player-sep">&amp;</span>' : ''}
-    <span class="mc-player-name">${player}</span>
+    <span class="mc-player-name ${isSelectedPlayer(player) ? 'viewer-player' : ''}">${player}</span>
   `).join('');
 }
 
@@ -436,7 +537,7 @@ function renderHome() {
     ? nextMatches.map(m => {
       const probability = getMatchWinProbability(m);
       const probabilityHtml = probability ? `${probability.team1}% : ${probability.team2}%` : '—';
-      return `<div class="mini-match-row">
+      return `<div class="mini-match-row ${isViewerMatch(m) ? 'viewer-match' : ''}">
         <div class="mini-match-meta">${formatMatchMeta(m)}</div>
         <div class="mini-match-grid">
           <div class="mini-match-team mini-match-team-1">${renderTeamPlayers(m.team1.spieler)}</div>
@@ -564,7 +665,7 @@ function renderSpiele() {
         const probabilityHtml = probability
           ? `<div class="mc-prob">${probability.team1}% : ${probability.team2}%</div>`
           : '';
-        return `<div class="mc pending">
+        return `<div class="mc pending ${isViewerMatch(m) ? 'viewer-match' : ''}">
           <div class="mc-meta"><span class="mc-nr">${formatMatchMeta(m)}</span></div>
           <div class="mc-team mc-team-1">
             <div class="mc-players">${renderTeamPlayers(m.team1.spieler)}</div>
@@ -580,7 +681,7 @@ function renderSpiele() {
       }
       const t1w = m.sieger === 1, t2w = m.sieger === 2;
       const [s1, s2] = m.saetze.split(':');
-      return `<div class="mc played">
+      return `<div class="mc played ${isViewerMatch(m) ? 'viewer-match' : ''}">
         <div class="mc-meta"><span class="mc-nr">${formatMatchMeta(m)}</span></div>
         <div class="mc-team mc-team-1 ${t1w?'win':''}">
           <div class="mc-players">${renderTeamPlayers(m.team1.spieler)}</div>
@@ -1147,6 +1248,7 @@ function toggleAll(on) {
 }
 
 // ── INIT ──────────────────────────────────────────────────────────
+updateViewerPicker();
 renderHome();
 renderRanking();
 renderSpiele();

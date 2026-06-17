@@ -389,7 +389,13 @@ function renderArticleCard(article) {
 
 function renderArticleBlock(block) {
   if (block.type === 'h') return `<h4>${block.text}</h4>`;
-  if (block.type === 'match') return `<div class="article-match">${block.text}</div>`;
+  if (block.type === 'match') {
+    const [matchup, result] = block.text.split(/\s*\|\s*Ergebnis:\s*/);
+    return `<div class="article-match">
+      <span>${matchup}</span>
+      ${result ? `<span class="article-match-result">Ergebnis: ${result}</span>` : ''}
+    </div>`;
+  }
   if (block.type === 'quote') {
     return `<blockquote>
       <p>${block.text}</p>
@@ -771,7 +777,7 @@ function initChart() {
       scales: {
         x: { grid: { color: '#222' }, ticks: { color: '#5a5a72', font: { family: 'DM Mono', size: 11 } } },
         y: {
-          min: 700, max: 1300,
+          min: 600, max: 1300,
           grid: { color: '#222' },
           ticks: { color: '#5a5a72', font: { family: 'DM Mono', size: 11 } }
         }
@@ -780,6 +786,24 @@ function initChart() {
   });
   initPlacementChart();
   renderFilter();
+}
+
+function getPlacementSegmentColor(context, playedFlags, color) {
+  const fromPlayed = playedFlags[context.p0DataIndex];
+  const toPlayed = playedFlags[context.p1DataIndex];
+
+  if (fromPlayed && toPlayed) return color;
+  if (!fromPlayed && !toPlayed) return GRAY;
+
+  const xScale = context.chart.scales.x;
+  const x0 = xScale.getPixelForValue(context.p0DataIndex);
+  const x1 = xScale.getPixelForValue(context.p1DataIndex);
+  const gradient = context.chart.ctx.createLinearGradient(x0, 0, x1, 0);
+
+  gradient.addColorStop(0, fromPlayed ? color : GRAY);
+  gradient.addColorStop(1, toPlayed ? color : GRAY);
+
+  return gradient;
 }
 
 function initPlacementChart() {
@@ -802,7 +826,7 @@ function initPlacementChart() {
       pointHoverRadius: 4,
       tension: 0.25,
       segment: {
-        borderColor: ctx => playedFlags[ctx.p1DataIndex] ? COLORS[i] : GRAY
+        borderColor: ctx => getPlacementSegmentColor(ctx, playedFlags, COLORS[i])
       }
     };
   });

@@ -128,10 +128,40 @@ const PADEL_INFO = {
   articles: [
     {
       spieltag: 1,
-      startDate: null,
-      endDate: null,
-      title: "Spieltag 1",
-      teaser: "Artikel folgt."
+      startDate: "2026-05-11",
+      endDate: "2026-05-24",
+      title: "Der Aufschlag ist gemacht - die Padel-Liga 2026 startet!",
+      meta: "SPIELTAG 1  ·  11. MAI - 22. MAI 2026",
+      teaser: "Es ist so weit: Die Padel-Liga 2026 öffnet ihre Tore. Mit dem ersten Spieltag fallen endlich die ersten Bälle.",
+      body: [
+        { type: "p", text: "Es ist so weit: Die Padel-Liga 2026 der Unternehmensgruppe Headsquare, Hanako und Envidual öffnet ihre Tore. Mit dem ersten Spieltag - ausgetragen im Zeitfenster vom 11. bis 22. Mai - fallen endlich die ersten Bälle. Die Spannung unter den 18 Teilnehmerinnen und Teilnehmern könnte kaum größer sein, die ersten Ergebnisse werden sehnlichst erwartet." },
+
+        { type: "h", text: "Spiel 1 - Das Eröffnungsspiel" },
+        { type: "match", text: "Greta P & Agnes K vs. Christoph L & Marco M" },
+        { type: "p", text: "Das Eröffnungsspiel der Liga gehört vier Protagonisten, auf die sich sofort aller Blicke richten. Marco M meldete sich bereits im Vorfeld zu Wort - und gab sich dabei erstaunlich geerdet:" },
+        { type: "quote", text: "Wir wollen erstmal tief stapeln - der Druck ist natürlich riesig. Nichtsdestotrotz sind wir motiviert und gewillt, das Spiel zu gewinnen und gleich mit einem Sieg in die Liga zu starten.", author: "Marco M" },
+        { type: "p", text: "Er und sein Partner Christoph L haben sich nach eigener Aussage bereits intensiv abgestimmt. Ob die demonstrative Bescheidenheit Taktik oder echte Zurückhaltung ist, werden Greta P und Agnes K auf dem Court herausfinden." },
+
+        { type: "h", text: "Spiel 2 - Das Unternehmensduell" },
+        { type: "match", text: "Leonie R & Cristian B (Hanako) vs. Jonas L & Luca W (Envidual)" },
+        { type: "p", text: "Spiel 2 hat eine zusätzliche Dimension: Hanako gegen Envidual liefert uns das erste firmenübergreifende Kräftemessen der Liga. Und Leonie R macht keinerlei Hehl daraus, wie sie den Ausgang dieser Begegnung einschätzt:" },
+        { type: "quote", text: "Ich werde das Turnier gewinnen. Also gewinne ich auch das erste Spiel. So einfach ist das.", author: "Leonie R" },
+        { type: "p", text: "Klarer kann man seine Ambitionen kaum formulieren. Jonas L und Luca W sind gewarnt, Envidual wird sich diesen Firmenruhm nicht kampflos nehmen lassen." },
+
+        { type: "h", text: "Spiel 3 - Das erste Mayr-Duell" },
+        { type: "match", text: "Martin B & Chris M vs. Marcel M & Irene W" },
+        { type: "p", text: "Die Auslosung hat es so gewollt: Mit Chris M gegen Marcel M ist das erste Mayr-Duell der Ligageschichte Programm. Und während Chris M sich noch bedeckt hält, hat Marcel M seine Karten längst auf den Tisch gelegt:" },
+        { type: "quote", text: "Es gibt bestimmt technisch versiertere Spieler, das muss ich zugeben. Aber es gibt keinen anderen Spieler mit diesem Spirit wie mich. Und das ist das Wichtigste bei einem Wettbewerb wie diesem.", author: "Marcel M" },
+        { type: "p", text: "Technik gegen Spirit - eine der ältesten Fragen im Sport. Martin B und Irene W werden jedenfalls alles daransetzen, dem Familientreffen die richtige Wendung zu geben." },
+
+        { type: "h", text: "Spiel 4 - Die stille Favoritenpartie" },
+        { type: "match", text: "Ludwig W & Raphael H vs. Florian Z & Niklas K" },
+        { type: "p", text: "Das vierte Spiel des Spieltags gehört vier Akteuren, die bislang noch keine großen Töne spucken. Vielleicht ist genau das ihre Stärke. Manchmal kommen die größten Überraschungen von denen, die leise starten und laut enden." },
+
+        { type: "h", text: "Alle Augen auf den Court" },
+        { type: "p", text: "Zwei Gewinnsätze, bei 1:1 entscheidet ein Match-Tie-Break bis 10 Punkte. Punkte werden vergeben wie im Eishockey: Ein klarer Sieg bringt 3 Punkte, ein Sieg im Tie-Break 2, eine knappe Niederlage immerhin noch 1. Wer nach sechs Spieltagen oben steht, krönt sich zum ersten Champion der Unternehmenspadel-Liga." },
+        { type: "p", text: "Möge der Beste gewinnen. Der erste Spieltag kann kommen." }
+      ]
     },
     {
       spieltag: 2,

@@ -86,22 +86,23 @@ const PADEL_DATA = {
     ]}
   ],
 
+  // Uhrzeiten als Text im Format "hh.mm" eintragen, z. B. "07.30". Ohne Uhrzeit: null.
   matches: [
     // SPIELTAG 1
-    { id: "spiel1",  spieltag: 1, datum: "2026-06-11", uhrzeit: 12.30, team1: { spieler: ["Greta P.",    "Agnes K."]    }, team2: { spieler: ["Christoph L.", "Marco M."]  }, ergebnis: "1:6, 3:6", saetze: "0:2", sieger: 2 },
-    { id: "spiel2",  spieltag: 1, datum: "2026-05-20", uhrzeit: 12.30, team1: { spieler: ["Leonie R.",   "Cristian B."] }, team2: { spieler: ["Jonas L.",     "Luca W."]   }, ergebnis: "2:6, 0:6", saetze: "0:2", sieger: 2 },
-    { id: "spiel3",  spieltag: 1, datum: "2026-06-17", uhrzeit: 13.00, team1: { spieler: ["Martin B.",   "Chris M."]    }, team2: { spieler: ["Marcel M.",    "Irene W."]  }, ergebnis: null, saetze: null, sieger: null },
-    { id: "spiel4",  spieltag: 1, datum: "2026-05-13", uhrzeit: 17.30, team1: { spieler: ["Ludwig W.",   "Raphael H."]  }, team2: { spieler: ["Florian Z.",   "Niklas K."] }, ergebnis: "6:3, 6:2", saetze: "2:0", sieger: 1 },
+    { id: "spiel1",  spieltag: 1, datum: "2026-06-11", uhrzeit: "12.30", team1: { spieler: ["Greta P.",    "Agnes K."]    }, team2: { spieler: ["Christoph L.", "Marco M."]  }, ergebnis: "1:6, 3:6", saetze: "0:2", sieger: 2 },
+    { id: "spiel2",  spieltag: 1, datum: "2026-05-20", uhrzeit: "12.30", team1: { spieler: ["Leonie R.",   "Cristian B."] }, team2: { spieler: ["Jonas L.",     "Luca W."]   }, ergebnis: "2:6, 0:6", saetze: "0:2", sieger: 2 },
+    { id: "spiel3",  spieltag: 1, datum: "2026-06-17", uhrzeit: "13.00", team1: { spieler: ["Martin B.",   "Chris M."]    }, team2: { spieler: ["Marcel M.",    "Irene W."]  }, ergebnis: null, saetze: null, sieger: null },
+    { id: "spiel4",  spieltag: 1, datum: "2026-05-13", uhrzeit: "17.30", team1: { spieler: ["Ludwig W.",   "Raphael H."]  }, team2: { spieler: ["Florian Z.",   "Niklas K."] }, ergebnis: "6:3, 6:2", saetze: "2:0", sieger: 1 },
     // SPIELTAG 2
-    { id: "spiel5",  spieltag: 2, datum: "2026-06-10", uhrzeit: 12.00, team1: { spieler: ["Lukas P.",    "Martin B."]   }, team2: { spieler: ["Luca W.",      "Andreas L."]}, ergebnis: "0:6, 4:6", saetze: "0:2", sieger: 2 },
-    { id: "spiel6",  spieltag: 2, datum: "2026-05-19", uhrzeit: 13.00, team1: { spieler: ["Ludwig W.",   "Cristian B."] }, team2: { spieler: ["Niklas K.",    "Greta P."]  }, ergebnis: "7:5, 6:1", saetze: "2:0", sieger: 1 },
-    { id: "spiel7",  spieltag: 2, datum: "2026-06-12", uhrzeit: 7.30, team1: { spieler: ["Christoph L.","Raphael H."]  }, team2: { spieler: ["Marco M.",     "Marcel M."] }, ergebnis: "1:6, 1:6", saetze: "0:2", sieger: 2 },
-    { id: "spiel8",  spieltag: 2, datum: "2026-06-22", uhrzeit: 12.30, team1: { spieler: ["Chris M.",    "Jonas L."]    }, team2: { spieler: ["Irene W.",     "Leonie R."] }, ergebnis: null, saetze: null, sieger: null },
+    { id: "spiel5",  spieltag: 2, datum: "2026-06-10", uhrzeit: "12.00", team1: { spieler: ["Lukas P.",    "Martin B."]   }, team2: { spieler: ["Luca W.",      "Andreas L."]}, ergebnis: "0:6, 4:6", saetze: "0:2", sieger: 2 },
+    { id: "spiel6",  spieltag: 2, datum: "2026-05-19", uhrzeit: "13.00", team1: { spieler: ["Ludwig W.",   "Cristian B."] }, team2: { spieler: ["Niklas K.",    "Greta P."]  }, ergebnis: "7:5, 6:1", saetze: "2:0", sieger: 1 },
+    { id: "spiel7",  spieltag: 2, datum: "2026-06-12", uhrzeit: "07.30", team1: { spieler: ["Christoph L.","Raphael H."]  }, team2: { spieler: ["Marco M.",     "Marcel M."] }, ergebnis: "1:6, 1:6", saetze: "0:2", sieger: 2 },
+    { id: "spiel8",  spieltag: 2, datum: "2026-06-22", uhrzeit: "12.30", team1: { spieler: ["Chris M.",    "Jonas L."]    }, team2: { spieler: ["Irene W.",     "Leonie R."] }, ergebnis: null, saetze: null, sieger: null },
     // SPIELTAG 3
     { id: "spiel9",  spieltag: 3, datum: "2026-06-08", uhrzeit: null, team1: { spieler: ["Cristian B.", "Chris M."]    }, team2: { spieler: ["Raphael H.",   "Leonie R."] }, ergebnis: null, saetze: null, sieger: null },
     { id: "spiel10", spieltag: 3, datum: "2026-06-08", uhrzeit: null, team1: { spieler: ["Agnes K.",    "Lukas P."]    }, team2: { spieler: ["Ludwig W.",    "Marco M."]  }, ergebnis: null, saetze: null, sieger: null },
     { id: "spiel11", spieltag: 3, datum: "2026-06-08", uhrzeit: null, team1: { spieler: ["Christoph L.","Florian Z."]  }, team2: { spieler: ["Luca W.",      "Irene W."]  }, ergebnis: null, saetze: null, sieger: null },
-    { id: "spiel12", spieltag: 3, datum: "2026-06-03", uhrzeit: 12.30, team1: { spieler: ["Greta P.",    "Andreas L."]  }, team2: { spieler: ["Marcel M.",    "Jonas L."]  }, ergebnis: "1:6, 6:3 – 6:10", saetze: "1:2", sieger: 2 },
+    { id: "spiel12", spieltag: 3, datum: "2026-06-03", uhrzeit: "12.30", team1: { spieler: ["Greta P.",    "Andreas L."]  }, team2: { spieler: ["Marcel M.",    "Jonas L."]  }, ergebnis: "1:6, 6:3 – 6:10", saetze: "1:2", sieger: 2 },
     // SPIELTAG 4
     { id: "spiel13", spieltag: 4, datum: "2026-06-22", uhrzeit: null, team1: { spieler: ["Chris M.",    "Raphael H."]  }, team2: { spieler: ["Ludwig W.",    "Irene W."]  }, ergebnis: null, saetze: null, sieger: null },
     { id: "spiel14", spieltag: 4, datum: "2026-06-22", uhrzeit: null, team1: { spieler: ["Cristian B.", "Lukas P."]    }, team2: { spieler: ["Christoph L.", "Martin B."] }, ergebnis: null, saetze: null, sieger: null },

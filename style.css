@@ -8,7 +8,7 @@
       --danger:     #f53a5a;
       --text:       #ffffff;
       --muted:      #a2a2b7;
-      --dim:        #a9a9c3;
+      --dim:        #8d8da4;
       --envidual:   #1B719C;
       --hanako:     #2B6D88;
       --headsquare: #E70713;
@@ -33,7 +33,7 @@
     .logo span { color: var(--dim); font-size: 1rem; margin-left: 6px; }
     nav { display: flex; gap: 2px; }
     nav button {
-      background: none; border: none; color: var(--muted); font-family: 'DM Sans', sans-serif;
+      background: none; border: none; color: var(--dim); font-family: 'DM Sans', sans-serif;
       font-size: 0.85rem; font-weight: 500; padding: 6px 14px; border-radius: 6px;
       cursor: pointer; transition: all 0.15s;
     }
@@ -55,7 +55,7 @@
     /* ── SECTION HEADER ── */
     .sh { display: flex; align-items: baseline; gap: 12px; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border); }
     .sh-title { font-family: 'Bebas Neue', sans-serif; font-size: 2rem; letter-spacing: 0.05em; }
-    .sh-meta { font-family: 'DM Mono', monospace; font-size: 0.85rem; color: var(--muted); }
+    .sh-meta { font-family: 'DM Mono', monospace; font-size: 0.85rem; color: var(--dim); }
 
     /* ── HOME / INFO WIDGETS ── */
     .home-grid {
@@ -75,8 +75,8 @@
     .widget-label,
     .article-kicker {
       font-family: 'DM Mono', monospace;
-      font-size: 0.72rem;
-      color: var(--muted);
+      font-size: 0.7rem;
+      color: var(--dim);
       letter-spacing: 0.12em;
       text-transform: uppercase;
       margin-bottom: 0.75rem;
@@ -84,7 +84,7 @@
     .widget h2,
     .info-card h2 {
       font-family: 'Bebas Neue', sans-serif;
-      font-size: 1.8rem;
+      font-size: 2rem;
       letter-spacing: 0.04em;
       margin-bottom: 0.85rem;
     }
@@ -122,13 +122,13 @@
       letter-spacing: 0.04em;
       margin-bottom: 0.6rem;
     }
-    .article-card h3 { font-size: 1rem; margin-bottom: 0.35rem; }
+    .article-card h3 { font-size: 1.7rem; margin-bottom: 0.75rem; }
     .article-card p,
     .info-card p { color: var(--dim); line-height: 1.5; margin-bottom: 0.8rem; }
     .article-meta {
       font-family: 'DM Mono', monospace;
-      font-size: 0.78rem;
-      color: var(--muted);
+      font-size: 0.85rem;
+      color: var(--dim);
       letter-spacing: 0.04em;
       margin-bottom: 1rem;
       text-transform: uppercase;
@@ -136,14 +136,13 @@
     .article-body { margin-top: 1rem; }
     .article-body h4 {
       color: var(--text);
-      font-size: 1.05rem;
+      font-size: 1.2rem;
       line-height: 1.25;
-      margin: 1.6rem 0 0.5rem;
+      margin: 2rem 0 0.2rem;
     }
     .article-match {
-      font-style: italic;
-      color: var(--muted);
-      margin-bottom: 0.9rem;
+      color: var(--accent);
+      margin-bottom: 1rem;
     }
     .article-body blockquote {
       border-left: 3px solid var(--accent);
@@ -152,14 +151,13 @@
     }
     .article-body blockquote p {
       color: var(--text);
-      font-size: 1.02rem;
+      font-size: 1rem;
       font-style: italic;
-      margin-bottom: 0.35rem;
+      margin-bottom: 0.1rem;
     }
     .article-body cite {
-      color: var(--muted);
-      font-family: 'DM Mono', monospace;
-      font-size: 0.75rem;
+      color: var(--accent);
+      font-size: 0.85rem;
       font-style: normal;
     }
     .article-body cite::before { content: "- "; }
@@ -182,15 +180,15 @@
     .mini-rank-points,
     .mini-match-meta {
       font-family: 'DM Mono', monospace;
-      color: var(--muted);
-      font-size: 0.82rem;
+      color: var(--dim);
+      font-size: 0.85rem;
     }
-    .mini-rank-name { font-weight: 600; }
+    .mini-rank-name { font-weight: 500; }
     .mini-rank-points { color: var(--accent); font-weight: 700; }
     .mini-rank-row.r1 .mini-rank-pos { color: var(--accent); font-weight: 700; }
     .mini-rank-row.r2 .mini-rank-pos { color: #bbb; font-weight: 700; }
     .mini-rank-row.r3 .mini-rank-pos { color: #c97b2e; font-weight: 700; }
-    .mini-rank-row.r4 .mini-rank-pos { color: var(--muted); font-weight: 700; }
+    .mini-rank-row.r4 .mini-rank-pos { color: var(--dim); font-weight: 500; }
     .mini-match-meta {
       display: flex;
       gap: 12px;
@@ -229,7 +227,7 @@
     }
     .mini-match-status {
       font-family: 'DM Mono', monospace;
-      color: var(--muted);
+      color: var(--dim);
       white-space: nowrap;
       text-align: center;
     }
@@ -237,7 +235,7 @@
       font-size: 0.9rem;    }
     .mini-match-label {
       font-family: 'DM Sans', sans-serif;
-      font-size: 0.7rem;
+      font-size: 0.85rem;
     }
     .empty-state { color: var(--muted); font-size: 0.9rem; }
 
@@ -257,13 +255,13 @@
     .info-menu a {
       color: var(--dim);
       text-decoration: none;
-      font-size: 0.92rem;
+      font-size: 1rem;
       padding: 0.45rem 0;
       border-bottom: 1px solid var(--border);
     }
     .info-menu a.is-sub {
-      color: var(--muted);
-      font-size: 0.82rem;
+      color: var(--dim);
+      font-size: 0.85rem;
       padding-left: 0.85rem;
     }
     .info-menu a:hover { color: var(--accent); }
@@ -271,8 +269,7 @@
     .info-group { margin-top: 1rem; }
     .info-group h3 { font-size: 1rem; margin-bottom: 0.65rem; }
     .info-note {
-      font-family: 'DM Mono', monospace;
-      font-size: 0.82rem;
+      font-size: 0.85rem;
       color: var(--muted) !important;
       margin-top: 1rem;
     }
@@ -322,7 +319,7 @@
     table.rt { width: 100%; border-collapse: collapse; margin-bottom: 1rem;}
     table.rt th {
       text-align: right; font-size: 0.7rem; font-weight: 600; letter-spacing: 0.12em;
-      text-transform: uppercase; color: var(--muted); padding: 10px 16px;
+      text-transform: uppercase; color: var(--dim); padding: 10px 16px;
       border-bottom: 1px solid var(--border);
     }
     table.rt th.l { text-align: left; }
@@ -333,7 +330,7 @@
     table.rt tbody tr:nth-child(even) { background: var(--row-alt); }
     table.rt tbody tr:hover { background: var(--surface); }
 
-    .rn { font-family: 'DM Mono', monospace; font-size: 1rem; color: var(--muted); width: 36px; text-align: left !important; }
+    .rn { font-family: 'DM Mono', monospace; font-size: 1rem; color: var(--dim); width: 36px; text-align: left !important; }
     .r1 .rn { color: var(--accent); font-weight: 700; }
     .r2 .rn { color: #bbb; font-weight: 700; }
     .r3 .rn { color: #c97b2e; font-weight: 700; }
@@ -353,25 +350,25 @@
     .num-val    { font-family: 'DM Mono', monospace; font-size: 1rem; color: var(--text); }
     .pos { color: var(--accent2); }
     .neg { color: var(--danger); }
-    .neu { color: var(--muted); }
+    .neu { color: var(--dim); }
 
     /* ── CHART ── */
     .chart-box {
       background: var(--surface); border: 1px solid var(--border);
       border-radius: 14px; padding: 1.5rem; margin-bottom: 1.5rem;
     }
-    .chart-box-title { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 1rem; }
+    .chart-box-title { font-size: 0.85rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--dim); margin-bottom: 1rem; }
     .filter-controls { display: flex; align-items: center; gap: 10px; margin-bottom: 1rem; flex-wrap: wrap; }
     .filter-row { display: flex; flex-wrap: wrap; gap: 6px; flex: 1; }
     .filter-toggle-btns { display: flex; gap: 6px; }
     .fb {
-      font-family: 'DM Sans', sans-serif; font-size: 0.75rem; font-weight: 500;
+      font-family: 'DM Sans', sans-serif; font-size: 0.85rem; font-weight: 500;
       padding: 3px 10px; border-radius: 100px; border: 1px solid var(--border);
       background: transparent; color: var(--muted); cursor: pointer; transition: all 0.15s;
     }
     .fb.on { color: #000; border-color: transparent; }
     .fb-toggle {
-      font-family: 'DM Sans', sans-serif; font-size: 0.75rem; font-weight: 500;
+      font-family: 'DM Sans', sans-serif; font-size: 0.85rem; font-weight: 500;
       padding: 4px 12px; border-radius: 100px; border: 1px solid var(--border);
       background: var(--surface2); color: var(--dim); cursor: pointer;
       transition: all 0.15s; white-space: nowrap;
@@ -384,14 +381,14 @@
     .spieltag-group { margin-bottom: 2.5rem; }
     .spieltag-label {
       font-size: 0.85rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase;
-      color: var(--muted); margin-bottom: 10px; padding-bottom: 8px; border-bottom: 1px solid var(--border);
+      color: var(--dim); margin-bottom: 10px; padding-bottom: 8px; border-bottom: 1px solid var(--border);
     }
     .match-list { display: flex; flex-direction: column; gap: 8px; }
     .mc {
       background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
       padding: 1.1rem 1.5rem;
       display: grid;
-      grid-template-columns: 230px 1fr 130px 1fr;
+      grid-template-columns: 300px 1fr 130px 1fr;
       align-items: center; gap: 24px;
     }
     .mc.pending { background: transparent; }
@@ -400,15 +397,15 @@
     .mc-team { display: flex; flex-direction: column; gap: 2px; }
     .mc-team-2 { text-align: right; align-items: flex-end; }
     .mc-team.win .mc-players { font-weight: 600; color: var(--text); }
-    .mc-team:not(.win) .mc-players { color: var(--dim); }
+    .mc-team:not(.win) .mc-players { color: var(--muted); }
     .mc-players { font-size: 1.1rem; }
     .mc-player-sep { margin: 0 0.3em; }
     .mc-score { text-align: center; }
     .mc-score-main { font-family: 'Bebas Neue', sans-serif; font-size: 2rem; letter-spacing: 0.05em; color: var(--text); line-height: 1; }
     .mc-score-detail { font-family: 'DM Mono', monospace; font-size: 0.85rem; color: var(--dim); margin-top: 3px; }
-    .mc-prob { font-family: 'DM Mono', monospace; font-size: 0.85rem; color: var(--muted); margin-bottom: 4px; }
-    .mc-pending-label { font-size: 0.85rem; color: var(--muted); text-align: center; }
-    .mc-nr { font-family: 'DM Mono', monospace; font-size: 0.85rem; color: var(--muted); text-align: left; }
+    .mc-prob { font-family: 'DM Mono', monospace; font-size: 0.85rem; color: var(--dim); margin-bottom: 4px; }
+    .mc-pending-label { font-size: 0.85rem; color: var(--dim); text-align: center; }
+    .mc-nr { font-family: 'DM Mono', monospace; font-size: 0.85rem; color: var(--dim); text-align: left; }
 
     @media (max-width: 768px) {
       header { justify-content: center; padding: 0 0.75rem; }

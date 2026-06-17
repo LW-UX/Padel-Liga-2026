@@ -381,7 +381,7 @@
     .fb-toggle:hover { border-color: var(--accent); color: var(--accent); }
     .chart-wrap { position: relative; height: 580px; }
     .placement-chart-wrap { position: relative; height: 520px; }
-    .elo-custom-tooltip {
+    .chart-custom-tooltip {
       position: absolute;
       z-index: 10;
       min-width: 210px;
@@ -409,6 +409,11 @@
       border-top: 1px solid var(--border);
       margin-top: 0.45rem;
       padding-top: 0.45rem;
+    }
+    .elo-tooltip-name {
+      color: var(--text);
+      font-weight: 700;
+      margin-bottom: 0.2rem;
     }
     .elo-tooltip-main {
       color: var(--text);
@@ -463,7 +468,7 @@
       .home-grid { gap: 12px; }
       .home-article-preview {
         position: relative;
-        max-height: 300px;
+        max-height: 250px;
         overflow: hidden;
       }
       .home-article-preview::after {

@@ -738,6 +738,11 @@ function getPlayerMatchContext(playerName, match) {
   };
 }
 
+function formatStatDiff(diff) {
+  if (!Number.isFinite(diff)) return '—';
+  return diff >= 0 ? `+${diff}` : `${diff}`;
+}
+
 function formatResultForPlayer(result, isTeam1) {
   if (!result) return '—';
   if (isTeam1) return result;
@@ -754,13 +759,13 @@ function escapeHtml(value) {
     .replace(/'/g, '&#039;');
 }
 
-function getOrCreateEloTooltip(chartInstance) {
+function getOrCreateChartTooltip(chartInstance, className = 'chart-custom-tooltip') {
   const parent = chartInstance.canvas.parentNode;
-  let tooltip = parent.querySelector('.elo-custom-tooltip');
+  let tooltip = parent.querySelector(`.${className}`);
 
   if (!tooltip) {
     tooltip = document.createElement('div');
-    tooltip.className = 'elo-custom-tooltip';
+    tooltip.className = className;
     parent.appendChild(tooltip);
   }
 
@@ -769,7 +774,7 @@ function getOrCreateEloTooltip(chartInstance) {
 
 function externalEloTooltip(context) {
   const { chart: chartInstance, tooltip } = context;
-  const tooltipEl = getOrCreateEloTooltip(chartInstance);
+  const tooltipEl = getOrCreateChartTooltip(chartInstance);
 
   if (tooltip.opacity === 0) {
     tooltipEl.style.opacity = 0;
@@ -790,19 +795,45 @@ function externalEloTooltip(context) {
       const matchContext = item.dataset.matchContexts?.[item.dataIndex];
 
       return `<div class="elo-tooltip-item">
-        <div class="elo-tooltip-main">
-          <strong>${escapeHtml(item.dataset.label)}</strong>: Elo ${escapeHtml(item.parsed.y)}
-          ${delta ? `<span class="elo-tooltip-delta ${deltaClass}">${escapeHtml(delta)}</span>` : ''}
-        </div>
-        ${gameLabel ? `<div>${escapeHtml(gameLabel)}</div>` : ''}
+        <div class="elo-tooltip-name">${escapeHtml(item.dataset.label)}</div>
+        <div class="elo-tooltip-main">Elo: ${escapeHtml(item.parsed.y)} ${delta ? `<span class="elo-tooltip-delta ${deltaClass}">${escapeHtml(delta)}</span>` : ''}</div>
         ${matchContext ? `
-          <div>Partner: ${escapeHtml(matchContext.partner)}</div>
-          <div>Gegner: ${escapeHtml(matchContext.opponents)}</div>
           <div>Ergebnis: ${escapeHtml(matchContext.result)}</div>
+          <div>Mit: ${escapeHtml(matchContext.partner)}</div>
+          <div>vs. ${escapeHtml(matchContext.opponents)}</div>
+        ` : gameLabel ? `
+          <div>${escapeHtml(gameLabel)}</div>
         ` : ''}
       </div>`;
     }).join('')}
   `;
+
+  tooltipEl.style.opacity = 1;
+  tooltipEl.style.left = `${tooltip.caretX}px`;
+  tooltipEl.style.top = `${tooltip.caretY}px`;
+}
+
+function externalPlacementTooltip(context) {
+  const { chart: chartInstance, tooltip } = context;
+  const tooltipEl = getOrCreateChartTooltip(chartInstance);
+
+  if (tooltip.opacity === 0) {
+    tooltipEl.style.opacity = 0;
+    return;
+  }
+
+  const items = tooltip.dataPoints || [];
+  tooltipEl.innerHTML = items.map(item => {
+    const stats = item.dataset.statsByPoint?.[item.dataIndex];
+    const diff = stats ? formatStatDiff(stats.spielDiff) : '—';
+    const diffClass = stats?.spielDiff > 0 ? 'pos' : stats?.spielDiff < 0 ? 'neg' : 'neu';
+
+    return `<div class="elo-tooltip-item">
+      <div class="elo-tooltip-name">${escapeHtml(item.dataset.label)}</div>
+      <div>Platz: ${escapeHtml(item.parsed.y)}</div>
+      ${stats ? `<div>Pkt.: ${escapeHtml(stats.punkte)} · Siege: ${escapeHtml(stats.siege)} · Diff.: <span class="elo-tooltip-delta ${diffClass}">${escapeHtml(diff)}</span></div>` : ''}
+    </div>`;
+  }).join('');
 
   tooltipEl.style.opacity = 1;
   tooltipEl.style.left = `${tooltip.caretX}px`;
@@ -852,7 +883,7 @@ function getPlayerSeries(player, events) {
     series.gameLabels.push(event.gameLabel);
     series.eventTitles.push(event.gameLabel === 'Start'
       ? 'Start'
-      : formatMatchDate(event.match || { datum: event.date }));
+      : event.match ? formatMatchMeta(event.match) : formatMatchDate({ datum: event.date }));
     series.matchContexts.push(getPlayerMatchContext(player.name, event.match));
   });
 
@@ -863,6 +894,7 @@ function getPlacementSeries() {
   const matchDays = [...new Set(PADEL_DATA.matches.map(m => m.spieltag))].sort((a, b) => a - b);
   const placementsByPlayer = new Map(PADEL_DATA.players.map(p => [p.name, []]));
   const playedByPlayer = new Map(PADEL_DATA.players.map(p => [p.name, []]));
+  const statsByPlayer = new Map(PADEL_DATA.players.map(p => [p.name, []]));
 
   matchDays.forEach(spieltag => {
     const matchesUntilDay = PADEL_DATA.matches.filter(m => m.sieger !== null && m.spieltag <= spieltag);
@@ -870,13 +902,14 @@ function getPlacementSeries() {
     const ranked = getRankedPlayers(matchesUntilDay);
     ranked.forEach((player, index) => {
       placementsByPlayer.get(player.name).push(index + 1);
+      statsByPlayer.get(player.name).push(player.stats);
       playedByPlayer.get(player.name).push(matchesAtDay.some(m =>
         m.team1.spieler.includes(player.name) || m.team2.spieler.includes(player.name)
       ));
     });
   });
 
-  return { matchDays, placementsByPlayer, playedByPlayer };
+  return { matchDays, placementsByPlayer, playedByPlayer, statsByPlayer };
 }
 
 const placementLabelPlugin = {
@@ -983,7 +1016,7 @@ function getPlacementSegmentColor(context, playedFlags, color) {
 
 function initPlacementChart() {
   if (placementChart) return;
-  const { matchDays, placementsByPlayer, playedByPlayer } = getPlacementSeries();
+  const { matchDays, placementsByPlayer, playedByPlayer, statsByPlayer } = getPlacementSeries();
   const maxPlace = PADEL_DATA.players.length;
   const datasets = PADEL_DATA.players.map((p, i) => {
     const playedFlags = playedByPlayer.get(p.name);
@@ -991,6 +1024,7 @@ function initPlacementChart() {
       label: p.name,
       data: placementsByPlayer.get(p.name),
       playedFlags,
+      statsByPoint: statsByPlayer.get(p.name),
       baseColor: COLORS[i],
       borderColor: COLORS[i],
       backgroundColor: 'transparent',
@@ -1022,9 +1056,8 @@ function initPlacementChart() {
       plugins: {
         legend: { display: false },
         tooltip: {
-          callbacks: {
-            label: context => `${context.dataset.label}: Platz ${context.parsed.y}`
-          }
+          enabled: false,
+          external: externalPlacementTooltip
         }
       },
       scales: {

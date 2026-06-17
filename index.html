@@ -337,6 +337,20 @@ function formatMatchTime(time) {
   return `${hours.padStart(2, '0')}:${minutes}`;
 }
 
+function getMatchTimeMinutes(match) {
+  const formattedTime = formatMatchTime(match.uhrzeit);
+  if (!formattedTime) return 24 * 60;
+  const [hours, minutes] = formattedTime.split(':').map(Number);
+
+  return hours * 60 + minutes;
+}
+
+function compareMatchesByDateTime(a, b) {
+  return toDateKey(a.datum).localeCompare(toDateKey(b.datum))
+    || getMatchTimeMinutes(a) - getMatchTimeMinutes(b)
+    || Number(a.id.replace('spiel', '')) - Number(b.id.replace('spiel', ''));
+}
+
 function formatMatchDate(match) {
   const d = parseDateValue(match.datum);
   const date = d
@@ -408,7 +422,7 @@ function renderHome() {
   const todayKey = toDateKey(new Date());
   const nextMatches = PADEL_DATA.matches
     .filter(m => m.sieger === null && toDateKey(m.datum) >= todayKey)
-    .sort((a, b) => toDateKey(a.datum).localeCompare(toDateKey(b.datum)))
+    .sort(compareMatchesByDateTime)
     .slice(0, 3);
 
   document.getElementById('home-next-matches').innerHTML = nextMatches.length
@@ -534,7 +548,9 @@ function renderSpiele() {
   const played = PADEL_DATA.matches.filter(m => m.sieger !== null).length;
   document.getElementById('sp-meta').textContent = `${played} / ${PADEL_DATA.matches.length} gespielt`;
   document.getElementById('spielplan').innerHTML = spieltage.map(st => {
-    const matches = PADEL_DATA.matches.filter(m => m.spieltag === st);
+    const matches = PADEL_DATA.matches
+      .filter(m => m.spieltag === st)
+      .sort(compareMatchesByDateTime);
     const rows = matches.map(m => {
       if (m.sieger === null) {
         const probability = getMatchWinProbability(m);

@@ -855,7 +855,7 @@ function initChart() {
       borderWidth: 2,
       pointRadius: 4,
       pointHoverRadius: 5,
-      tension: 0,
+      tension: 0.3,
       spanGaps: true
     };
   });
@@ -993,8 +993,8 @@ function initPlacementChart() {
         },
         y: {
           reverse: true,
-          min: 1,
-          max: maxPlace,
+          min: 0.5,
+          max: maxPlace + 0.5,
           title: { display: true, text: 'Platz', color: '#a2a2b7', font: { family: 'DM Sans', size: 12, weight: '600' } },
           grid: { color: '#222' },
           ticks: {

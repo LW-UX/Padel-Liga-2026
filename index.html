@@ -719,7 +719,7 @@ function getChartEvents() {
 
       return (getGameNumber(a.gameLabel) || 0) - (getGameNumber(b.gameLabel) || 0);
     })
-    .map(event => ({ ...event, label: formatChartEventLabel(event) }));
+    .map((event, eventIndex) => ({ ...event, eventIndex, label: formatChartEventLabel(event) }));
 }
 
 function getPlayerMatchContext(playerName, match) {
@@ -760,6 +760,7 @@ function getPlayerSeries(player, events) {
     previousElo = elo;
 
     return {
+      x: event.eventIndex,
       y: elo,
       delta,
       deltaLabel: formatEloDelta(delta),
@@ -835,6 +836,7 @@ function initChart() {
       pointRadius: 4,
       pointHoverRadius: 5,
       tension: 0,
+      parsing: false,
       spanGaps: true
     };
   });
@@ -843,7 +845,7 @@ function initChart() {
   chart = new Chart(ctx, {
     type: 'line',
     data: {
-      labels: chartEvents.map(event => event.label),
+      labels: chartEvents.map(event => new Date(event.date).toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit'})),
       datasets
     },
     options: {

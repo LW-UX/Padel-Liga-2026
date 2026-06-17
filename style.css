@@ -346,6 +346,7 @@
       letter-spacing: 0.08em; text-transform: uppercase;
       padding: 2px 7px; border-radius: 100px; margin-left: 8px;
     }
+    .firma-short { display: none; }
     .firma-Envidual   { background: rgba(58,143,245,0.12); color: var(--envidual); }
     .firma-Hanako     { background: rgba(255,255,255,0.1); color: var(--hanako); }
     .firma-Headsquare { background: rgba(0.0.0.0); color: rgba(231,7,19,0.7); }
@@ -387,7 +388,6 @@
       min-width: 210px;
       pointer-events: none;
       opacity: 0;
-      transform: translate(12px, -50%);
       transition: opacity 0.08s ease;
       background: rgba(12,12,15,0.96);
       border: 1px solid var(--border);
@@ -491,6 +491,40 @@
       .info-layout > .info-card { position: static; }
       .widget,
       .info-card { padding: 1rem; }
+      .ranking-wrap { margin-left: -0.75rem; margin-right: -0.75rem; }
+      table.rt { min-width: 760px; }
+      table.rt th { padding: 8px 8px; letter-spacing: 0.09em; }
+      table.rt td { padding: 11px 8px; }
+      .rn { width: 28px; }
+      .pname { font-size: 0.95rem; white-space: nowrap; }
+      .firma-badge {
+        font-size: 0.58rem;
+        letter-spacing: 0.04em;
+        padding: 1px 5px;
+        margin-left: 5px;
+        vertical-align: 0.08em;
+      }
+      .firma-full { display: none; }
+      .firma-short { display: inline; }
+      .elo-val,
+      .punkte-val,
+      .num-val { font-size: 0.92rem; }
+      .filter-controls {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 8px;
+      }
+      .filter-toggle-btns {
+        width: 100%;
+      }
+      .filter-row {
+        width: 100%;
+        flex: none;
+      }
+      .chart-custom-tooltip {
+        max-width: calc(100vw - 32px);
+        min-width: min(260px, calc(100vw - 32px));
+      }
       .mc {
         grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
         grid-template-areas:

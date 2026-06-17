@@ -292,13 +292,14 @@ function renderFirmenRanking() {
 
 function renderRanking() {
   const withStats = getRankedPlayers();
+  const firmaShort = { Envidual: 'Env', Headsquare: 'Hsq', Hanako: 'Han' };
   document.getElementById('rl-meta').textContent = withStats.length + ' Spieler';
   document.getElementById('rl-body').innerHTML = withStats.map((p, i) => {
     const spielDiffStr = p.stats.spiele > 0 ? (p.stats.spielDiff >= 0 ? `+${p.stats.spielDiff}` : `${p.stats.spielDiff}`) : '—';
     const spielDiffClass = p.stats.spielDiff > 0 ? 'pos' : p.stats.spielDiff < 0 ? 'neg' : 'neu';
     return `<tr class="r${Math.min(i+1,4)}">
       <td class="rn l">${i+1}</td>
-      <td class="l"><span class="pname">${p.name}</span><span class="firma-badge firma-${p.firma}">${p.firma}</span></td>
+      <td class="l"><span class="pname">${p.name}</span><span class="firma-badge firma-${p.firma}"><span class="firma-full">${p.firma}</span><span class="firma-short">${firmaShort[p.firma] || p.firma}</span></span></td>
       <td class="num-val">${p.stats.spiele}</td>
       <td class="num-val">${p.stats.siege}</td>
       <td class="punkte-val">${p.stats.punkte}</td>
@@ -772,6 +773,30 @@ function getOrCreateChartTooltip(chartInstance, className = 'chart-custom-toolti
   return tooltip;
 }
 
+function positionChartTooltip(chartInstance, tooltip, tooltipEl) {
+  const isMobile = window.matchMedia('(max-width: 768px)').matches;
+
+  tooltipEl.style.opacity = 1;
+
+  if (isMobile) {
+    const parentHeight = chartInstance.canvas.parentNode.clientHeight;
+    const tooltipHeight = tooltipEl.offsetHeight || 0;
+    const top = Math.min(
+      Math.max(tooltip.caretY + 16, 12),
+      Math.max(parentHeight - tooltipHeight - 12, 12)
+    );
+
+    tooltipEl.style.left = '50%';
+    tooltipEl.style.top = `${top}px`;
+    tooltipEl.style.transform = 'translateX(-50%)';
+    return;
+  }
+
+  tooltipEl.style.left = `${tooltip.caretX}px`;
+  tooltipEl.style.top = `${tooltip.caretY}px`;
+  tooltipEl.style.transform = 'translate(12px, -50%)';
+}
+
 function externalEloTooltip(context) {
   const { chart: chartInstance, tooltip } = context;
   const tooltipEl = getOrCreateChartTooltip(chartInstance);
@@ -808,9 +833,7 @@ function externalEloTooltip(context) {
     }).join('')}
   `;
 
-  tooltipEl.style.opacity = 1;
-  tooltipEl.style.left = `${tooltip.caretX}px`;
-  tooltipEl.style.top = `${tooltip.caretY}px`;
+  positionChartTooltip(chartInstance, tooltip, tooltipEl);
 }
 
 function externalPlacementTooltip(context) {
@@ -835,9 +858,7 @@ function externalPlacementTooltip(context) {
     </div>`;
   }).join('');
 
-  tooltipEl.style.opacity = 1;
-  tooltipEl.style.left = `${tooltip.caretX}px`;
-  tooltipEl.style.top = `${tooltip.caretY}px`;
+  positionChartTooltip(chartInstance, tooltip, tooltipEl);
 }
 
 function formatEloDelta(delta) {

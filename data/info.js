@@ -173,7 +173,7 @@ const PADEL_INFO = {
     {
       spieltag: 3,
       startDate: "2026-06-08",
-      endDate: "2026-06-19",
+      endDate: "2026-06-21",
       title: "Die Liga zeigt Zähne",
       meta: "SPIELTAG 3  ·  8. JUNI - 19. JUNI 2026",
       teaser: "Zwei Spieltage sind absolviert, der dritte steht in den Startlöchern. Die Tabelle nimmt Formen an, doch für viele beginnt die Liga jetzt erst richtig.",

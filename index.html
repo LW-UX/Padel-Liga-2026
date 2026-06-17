@@ -750,27 +750,42 @@ function getPlayerSeries(player, events) {
       .filter(([key, entry]) => key && Number.isFinite(Number(entry.elo)))
   );
   let previousElo = null;
+  const series = {
+    eloValues: [],
+    deltas: [],
+    deltaLabels: [],
+    gameLabels: [],
+    eventTitles: [],
+    matchContexts: []
+  };
 
-  return events.map(event => {
+  events.forEach(event => {
     const historyEntry = historyByEvent.get(event.key);
-    if (!historyEntry) return null;
+    if (!historyEntry) {
+      series.eloValues.push(null);
+      series.deltas.push(null);
+      series.deltaLabels.push('');
+      series.gameLabels.push('');
+      series.eventTitles.push('');
+      series.matchContexts.push(null);
+      return;
+    }
 
     const elo = Number(historyEntry.elo);
     const delta = previousElo === null ? null : elo - previousElo;
     previousElo = elo;
 
-    return {
-      x: event.eventIndex,
-      y: elo,
-      delta,
-      deltaLabel: formatEloDelta(delta),
-      gameLabel: event.gameLabel,
-      eventTitle: event.gameLabel === 'Start'
-        ? 'Start'
-        : formatMatchDate(event.match || { datum: event.date }),
-      matchContext: getPlayerMatchContext(player.name, event.match)
-    };
+    series.eloValues.push(elo);
+    series.deltas.push(delta);
+    series.deltaLabels.push(formatEloDelta(delta));
+    series.gameLabels.push(event.gameLabel);
+    series.eventTitles.push(event.gameLabel === 'Start'
+      ? 'Start'
+      : formatMatchDate(event.match || { datum: event.date }));
+    series.matchContexts.push(getPlayerMatchContext(player.name, event.match));
   });
+
+  return series;
 }
 
 function getPlacementSeries() {
@@ -825,7 +840,12 @@ function initChart() {
     const series = getPlayerSeries(p, chartEvents);
     return {
       label: p.name,
-      data: series,
+      data: series.eloValues,
+      deltas: series.deltas,
+      deltaLabels: series.deltaLabels,
+      gameLabels: series.gameLabels,
+      eventTitles: series.eventTitles,
+      matchContexts: series.matchContexts,
       borderColor: COLORS[i],
       backgroundColor: 'transparent',
       pointBackgroundColor: COLORS[i],
@@ -836,7 +856,6 @@ function initChart() {
       pointRadius: 4,
       pointHoverRadius: 5,
       tension: 0,
-      parsing: false,
       spanGaps: true
     };
   });
@@ -857,25 +876,30 @@ function initChart() {
         tooltip: {
           displayColors: false,
           callbacks: {
-            title: items => items[0]?.raw?.eventTitle || '',
+            title: items => {
+              const item = items.find(entry => entry.dataset.eventTitles?.[entry.dataIndex]);
+              return item ? item.dataset.eventTitles[item.dataIndex] : '';
+            },
             labelTextColor: context => {
-              const delta = context.raw?.delta;
+              const delta = context.dataset.deltas?.[context.dataIndex];
               if (delta > 0) return '#7af53a';
               if (delta < 0) return '#f5503a';
               return '#ffffff';
             },
             label: context => {
-              const point = context.raw || {};
-              const delta = point.deltaLabel ? ` (${point.deltaLabel})` : '';
+              const deltaLabel = context.dataset.deltaLabels?.[context.dataIndex];
+              const gameLabel = context.dataset.gameLabels?.[context.dataIndex];
+              const matchContext = context.dataset.matchContexts?.[context.dataIndex];
+              const delta = deltaLabel ? ` (${deltaLabel})` : '';
               const lines = [
                 `${context.dataset.label}: Elo ${context.parsed.y}${delta}`,
-                point.gameLabel || ''
+                gameLabel || ''
               ].filter(Boolean);
 
-              if (point.matchContext) {
-                lines.push(`Partner: ${point.matchContext.partner}`);
-                lines.push(`Gegner: ${point.matchContext.opponents}`);
-                lines.push(`Ergebnis: ${point.matchContext.result}`);
+              if (matchContext) {
+                lines.push(`Partner: ${matchContext.partner}`);
+                lines.push(`Gegner: ${matchContext.opponents}`);
+                lines.push(`Ergebnis: ${matchContext.result}`);
               }
 
               return lines;

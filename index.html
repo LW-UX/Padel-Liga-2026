@@ -641,42 +641,135 @@ function toDateKey(date) {
   return `${year}-${month}-${day}`;
 }
 
-function getLatestPlayedDateKey() {
-  const playedDates = PADEL_DATA.matches
-    .filter(m => m.sieger !== null)
-    .map(m => toDateKey(m.datum))
-    .filter(Boolean)
-    .sort();
+function normalizeGameLabel(label) {
+  const value = String(label || '').trim();
+  const gameNumber = value.match(/spiel\s*(\d+)/i)?.[1];
 
-  return playedDates.at(-1) || null;
+  if (gameNumber) return `Spiel ${gameNumber}`;
+  return value || 'Start';
 }
 
-function getChartDateKeys() {
-  const latestPlayedDate = getLatestPlayedDateKey();
-  const historyDates = PADEL_DATA.players.flatMap(p =>
-    (p.history || []).map(h => toDateKey(h.date)).filter(Boolean)
-  );
-  const playedDates = PADEL_DATA.matches
-    .filter(m => m.sieger !== null)
-    .map(m => toDateKey(m.datum))
-    .filter(Boolean);
-
-  return [...new Set([...historyDates, ...playedDates])]
-    .filter(d => !latestPlayedDate || d <= latestPlayedDate)
-    .sort();
+function getGameNumber(label) {
+  const gameNumber = String(label || '').match(/spiel\s*(\d+)/i)?.[1];
+  return gameNumber ? Number(gameNumber) : null;
 }
 
-function getPlayerSeries(player, dateKeys) {
-  const historyByDate = new Map(
-    (player.history || [])
-      .map(h => [toDateKey(h.date), { elo: Number(h.elo), spiel: h.spiel || '' }])
-      .filter(([date, entry]) => date && Number.isFinite(entry.elo))
-  );
+function getMatchByGameLabel(label) {
+  const gameNumber = getGameNumber(label);
+  if (!gameNumber) return null;
+
+  return PADEL_DATA.matches.find(match => Number(match.id.replace('spiel', '')) === gameNumber) || null;
+}
+
+function getHistoryEventKey(historyEntry) {
+  const date = toDateKey(historyEntry.date);
+  const gameNumber = getGameNumber(historyEntry.spiel);
+  const label = normalizeGameLabel(historyEntry.spiel).toLowerCase().replace(/\s+/g, '-');
+
+  return `${date}|${gameNumber ? `spiel${gameNumber}` : label}`;
+}
+
+function formatChartEventLabel(event) {
+  if (event.gameLabel === 'Start') return ['Start'];
+
+  const dateLabel = event.match
+    ? formatMatchDate(event.match)
+    : new Date(event.date).toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit' });
+
+  return [dateLabel, event.gameLabel];
+}
+
+function getChartEvents() {
+  const events = new Map();
+
+  PADEL_DATA.players.forEach(player => {
+    (player.history || []).forEach((historyEntry, index) => {
+      const date = toDateKey(historyEntry.date);
+      const elo = Number(historyEntry.elo);
+      if (!date || !Number.isFinite(elo)) return;
+
+      const gameLabel = normalizeGameLabel(historyEntry.spiel);
+      const match = getMatchByGameLabel(gameLabel);
+      const key = getHistoryEventKey(historyEntry);
+
+      if (!events.has(key)) {
+        events.set(key, {
+          key,
+          date,
+          gameLabel,
+          match,
+          index,
+          label: null
+        });
+      }
+    });
+  });
+
+  return [...events.values()]
+    .sort((a, b) => {
+      const dateCompare = a.date.localeCompare(b.date);
+      if (dateCompare) return dateCompare;
+
+      const aIsStart = a.gameLabel === 'Start';
+      const bIsStart = b.gameLabel === 'Start';
+      if (aIsStart !== bIsStart) return aIsStart ? -1 : 1;
+
+      const timeCompare = (a.match ? getMatchTimeMinutes(a.match) : 0) - (b.match ? getMatchTimeMinutes(b.match) : 0);
+      if (timeCompare) return timeCompare;
+
+      return (getGameNumber(a.gameLabel) || 0) - (getGameNumber(b.gameLabel) || 0);
+    })
+    .map(event => ({ ...event, label: formatChartEventLabel(event) }));
+}
+
+function getPlayerMatchContext(playerName, match) {
+  if (!match) return null;
+
+  const isTeam1 = match.team1.spieler.includes(playerName);
+  const team = isTeam1 ? match.team1.spieler : match.team2.spieler;
+  const opponents = isTeam1 ? match.team2.spieler : match.team1.spieler;
+
+  if (!team.includes(playerName)) return null;
 
   return {
-    eloValues: dateKeys.map(date => historyByDate.get(date)?.elo ?? null),
-    gameLabels: dateKeys.map(date => historyByDate.get(date)?.spiel ?? '')
+    partner: team.find(name => name !== playerName) || '—',
+    opponents: opponents.join(' & '),
+    result: match.ergebnis || '—'
   };
+}
+
+function formatEloDelta(delta) {
+  if (!Number.isFinite(delta) || delta === 0) return delta === 0 ? '±0' : '';
+  return delta > 0 ? `+${delta}` : `${delta}`;
+}
+
+function getPlayerSeries(player, events) {
+  const historyByEvent = new Map(
+    (player.history || [])
+      .map(historyEntry => [getHistoryEventKey(historyEntry), historyEntry])
+      .filter(([key, entry]) => key && Number.isFinite(Number(entry.elo)))
+  );
+  let previousElo = null;
+
+  return events.map(event => {
+    const historyEntry = historyByEvent.get(event.key);
+    if (!historyEntry) return null;
+
+    const elo = Number(historyEntry.elo);
+    const delta = previousElo === null ? null : elo - previousElo;
+    previousElo = elo;
+
+    return {
+      y: elo,
+      delta,
+      deltaLabel: formatEloDelta(delta),
+      gameLabel: event.gameLabel,
+      eventTitle: event.gameLabel === 'Start'
+        ? 'Start'
+        : formatMatchDate(event.match || { datum: event.date }),
+      matchContext: getPlayerMatchContext(player.name, event.match)
+    };
+  });
 }
 
 function getPlacementSeries() {
@@ -725,14 +818,13 @@ function initChart() {
     initPlacementChart();
     return;
   }
-  const allDates = getChartDateKeys();
+  const chartEvents = getChartEvents();
 
   const datasets = PADEL_DATA.players.map((p, i) => {
-    const series = getPlayerSeries(p, allDates);
+    const series = getPlayerSeries(p, chartEvents);
     return {
       label: p.name,
-      data: series.eloValues,
-      gameLabels: series.gameLabels,
+      data: series,
       borderColor: COLORS[i],
       backgroundColor: 'transparent',
       pointBackgroundColor: COLORS[i],
@@ -751,25 +843,40 @@ function initChart() {
   chart = new Chart(ctx, {
     type: 'line',
     data: {
-      labels: allDates.map(d => new Date(d).toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit'})),
+      labels: chartEvents.map(event => event.label),
       datasets
     },
     options: {
       responsive: true,
       maintainAspectRatio: false,
-      interaction: { mode: 'nearest', intersect: true },
+      interaction: { mode: 'index', intersect: true },
       plugins: {
         legend: { display: false },
         tooltip: {
           displayColors: false,
           callbacks: {
-            title: items => items[0]?.dataset.label || '',
+            title: items => items[0]?.raw?.eventTitle || '',
+            labelTextColor: context => {
+              const delta = context.raw?.delta;
+              if (delta > 0) return '#7af53a';
+              if (delta < 0) return '#f5503a';
+              return '#ffffff';
+            },
             label: context => {
-              const gameLabel = context.dataset.gameLabels?.[context.dataIndex];
-              return [
-                `Elo: ${context.parsed.y}`,
-                gameLabel ? `Spiel: ${gameLabel}` : 'Spiel: Start'
-              ];
+              const point = context.raw || {};
+              const delta = point.deltaLabel ? ` (${point.deltaLabel})` : '';
+              const lines = [
+                `${context.dataset.label}: Elo ${context.parsed.y}${delta}`,
+                point.gameLabel || ''
+              ].filter(Boolean);
+
+              if (point.matchContext) {
+                lines.push(`Partner: ${point.matchContext.partner}`);
+                lines.push(`Gegner: ${point.matchContext.opponents}`);
+                lines.push(`Ergebnis: ${point.matchContext.result}`);
+              }
+
+              return lines;
             }
           }
         }

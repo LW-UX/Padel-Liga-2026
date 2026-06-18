@@ -174,23 +174,13 @@
 const VIEWER_STORAGE_KEY = 'padel-liga-viewer';
 let selectedViewerId = localStorage.getItem(VIEWER_STORAGE_KEY) || 'sb';
 
-function getPlayerInitials(name) {
-  return name
-    .replace(/\./g, '')
-    .split(/\s+/)
-    .filter(Boolean)
-    .map(part => part[0])
-    .join(' ')
-    .toUpperCase();
-}
-
 function getViewerOptions() {
   return [
     { id: 'sb', name: 'Auswählen', short: '-/-' },
     ...PADEL_DATA.players.map(player => ({
       id: player.id,
       name: player.name,
-      short: getPlayerInitials(player.name)
+      short: player.initials
     }))
   ];
 }
@@ -520,7 +510,7 @@ function renderHome() {
   `;
 
   document.getElementById('home-ranking').innerHTML = getRankedPlayers().slice(0, 4)
-    .map((p, i) => `<div class="mini-rank-row r${i + 1}">
+    .map((p, i) => `<div class="mini-rank-row r${i + 1} ${isSelectedPlayer(p.name) ? 'viewer-highlight' : ''}">
       <span class="mini-rank-pos">${i + 1}</span>
       <span class="mini-rank-name">${p.name}</span>
       <span class="mini-rank-points">${p.stats.punkte}</span>

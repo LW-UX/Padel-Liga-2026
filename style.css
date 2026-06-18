@@ -4,6 +4,7 @@
       --surface2:   #454545;
       --border:     #323246;
       --accent:     #d4f53a;
+      --accent2:    #b8a7d9;
       --positiv:    #3af5b4;
       --negativ:    #f53a5a;
       --text:       #ffffff;
@@ -167,7 +168,7 @@
     }
     .clean-list { display: grid; gap: 0.65rem; list-style: none; color: var(--dim); line-height: 1.42; }
     .clean-list li { position: relative; padding-left: 1rem; }
-    .clean-list li::before { content: ""; position: absolute; left: 0; top: 0.62em; width: 5px; height: 5px; border-radius: 50%; background: var(--accent); }
+    .clean-list li::before { content: ""; position: absolute; left: 0; top: 0.62em; width: 5px; height: 5px; border-radius: 50%; background: var(--accent2); }
     .text-link {
       display: inline-flex;
       margin-top: 1rem;
@@ -218,7 +219,7 @@
       margin: 2rem 0 0.2rem;
     }
     .article-match {
-      color: var(--accent);
+      color: var(--accent2);
       display: grid;
       gap: 0.25rem;
       margin-bottom: 0.35rem;
@@ -227,7 +228,7 @@
       color: var(--muted);
     }
     .article-body blockquote {
-      border-left: 3px solid var(--accent);
+      border-left: 3px solid var(--accent2);
       margin: 1rem 0;
       padding: 0.2rem 0 0.2rem 1rem;
     }
@@ -238,7 +239,7 @@
       margin-bottom: 0.1rem;
     }
     .article-body cite {
-      color: var(--accent);
+      color: var(--accent2);
       font-size: 0.85rem;
       font-style: normal;
     }

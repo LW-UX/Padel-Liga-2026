@@ -282,8 +282,7 @@
       padding-bottom: 0.65rem;
       padding-left: 0.45rem;
       padding-right: 0.45rem;
-      border-radius: 8px;
-      background: rgba(212,245,58,0.08);
+      background: rgba(212,245,58,0.12);
       box-shadow: inset 3px 0 0 var(--accent);
     }
     .mini-rank-row.viewer-highlight .mini-rank-name {

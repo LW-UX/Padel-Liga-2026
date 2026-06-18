@@ -619,16 +619,16 @@
       .info-card { padding: 1rem; }
       .ranking-wrap { margin-left: 0; margin-right: 0; }
       table.rt { min-width: 660px; }
-      table.rt .col-rank { width: 42px; }
-      table.rt .col-name { width: 178px; }
+      table.rt .col-rank { width: 42px; padding-left: 12px; }
+      table.rt .col-name { width: 140px; }
       table.rt .col-games,
       table.rt .col-wins,
       table.rt .col-points,
       table.rt .col-diff,
       table.rt .col-elo { width: 72px; }
       table.rt .col-gv { width: 102px; }
-      table.rt th { padding: 8px 8px; letter-spacing: 0.09em; }
-      table.rt td { padding: 11px 8px; }
+      table.rt th { padding: 8px 2px; letter-spacing: 0.09em; }
+      table.rt td { padding: 11px 2px; }
       .rn { width: 28px; }
       .pname { font-size: 1rem; white-space: nowrap; }
       .firma-badge {

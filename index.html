@@ -695,8 +695,12 @@ function renderSpiele() {
       }
       const t1w = m.sieger === 1, t2w = m.sieger === 2;
       const [s1, s2] = m.saetze.split(':');
-      return `<div class="mc played ${isViewerMatch(m) ? 'viewer-match' : ''}">
-        <div class="mc-meta"><span class="mc-nr">${formatMatchMeta(m)}</span></div>
+      const viewerInT1 = isParticipantView() && m.team1.spieler.includes(getSelectedViewer().name);
+      const viewerInT2 = isParticipantView() && m.team2.spieler.includes(getSelectedViewer().name);
+      const viewerWon  = (viewerInT1 && m.sieger === 1) || (viewerInT2 && m.sieger === 2);
+      const viewerLost = (viewerInT1 && m.sieger === 2) || (viewerInT2 && m.sieger === 1);
+      const viewerResultClass = viewerWon ? 'viewer-win' : viewerLost ? 'viewer-loss' : '';
+      return `<div class="mc played ${isViewerMatch(m) ? `viewer-match ${viewerResultClass}` : ''}">        <div class="mc-meta"><span class="mc-nr">${formatMatchMeta(m)}</span></div>
         <div class="mc-team mc-team-1 ${t1w?'win':''}">
           <div class="mc-players">${renderTeamPlayers(m.team1.spieler)}</div>
         </div>

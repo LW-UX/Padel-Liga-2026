@@ -247,6 +247,7 @@ function selectViewer(id) {
   localStorage.setItem(VIEWER_STORAGE_KEY, selectedViewerId);
   if (!isParticipantView()) showOnlyViewerMatches = false;
   updateViewerPicker();
+  updateChartViewerFocus();
   renderHome();
   renderRanking();
   renderSpiele();
@@ -757,10 +758,59 @@ function renderSpiele() {
 // ── CHART ─────────────────────────────────────────────────────────
 const COLORS = ['#d4f53a','#3af5b4','#3a8ff5','#f5a03a','#f53ab4','#a03af5','#f5f53a','#3af5f5','#f53a5a','#7af53a','#f57a3a','#3a5af5','#f53af5','#5af5f5','#f5c43a','#3af58a','#f5503a','#c43af5'];
 const GRAY = '#444444';
+const CHART_DIM_ALPHA = '80';
 
 let chart = null;
 let placementChart = null;
 const activeP = new Set(PADEL_DATA.players.map(p => p.id));
+
+function dimChartColor(color) {
+  if (typeof color === 'string' && color.startsWith('#') && color.length === 7) {
+    return `${color}${CHART_DIM_ALPHA}`;
+  }
+
+  return color;
+}
+
+function getChartColor(color, playerName) {
+  return isParticipantView() && getSelectedViewer().name !== playerName
+    ? dimChartColor(color)
+    : color;
+}
+
+function getChartLineWidth(playerName) {
+  return isParticipantView() && getSelectedViewer().name === playerName ? 4 : 2;
+}
+
+function updateChartViewerFocus() {
+  if (chart) {
+    chart.data.datasets.forEach((dataset, index) => {
+      const player = PADEL_DATA.players[index];
+      const color = getChartColor(COLORS[index], player.name);
+      dataset.borderColor = color;
+      dataset.pointBackgroundColor = color;
+      dataset.pointBorderColor = color;
+      dataset.pointHoverBackgroundColor = color;
+      dataset.pointHoverBorderColor = color;
+      dataset.borderWidth = getChartLineWidth(player.name);
+    });
+    chart.update();
+  }
+
+  if (placementChart) {
+    placementChart.data.datasets.forEach((dataset, index) => {
+      const player = PADEL_DATA.players[index];
+      const color = getChartColor(COLORS[index], player.name);
+      const playedFlags = dataset.playedFlags;
+      dataset.borderColor = color;
+      dataset.pointBackgroundColor = playedFlags.map(hasMatch => hasMatch ? color : GRAY);
+      dataset.pointBorderColor = playedFlags.map(hasMatch => hasMatch ? color : GRAY);
+      dataset.borderWidth = getChartLineWidth(player.name);
+      dataset.segment.borderColor = ctx => getPlacementSegmentColor(ctx, playedFlags, color);
+    });
+    placementChart.update();
+  }
+}
 
 function parseDateValue(date) {
   if (!date) return null;
@@ -1124,6 +1174,7 @@ function initChart() {
 
   const datasets = PADEL_DATA.players.map((p, i) => {
     const series = getPlayerSeries(p, chartEvents);
+    const color = getChartColor(COLORS[i], p.name);
     return {
       label: p.name,
       data: series.eloValues,
@@ -1132,13 +1183,13 @@ function initChart() {
       gameLabels: series.gameLabels,
       eventTitles: series.eventTitles,
       matchContexts: series.matchContexts,
-      borderColor: COLORS[i],
+      borderColor: color,
       backgroundColor: 'transparent',
-      pointBackgroundColor: COLORS[i],
-      pointBorderColor: COLORS[i],
-      pointHoverBackgroundColor: COLORS[i],
-      pointHoverBorderColor: COLORS[i],
-      borderWidth: 2,
+      pointBackgroundColor: color,
+      pointBorderColor: color,
+      pointHoverBackgroundColor: color,
+      pointHoverBorderColor: color,
+      borderWidth: getChartLineWidth(p.name),
       pointRadius: 4,
       pointHoverRadius: 5,
       tension: 0.3,
@@ -1202,23 +1253,24 @@ function initPlacementChart() {
   const maxPlace = PADEL_DATA.players.length;
   const datasets = PADEL_DATA.players.map((p, i) => {
     const playedFlags = playedByPlayer.get(p.name);
+    const color = getChartColor(COLORS[i], p.name);
     return {
       label: p.name,
       data: placementsByPlayer.get(p.name),
       playedFlags,
       statsByPoint: statsByPlayer.get(p.name),
       baseColor: COLORS[i],
-      borderColor: COLORS[i],
+      borderColor: color,
       backgroundColor: 'transparent',
-      pointBackgroundColor: playedFlags.map(hasMatch => hasMatch ? COLORS[i] : GRAY),
-      pointBorderColor: playedFlags.map(hasMatch => hasMatch ? COLORS[i] : GRAY),
-      borderWidth: 2,
+      pointBackgroundColor: playedFlags.map(hasMatch => hasMatch ? color : GRAY),
+      pointBorderColor: playedFlags.map(hasMatch => hasMatch ? color : GRAY),
+      borderWidth: getChartLineWidth(p.name),
       pointRadius: playedFlags.map(hasMatch => hasMatch ? 3 : 0),
       pointHitRadius: playedFlags.map(hasMatch => hasMatch ? 8 : 0),
       pointHoverRadius: playedFlags.map(hasMatch => hasMatch ? 4 : 0),
       tension: 0,
       segment: {
-        borderColor: ctx => getPlacementSegmentColor(ctx, playedFlags, COLORS[i])
+        borderColor: ctx => getPlacementSegmentColor(ctx, playedFlags, color)
       }
     };
   });

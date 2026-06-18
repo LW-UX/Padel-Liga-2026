@@ -4,7 +4,8 @@
       --surface2:   #454545;
       --border:     #323246;
       --accent:     #d4f53a;
-      --accent2:    #7a93d7;
+      --accent2:    color-mix(in srgb, var(--accent) 70%, black);
+      --accent3:    #7a93d7;
       --positiv:    #3af5b4;
       --negativ:    #f53a5a;
       --text:       #ffffff;
@@ -132,8 +133,39 @@
 
     /* ── SECTION HEADER ── */
     .sh { display: flex; align-items: baseline; gap: 12px; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border); }
+    .sh-with-control { align-items: center; justify-content: space-between; }
+    .sh-heading { display: flex; align-items: baseline; gap: 12px; }
     .sh-title { font-family: 'Bebas Neue', sans-serif; font-size: 2rem; letter-spacing: 0.05em; }
     .sh-meta { font-family: 'DM Mono', monospace; font-size: 0.85rem; color: var(--dim); }
+    .match-scope-toggle {
+      display: inline-flex;
+      flex: 0 0 auto;
+      padding: 3px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: rgba(255,255,255,0.04);
+    }
+    .match-scope-toggle button {
+      border: 0;
+      border-radius: 999px;
+      background: transparent;
+      color: var(--dim);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 600;
+      padding: 0.35rem 0.75rem;
+      cursor: pointer;
+    }
+    .match-scope-toggle button.active {
+      background: var(--surface2);
+      color: var(--accent);
+    }
+    .match-scope-toggle.disabled {
+      opacity: 0.55;
+    }
+    .match-scope-toggle.disabled button {
+      cursor: default;
+    }
 
     /* ── HOME / INFO WIDGETS ── */
     .home-grid {
@@ -398,7 +430,7 @@
       color: var(--dim);
     }
     .info-table th { color: var(--muted); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.08em; }
-    .info-article-section { display: grid; gap: 18px; }
+    .info-article-section { display: grid; gap: 18px; margin-top: 32px;}
     .info-article-heading { margin-bottom: 0; }
     .info-articles-stack { display: grid; gap: 18px; }
     .info-article-card .article-card {
@@ -597,6 +629,18 @@
       .hero-season { display: none; }
       main { padding-left: 0.75rem; padding-right: 0.75rem; }
       nav button { padding: 6px 8px; font-size: 0.78rem; }
+      .sh-with-control {
+        align-items: flex-start;
+        gap: 0.8rem;
+      }
+      .sh-heading {
+        flex-wrap: wrap;
+        row-gap: 0.2rem;
+      }
+      .match-scope-toggle button {
+        padding: 0.32rem 0.6rem;
+        font-size: 0.78rem;
+      }
       .home-grid,
       .info-layout { grid-template-columns: 1fr; }
       .home-grid { gap: 12px; }

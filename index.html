@@ -165,9 +165,15 @@
 
   <!-- SPIELE -->
   <section id="spiele" class="section">
-    <div class="sh">
-      <div class="sh-title">SPIELPLAN</div>
-      <div class="sh-meta" id="sp-meta"></div>
+    <div class="sh sh-with-control">
+      <div class="sh-heading">
+        <div class="sh-title">SPIELPLAN</div>
+        <div class="sh-meta" id="sp-meta"></div>
+      </div>
+      <div class="match-scope-toggle" id="match-scope-toggle" aria-label="Spielplan filtern">
+        <button type="button" class="active" onclick="setMatchScope(false)">Alle</button>
+        <button type="button" onclick="setMatchScope(true)">Meine</button>
+      </div>
     </div>
     <div id="spielplan"></div>
   </section>
@@ -193,6 +199,7 @@
 // ── VIEWER ────────────────────────────────────────────────────────
 const VIEWER_STORAGE_KEY = 'padel-liga-viewer';
 let selectedViewerId = localStorage.getItem(VIEWER_STORAGE_KEY) || 'sb';
+let showOnlyViewerMatches = false;
 
 function getViewerOptions() {
   return [
@@ -238,6 +245,7 @@ function closeViewerMenu() {
 function selectViewer(id) {
   selectedViewerId = id;
   localStorage.setItem(VIEWER_STORAGE_KEY, selectedViewerId);
+  if (!isParticipantView()) showOnlyViewerMatches = false;
   updateViewerPicker();
   renderHome();
   renderRanking();
@@ -271,6 +279,25 @@ document.addEventListener('click', event => {
 document.addEventListener('keydown', event => {
   if (event.key === 'Escape') closeViewerMenu();
 });
+
+function setMatchScope(onlyMine) {
+  showOnlyViewerMatches = isParticipantView() && onlyMine;
+  renderSpiele();
+}
+
+function updateMatchScopeToggle() {
+  const toggle = document.getElementById('match-scope-toggle');
+  if (!toggle) return;
+
+  const buttons = toggle.querySelectorAll('button');
+  const canFilter = isParticipantView();
+  if (!canFilter) showOnlyViewerMatches = false;
+
+  toggle.classList.toggle('disabled', !canFilter);
+  buttons[0].classList.toggle('active', !showOnlyViewerMatches);
+  buttons[1].classList.toggle('active', showOnlyViewerMatches);
+  buttons[1].disabled = !canFilter;
+}
 
 // ── NAV ───────────────────────────────────────────────────────────
 function nav(id, el) {
@@ -666,13 +693,17 @@ function renderInfos() {
 
 // ── MATCHES ───────────────────────────────────────────────────────
 function renderSpiele() {
+  updateMatchScopeToggle();
   const spieltage = [...new Set(PADEL_DATA.matches.map(m => m.spieltag))].sort((a,b)=>a-b);
   const played = PADEL_DATA.matches.filter(m => m.sieger !== null).length;
   document.getElementById('sp-meta').textContent = `${played} / ${PADEL_DATA.matches.length} gespielt`;
-  document.getElementById('spielplan').innerHTML = spieltage.map(st => {
+  const spielplanHtml = spieltage.map(st => {
     const matches = PADEL_DATA.matches
       .filter(m => m.spieltag === st)
+      .filter(m => !showOnlyViewerMatches || isViewerMatch(m))
       .sort(compareMatchesByNumber);
+    if (!matches.length) return '';
+
     const rows = matches.map(m => {
       if (m.sieger === null) {
         const probability = getMatchWinProbability(m);
@@ -719,6 +750,8 @@ function renderSpiele() {
       <div class="match-list">${rows}</div>
     </div>`;
   }).join('');
+
+  document.getElementById('spielplan').innerHTML = spielplanHtml || '<div class="empty-state">Keine Spiele für diese Auswahl.</div>';
 }
 
 // ── CHART ─────────────────────────────────────────────────────────

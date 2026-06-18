@@ -758,8 +758,8 @@ function renderSpiele() {
 // ── CHART ─────────────────────────────────────────────────────────
 const COLORS = ['#d4f53a','#3af5b4','#3a8ff5','#f5a03a','#f53ab4','#a03af5','#f5f53a','#3af5f5','#f53a5a','#7af53a','#f57a3a','#3a5af5','#f53af5','#5af5f5','#f5c43a','#3af58a','#f5503a','#c43af5'];
 const GRAY = '#444444';
-const CHART_DIM_ALPHA = '80';
-const CHART_GRAY_MIX = 0.3;
+const CHART_DIM_ALPHA = '99';
+const CHART_GRAY_MIX = 0.5;
 
 let chart = null;
 let placementChart = null;
@@ -788,7 +788,7 @@ function blendHexColors(color, mixColor, mixAmount) {
   });
 }
 
-function dimEloChartColor(color) {
+function dimChartColor(color) {
   if (typeof color === 'string' && color.startsWith('#') && color.length === 7) {
     return `${blendHexColors(color, GRAY, CHART_GRAY_MIX)}${CHART_DIM_ALPHA}`;
   }
@@ -798,7 +798,7 @@ function dimEloChartColor(color) {
 
 function getEloChartColor(color, playerName) {
   return isParticipantView() && getSelectedViewer().name !== playerName
-    ? dimEloChartColor(color)
+    ? dimChartColor(color)
     : color;
 }
 
@@ -812,13 +812,13 @@ function getPlacementLabelWeight(playerName) {
 
 function getPlacementLabelColor(playerName, color) {
   return isParticipantView() && getSelectedViewer().name !== playerName
-    ? `${color}80`
+    ? dimChartColor(color)
     : color;
 }
 
 function getPlacementChartColor(color, playerName) {
   return isParticipantView() && getSelectedViewer().name !== playerName
-    ? `${color}80`
+    ? dimChartColor(color)
     : color;
 }
 

@@ -1,15 +1,15 @@
 :root {
       --bg:         #000000;
-      --surface:    #1c1c1c;
+      --surface:    #222222;
       --surface2:   #454545;
       --border:     #323246;
       --accent:     #d4f53a;
-      --accent2:    #C98A55;
+      --accent2:    #7a93d7;
       --positiv:    #3af5b4;
       --negativ:    #f53a5a;
       --text:       #ffffff;
       --muted:      #7b7b83;
-      --dim:        #a2a2b7;
+      --dim:        #bebec3;
       --envidual:   #1B719C;
       --hanako:     #2B6D88;
       --headsquare: #E70713;
@@ -342,11 +342,11 @@
       border-color: var(--accent);
     }
     .mc.viewer-win  { 
-      background: color-mix(in srgb, var(--positiv) 25%, transparent); 
+      background: color-mix(in srgb, var(--positiv) 16%, transparent); 
       border-color: var(--positiv);
     }
     .mc.viewer-loss { 
-      background: color-mix(in srgb, var(--negativ) 25%, transparent); 
+      background: color-mix(in srgb, var(--negativ) 16%, transparent); 
       border-color: var(--negativ);
     }
     .mc-player-name.viewer-player {

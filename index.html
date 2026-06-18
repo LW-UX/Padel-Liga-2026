@@ -401,8 +401,12 @@ function expectedScore(playerElo, opponentElo) {
   return 1 / (1 + Math.pow(10, (opponentElo - playerElo) / 500));
 }
 
-function expectedPlayerScore(playerElo, opponent1Elo, opponent2Elo) {
-  return (expectedScore(playerElo, opponent1Elo) + expectedScore(playerElo, opponent2Elo)) / 2;
+const TEAM_ELO_WEAKER_WEIGHT = 0.7;
+
+function getWeightedTeamElo(teamElos) {
+  const [weakerElo, strongerElo] = [...teamElos].sort((a, b) => a - b);
+
+  return weakerElo * TEAM_ELO_WEAKER_WEIGHT + strongerElo * (1 - TEAM_ELO_WEAKER_WEIGHT);
 }
 
 function getMatchWinProbabilityFromElos(match, getEloValue) {
@@ -417,10 +421,7 @@ function getMatchWinProbabilityFromElos(match, getEloValue) {
 
   if ([...team1Elos, ...team2Elos].some(elo => elo === null)) return null;
 
-  const team1Expected = (
-    expectedPlayerScore(team1Elos[0], team2Elos[0], team2Elos[1]) +
-    expectedPlayerScore(team1Elos[1], team2Elos[0], team2Elos[1])
-  ) / 2;
+  const team1Expected = expectedScore(getWeightedTeamElo(team1Elos), getWeightedTeamElo(team2Elos));
   const team1Probability = Math.round(team1Expected * 100);
 
   return {

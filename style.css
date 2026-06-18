@@ -4,7 +4,7 @@
       --surface2:   #454545;
       --border:     #323246;
       --accent:     #d4f53a;
-      --accent2:    color-mix(in srgb, var(--accent) 70%, black);
+      --accent2:    #fff896;
       --accent3:    #7a93d7;
       --positiv:    #3af5b4;
       --negativ:    #f53a5a;

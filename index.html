@@ -810,6 +810,12 @@ function getPlacementLabelWeight(playerName) {
   return isParticipantView() && getSelectedViewer().name === playerName ? 700 : 300;
 }
 
+function getPlacementLabelColor(playerName, color) {
+  return isParticipantView() && getSelectedViewer().name !== playerName
+    ? `${color}80`
+    : color;
+}
+
 function updateChartViewerFocus() {
   if (chart) {
     chart.data.datasets.forEach((dataset, index) => {
@@ -832,7 +838,7 @@ function updateChartViewerFocus() {
       dataset.borderColor = color;
       dataset.pointBackgroundColor = playedFlags.map(hasMatch => hasMatch ? color : GRAY);
       dataset.pointBorderColor = playedFlags.map(hasMatch => hasMatch ? color : GRAY);
-      dataset.borderWidth = 2;
+      dataset.borderWidth = 1;
       dataset.segment.borderColor = ctx => getPlacementSegmentColor(ctx, playedFlags, color);
     });
     placementChart.update();
@@ -1184,7 +1190,7 @@ const placementLabelPlugin = {
 
       const point = meta.data[meta.data.length - 1];
       ctx.font = `${getPlacementLabelWeight(dataset.label)} 11px DM Sans`;
-      ctx.fillStyle = dataset.baseColor || dataset.borderColor;
+      ctx.fillStyle = getPlacementLabelColor(dataset.label, dataset.baseColor || dataset.borderColor);
       ctx.fillText(dataset.label, Math.min(point.x + 8, chartArea.right + 8), point.y);
     });
 
@@ -1291,7 +1297,7 @@ function initPlacementChart() {
       backgroundColor: 'transparent',
       pointBackgroundColor: playedFlags.map(hasMatch => hasMatch ? color : GRAY),
       pointBorderColor: playedFlags.map(hasMatch => hasMatch ? color : GRAY),
-      borderWidth: 2,
+      borderWidth: 1,
       pointRadius: playedFlags.map(hasMatch => hasMatch ? 3 : 0),
       pointHitRadius: playedFlags.map(hasMatch => hasMatch ? 8 : 0),
       pointHoverRadius: playedFlags.map(hasMatch => hasMatch ? 4 : 0),

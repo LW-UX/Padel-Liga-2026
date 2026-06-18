@@ -816,6 +816,16 @@ function getPlacementLabelColor(playerName, color) {
     : color;
 }
 
+function getPlacementChartColor(color, playerName) {
+  return isParticipantView() && getSelectedViewer().name !== playerName
+    ? `${color}80`
+    : color;
+}
+
+function getPlacementChartLineWidth(playerName) {
+  return isParticipantView() && getSelectedViewer().name === playerName ? 3 : 1;
+}
+
 function updateChartViewerFocus() {
   if (chart) {
     chart.data.datasets.forEach((dataset, index) => {
@@ -833,12 +843,13 @@ function updateChartViewerFocus() {
 
   if (placementChart) {
     placementChart.data.datasets.forEach((dataset, index) => {
-      const color = COLORS[index];
+      const player = PADEL_DATA.players[index];
+      const color = getPlacementChartColor(COLORS[index], player.name);
       const playedFlags = dataset.playedFlags;
       dataset.borderColor = color;
       dataset.pointBackgroundColor = playedFlags.map(hasMatch => hasMatch ? color : GRAY);
       dataset.pointBorderColor = playedFlags.map(hasMatch => hasMatch ? color : GRAY);
-      dataset.borderWidth = 3;
+      dataset.borderWidth = getPlacementChartLineWidth(player.name);
       dataset.segment.borderColor = ctx => getPlacementSegmentColor(ctx, playedFlags, color);
     });
     placementChart.update();
@@ -1286,7 +1297,7 @@ function initPlacementChart() {
   const maxPlace = PADEL_DATA.players.length;
   const datasets = PADEL_DATA.players.map((p, i) => {
     const playedFlags = playedByPlayer.get(p.name);
-    const color = COLORS[i];
+    const color = getPlacementChartColor(COLORS[i], p.name);
     return {
       label: p.name,
       data: placementsByPlayer.get(p.name),
@@ -1297,7 +1308,7 @@ function initPlacementChart() {
       backgroundColor: 'transparent',
       pointBackgroundColor: playedFlags.map(hasMatch => hasMatch ? color : GRAY),
       pointBorderColor: playedFlags.map(hasMatch => hasMatch ? color : GRAY),
-      borderWidth: 1,
+      borderWidth: getPlacementChartLineWidth(p.name),
       pointRadius: playedFlags.map(hasMatch => hasMatch ? 3 : 0),
       pointHitRadius: playedFlags.map(hasMatch => hasMatch ? 8 : 0),
       pointHoverRadius: playedFlags.map(hasMatch => hasMatch ? 4 : 0),

@@ -266,6 +266,9 @@
       color: var(--dim);
       font-size: 0.85rem;
     }
+    .mini-rank-pos {
+      padding-left: 8px;
+    }
     .mini-rank-name { font-weight: 500; }
     .mini-rank-points { color: var(--accent); font-weight: 700; }
     .mini-rank-row.r1 .mini-rank-pos { color: var(--accent); font-weight: 700; }
@@ -437,11 +440,10 @@
     table.rt tbody tr:nth-child(even) { background: var(--row-alt); }
     table.rt tbody tr:hover { background: var(--surface); }
     table.rt tbody tr.viewer-highlight td {
-      background: rgba(212,245,58,0.08);
-      box-shadow: inset 0 1px rgba(212,245,58,0.18), inset 0 -1px rgba(212,245,58,0.18);
+      background: rgba(212,245,58,0.12);
     }
     table.rt tbody tr.viewer-highlight td:first-child {
-      box-shadow: inset 3px 0 0 var(--accent), inset 0 1px rgba(212,245,58,0.18), inset 0 -1px rgba(212,245,58,0.18);
+      box-shadow: inset 3px 0 0 var(--accent);
     }
     table.rt tbody tr.viewer-highlight .pname {
       color: var(--accent);
@@ -620,7 +622,7 @@
       .ranking-wrap { margin-left: 0; margin-right: 0; }
       table.rt { min-width: 500px; }
       table.rt .col-rank { width: 42px; }
-      table.rt .col-name { width: 170px; }
+      table.rt .col-name { width: 160px; }
       table.rt .col-games,
       table.rt .col-wins,
       table.rt .col-points,

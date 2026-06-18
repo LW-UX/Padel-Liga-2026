@@ -43,7 +43,7 @@
 
     /* ── HERO ── */
     .hero { padding: 3rem 2rem 2rem; max-width: 1100px; margin: 0 auto; }
-    .hero-eyebrow { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); margin-bottom: 1rem; }
+    .hero-eyebrow { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent2); margin-bottom: 1rem; }
     .hero-title-row {
       display: flex;
       align-items: center;

@@ -696,7 +696,7 @@ function renderSpiele() {
   updateMatchScopeToggle();
   const spieltage = [...new Set(PADEL_DATA.matches.map(m => m.spieltag))].sort((a,b)=>a-b);
   const played = PADEL_DATA.matches.filter(m => m.sieger !== null).length;
-  document.getElementById('sp-meta').textContent = `${played} / ${PADEL_DATA.matches.length} gespielt`;
+  document.getElementById('sp-meta').textContent = `${played} / ${PADEL_DATA.matches.length} Spiele`;
   const spielplanHtml = spieltage.map(st => {
     const matches = PADEL_DATA.matches
       .filter(m => m.spieltag === st)

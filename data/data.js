@@ -71,7 +71,7 @@ const PADEL_DATA = {
       { date: "2026-06-12", elo: 1126, spiel: "Spiel 7" },
       { date: "2026-06-17", elo: 1154, spiel: "Spiel 3" }
     ]},
-    { id: "marco_m",    name: "Marco M.",    initials: "MaM",  firma: "Headsquare", history: [
+    { id: "marco_m",    name: "Marco M.",    initials: "MaMay",  firma: "Headsquare", history: [
       { date: "2026-05-11", elo: 1050, spiel: "Start" },
       { date: "2026-06-11", elo: 1081, spiel: "Spiel 1" },
       { date: "2026-06-12", elo: 1149, spiel: "Spiel 7" }

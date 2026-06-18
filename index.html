@@ -443,6 +443,10 @@ function compareMatchesByDateTime(a, b) {
     || Number(a.id.replace('spiel', '')) - Number(b.id.replace('spiel', ''));
 }
 
+function compareMatchesByNumber(a, b) {
+  return Number(a.id.replace('spiel', '')) - Number(b.id.replace('spiel', ''));
+}
+
 function formatMatchDate(match) {
   const d = parseDateValue(match.datum);
   const date = d
@@ -519,7 +523,7 @@ function renderHome() {
 
   const todayKey = toDateKey(new Date());
   const nextMatches = PADEL_DATA.matches
-    .filter(m => m.sieger === null && toDateKey(m.datum) >= todayKey)
+    .filter(m => m.sieger === null && m.uhrzeit && toDateKey(m.datum) >= todayKey)
     .sort(compareMatchesByDateTime)
     .slice(0, 3);
 
@@ -648,7 +652,7 @@ function renderSpiele() {
   document.getElementById('spielplan').innerHTML = spieltage.map(st => {
     const matches = PADEL_DATA.matches
       .filter(m => m.spieltag === st)
-      .sort(compareMatchesByDateTime);
+      .sort(compareMatchesByNumber);
     const rows = matches.map(m => {
       if (m.sieger === null) {
         const probability = getMatchWinProbability(m);

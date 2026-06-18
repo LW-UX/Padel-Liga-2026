@@ -667,7 +667,7 @@
         gap: 8px 10px;
         padding: 1rem 0.95rem;
       }
-      .mc-meta { grid-area: meta; justify-content: flex-start; gap: 12px; }
+      .mc-meta { grid-area: meta; justify-content: center; gap: 12px; }
       .mc-team-1 { grid-area: team1; min-width: 0; }
       .mc-score { grid-area: score; min-width: 78px; }
       .mc-team-2 { grid-area: team2; min-width: 0; }

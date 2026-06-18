@@ -271,6 +271,19 @@
     .mini-rank-row.r2 .mini-rank-pos { color: #bbb; font-weight: 700; }
     .mini-rank-row.r3 .mini-rank-pos { color: #c97b2e; font-weight: 700; }
     .mini-rank-row.r4 .mini-rank-pos { color: var(--dim); font-weight: 500; }
+    .mini-rank-row.viewer-highlight {
+      margin-left: -0.45rem;
+      margin-right: -0.45rem;
+      padding-left: 0.45rem;
+      padding-right: 0.45rem;
+      border-radius: 8px;
+      background: rgba(212,245,58,0.08);
+      box-shadow: inset 3px 0 0 var(--accent);
+    }
+    .mini-rank-row.viewer-highlight .mini-rank-name {
+      color: var(--accent);
+      font-weight: 700;
+    }
     .mini-match-meta {
       display: flex;
       gap: 12px;

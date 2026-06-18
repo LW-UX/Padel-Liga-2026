@@ -1,93 +1,92 @@
 const PADEL_DATA = {
 
   players: [
-    { id: "agnes_k",    name: "Agnes K.",    firma: "Headsquare", history: [
+    { id: "agnes_k",    name: "Agnes K.",    initials: "AK",  firma: "Headsquare", history: [
       { date: "2026-05-11", elo: 750,  spiel: "Start" },
       { date: "2026-06-11", elo: 708,  spiel: "Spiel 1" }
     ]},
-    { id: "andreas_l",  name: "Andreas L.",  firma: "Headsquare", history: [
+    { id: "andreas_l",  name: "Andreas L.",  initials: "AL",  firma: "Headsquare", history: [
       { date: "2026-05-11", elo: 1100, spiel: "Start" },
       { date: "2026-06-03", elo: 1025, spiel: "Spiel 12" },
       { date: "2026-06-10", elo: 1090, spiel: "Spiel 5" }
     ]},
-    { id: "chris_m",    name: "Chris M.",    firma: "Envidual",   history: [
+    { id: "chris_m",    name: "Chris M.",    initials: "ChM",  firma: "Envidual",   history: [
       { date: "2026-05-11", elo: 900, spiel: "Start" },
       { date: "2026-06-17", elo: 950, spiel: "Spiel 8" },
       { date: "2026-06-17", elo: 884, spiel: "Spiel 3" }
     ]},
-    { id: "christoph_l",name: "Christoph L.",firma: "Headsquare", history: [
+    { id: "christoph_l",name: "Christoph L.",initials: "CL",  firma: "Headsquare", history: [
       { date: "2026-05-11", elo: 850,  spiel: "Start" },
       { date: "2026-06-11", elo: 909,  spiel: "Spiel 1" },
       { date: "2026-06-12", elo: 858,  spiel: "Spiel 7" }
     ]},
-    { id: "cristian_b", name: "Cristian B.", firma: "Hanako",     history: [
+    { id: "cristian_b", name: "Cristian B.", initials: "CB",  firma: "Hanako",     history: [
       { date: "2026-05-11", elo: 800, spiel: "Start" },
       { date: "2026-05-19", elo: 877, spiel: "Spiel 6" },
       { date: "2026-05-20", elo: 785, spiel: "Spiel 2" }
     ]},
-    { id: "florian_z",  name: "Florian Z.",  firma: "Hanako",     history: [
+    { id: "florian_z",  name: "Florian Z.",  initials: "FZ",  firma: "Hanako",     history: [
       { date: "2026-05-11", elo: 800,  spiel: "Start" },
       { date: "2026-05-13", elo: 773,  spiel: "Spiel 4" }
     ]},
-    { id: "greta_p",    name: "Greta P.",    firma: "Hanako",     history: [
+    { id: "greta_p",    name: "Greta P.",    initials: "GP",  firma: "Hanako",     history: [
       { date: "2026-05-11", elo: 900,  spiel: "Start" },
       { date: "2026-05-19", elo: 840,  spiel: "Spiel 6" },
       { date: "2026-06-03", elo: 797,  spiel: "Spiel 12" },
       { date: "2026-06-11", elo: 748,  spiel: "Spiel 1" }
     ]},
-    { id: "irene_w",    name: "Irene W.",    firma: "Headsquare", history: [
+    { id: "irene_w",    name: "Irene W.",    initials: "IW",  firma: "Headsquare", history: [
       { date: "2026-05-11", elo: 750, spiel: "Start" },
       { date: "2026-06-17", elo: 702, spiel: "Spiel 8" },
       { date: "2026-06-17", elo: 783, spiel: "Spiel 3" }
     ]},
-    { id: "jonas_l",    name: "Jonas L.",    firma: "Envidual",   history: [
+    { id: "jonas_l",    name: "Jonas L.",    initials: "JL",  firma: "Envidual",   history: [
       { date: "2026-05-11", elo: 800, spiel: "Start" },
       { date: "2026-05-20", elo: 885, spiel: "Spiel 2" },
       { date: "2026-06-03", elo: 951, spiel: "Spiel 12" },
       { date: "2026-06-17", elo: 993, spiel: "Spiel 8" }
     ]},
-    { id: "leonie_r",   name: "Leonie R.",   firma: "Hanako",     history: [
+    { id: "leonie_r",   name: "Leonie R.",   initials: "LR",  firma: "Hanako",     history: [
       { date: "2026-05-11", elo: 800, spiel: "Start" },
       { date: "2026-05-20", elo: 722, spiel: "Spiel 2" },
       { date: "2026-06-17", elo: 678, spiel: "Spiel 8" }
-
     ]},
-    { id: "luca_w",     name: "Luca W.",     firma: "Envidual",   history: [
+    { id: "luca_w",     name: "Luca W.",     initials: "LW",  firma: "Envidual",   history: [
       { date: "2026-05-11", elo: 800, spiel: "Start" },
       { date: "2026-05-20", elo: 885, spiel: "Spiel 2" },
       { date: "2026-06-10", elo: 969, spiel: "Spiel 5" }
     ]},
-    { id: "ludwig_w",   name: "Ludwig W.",   firma: "Envidual",   history: [
+    { id: "ludwig_w",   name: "Ludwig W.",   initials: "LuW",  firma: "Envidual",   history: [
       { date: "2026-05-11", elo: 1100, spiel: "Start" },
       { date: "2026-05-13", elo: 1130, spiel: "Spiel 4" },
       { date: "2026-05-19", elo: 1161, spiel: "Spiel 6" }
     ]},
-    { id: "lukas_p",    name: "Lukas P.",    firma: "Headsquare", history: [
+    { id: "lukas_p",    name: "Lukas P.",    initials: "LP",  firma: "Headsquare", history: [
       { date: "2026-05-11", elo: 1150, spiel: "Start" },
       { date: "2026-06-10", elo: 1049, spiel: "Spiel 5" }
     ]},
-    { id: "marcel_m",   name: "Marcel M.",   firma: "Envidual",   history: [
+    { id: "marcel_m",   name: "Marcel M.",   initials: "MzM",  firma: "Envidual",   history: [
       { date: "2026-05-11", elo: 1000, spiel: "Start" },
       { date: "2026-06-03", elo: 1053, spiel: "Spiel 12" },
       { date: "2026-06-12", elo: 1126, spiel: "Spiel 7" },
       { date: "2026-06-17", elo: 1154, spiel: "Spiel 3" }
     ]},
-    { id: "marco_m",    name: "Marco M.",    firma: "Headsquare", history: [
+    { id: "marco_m",    name: "Marco M.",    initials: "MaM",  firma: "Headsquare", history: [
       { date: "2026-05-11", elo: 1050, spiel: "Start" },
       { date: "2026-06-11", elo: 1081, spiel: "Spiel 1" },
       { date: "2026-06-12", elo: 1149, spiel: "Spiel 7" }
     ]},
-    { id: "martin_b",   name: "Martin B.",   firma: "Headsquare", history: [
+    { id: "martin_b",   name: "Martin B.",   initials: "MB",  firma: "Headsquare", history: [
       { date: "2026-05-11", elo: 800, spiel: "Start" },
       { date: "2026-06-10", elo: 752, spiel: "Spiel 5" },
       { date: "2026-06-17", elo: 708, spiel: "Spiel 3" }
     ]},
-    { id: "niklas_k",   name: "Niklas K.",   firma: "Hanako",     history: [
+    { id: "niklas_k",   name: "Niklas K.",   initials: "NK",  firma: "Hanako",     history: [
       { date: "2026-05-11", elo: 850,  spiel: "Start" },
       { date: "2026-05-13", elo: 817,  spiel: "Spiel 4" },
       { date: "2026-05-19", elo: 768,  spiel: "Spiel 6" }
     ]},
-    { id: "raphael_h",  name: "Raphael H.",  firma: "Headsquare", history: [
+    { id: "raphael_h",  name: "Raphael H.",  initials: "RH",  firma: "Headsquare", history: [
       { date: "2026-05-11", elo: 1100, spiel: "Start" },
       { date: "2026-05-13", elo: 1130, spiel: "Spiel 4" },
       { date: "2026-06-12", elo: 1041, spiel: "Spiel 7" }

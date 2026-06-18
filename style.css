@@ -421,7 +421,8 @@
     .info-article-readmore { display: inline-flex; }
 
     /* ── RANKING TABLE ── */
-    .ranking-wrap { overflow-x: auto; margin-bottom: 4rem; }
+    .ranking-wrap { overflow-x: auto; margin-bottom: 0.75rem; }
+    .ranking-note { margin-bottom: 4rem; }
     table.rt { width: 100%; border-collapse: collapse; margin-bottom: 1rem;}
     table.rt th {
       text-align: right; font-size: 0.7rem; font-weight: 600; letter-spacing: 0.12em;
@@ -616,8 +617,8 @@
       .info-layout > .info-card { position: static; }
       .widget,
       .info-card { padding: 1rem; }
-      .ranking-wrap { margin-left: -0.75rem; margin-right: -0.75rem; }
-      table.rt { min-width: 760px; }
+      .ranking-wrap { margin-left: 0; margin-right: 0; }
+      table.rt { min-width: 660px; }
       table.rt th { padding: 8px 8px; letter-spacing: 0.09em; }
       table.rt td { padding: 11px 8px; }
       .rn { width: 28px; }

@@ -1,11 +1,11 @@
 :root {
       --bg:         #000000;
       --surface:    #1c1c1c;
-      --surface2:   #5a5a5a;
+      --surface2:   #454545;
       --border:     #323246;
       --accent:     #d4f53a;
-      --accent2:    #3af5b4;
-      --danger:     #f53a5a;
+      --positiv:    #3af5b4;
+      --negativ:    #f53a5a;
       --text:       #ffffff;
       --muted:      #a2a2b7;
       --dim:        #8d8da4;
@@ -465,8 +465,8 @@
     .elo-val    { font-family: 'DM Mono', monospace; font-size: 1rem; font-weight: 400; color: var(--dim); }
     .punkte-val { font-family: 'DM Mono', monospace; font-size: 1rem; font-weight: 700; color: var(--accent); }
     .num-val    { font-family: 'DM Mono', monospace; font-size: 1rem; color: var(--text); }
-    .pos { color: var(--accent2); }
-    .neg { color: var(--danger); }
+    .pos { color: var(--positiv); }
+    .neg { color: var(--negativ); }
     .neu { color: var(--dim); }
 
     /* ── CHART ── */

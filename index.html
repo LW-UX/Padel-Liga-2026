@@ -97,7 +97,7 @@
           <tr>
             <th class="l rn">#</th>
             <th class="l">Spieler</th>
-            <th>Spiele</th>
+            <th>Partien</th>
             <th>Siege</th>
             <th>Punkte</th>
             <th>G:V</th>
@@ -108,7 +108,7 @@
         <tbody id="rl-body"></tbody>
       </table>
     </div>
-    <div class="sh-meta ranking-note">Sortierung: Punkte · Siege · Spiel-Differenz · Spiele gewonnen</div>
+    <div class="sh-meta ranking-note">Sortierung: Punkte · Siege · Spiel-Differenz · gewonnene Spiele</div>
     <div class="sh" style="margin-top: 2.5rem;">
       <div class="sh-title">FIRMEN-RANGLISTE</div>
       <div class="sh-meta" id="fr-meta"></div>
@@ -130,7 +130,7 @@
             <th class="l rn">#</th>
             <th class="l">Firma</th>
             <th>TN</th>
-            <th>Spiele</th>
+            <th>Partien</th>
             <th>Siege</th>
             <th>Punkte</th>
             <th>Diff.</th>
@@ -158,7 +158,7 @@
       <div class="chart-wrap"><canvas id="eloChart"></canvas></div>
     </div>
     <div class="chart-box">
-      <div class="chart-box-title">Platzierungen</div>
+      <div class="chart-box-title">Platzierungen nach Spieltag</div>
       <div class="placement-chart-wrap"><canvas id="placementChart"></canvas></div>
     </div>
   </section>
@@ -803,7 +803,7 @@ function getEloChartColor(color, playerName) {
 }
 
 function getEloChartLineWidth(playerName) {
-  return isParticipantView() && getSelectedViewer().name === playerName ? 3 : 2;
+  return isParticipantView() && getSelectedViewer().name === playerName ? 3 : 1;
 }
 
 function getPlacementLabelWeight(playerName) {
@@ -838,7 +838,7 @@ function updateChartViewerFocus() {
       dataset.borderColor = color;
       dataset.pointBackgroundColor = playedFlags.map(hasMatch => hasMatch ? color : GRAY);
       dataset.pointBorderColor = playedFlags.map(hasMatch => hasMatch ? color : GRAY);
-      dataset.borderWidth = 1;
+      dataset.borderWidth = 3;
       dataset.segment.borderColor = ctx => getPlacementSegmentColor(ctx, playedFlags, color);
     });
     placementChart.update();

@@ -358,6 +358,45 @@ function getLatestPlayerEloValue(player) {
   return latestHistory ? Number(latestHistory.elo) : null;
 }
 
+function getMatchNumber(matchOrLabel) {
+  const value = typeof matchOrLabel === 'string' ? matchOrLabel : matchOrLabel?.id;
+  const match = String(value || '').match(/\d+/);
+  return match ? Number(match[0]) : 0;
+}
+
+function getMatchOrderKey(match) {
+  const dateKey = toDateKey(match?.datum) || '9999-12-31';
+  const minutes = getMatchTimeMinutes(match || {});
+  const matchNumber = getMatchNumber(match);
+
+  return `${dateKey}|${String(minutes).padStart(4, '0')}|${String(matchNumber).padStart(4, '0')}`;
+}
+
+function getHistoryOrderKey(historyEntry) {
+  const historyMatch = PADEL_DATA.matches.find(match => getMatchNumber(match) === getMatchNumber(historyEntry.spiel));
+  if (historyMatch) return getMatchOrderKey(historyMatch);
+
+  const dateKey = toDateKey(historyEntry.date) || '0000-00-00';
+  return `${dateKey}|0000|0000`;
+}
+
+function getPlayerEloBeforeMatch(player, match) {
+  const matchOrderKey = getMatchOrderKey(match);
+  const latestHistoryBeforeMatch = (player.history || [])
+    .map((historyEntry, index) => ({
+      ...historyEntry,
+      index,
+      orderKey: getHistoryOrderKey(historyEntry)
+    }))
+    .filter(historyEntry =>
+      historyEntry.orderKey < matchOrderKey &&
+      Number.isFinite(Number(historyEntry.elo))
+    )
+    .sort((a, b) => b.orderKey.localeCompare(a.orderKey) || b.index - a.index)[0];
+
+  return latestHistoryBeforeMatch ? Number(latestHistoryBeforeMatch.elo) : null;
+}
+
 function expectedScore(playerElo, opponentElo) {
   return 1 / (1 + Math.pow(10, (opponentElo - playerElo) / 500));
 }
@@ -366,15 +405,15 @@ function expectedPlayerScore(playerElo, opponent1Elo, opponent2Elo) {
   return (expectedScore(playerElo, opponent1Elo) + expectedScore(playerElo, opponent2Elo)) / 2;
 }
 
-function getMatchWinProbability(match) {
+function getMatchWinProbabilityFromElos(match, getEloValue) {
   const playersByName = new Map(PADEL_DATA.players.map(p => [p.name, p]));
   const team1 = match.team1.spieler.map(name => playersByName.get(name));
   const team2 = match.team2.spieler.map(name => playersByName.get(name));
 
   if (team1.some(p => !p) || team2.some(p => !p)) return null;
 
-  const team1Elos = team1.map(getLatestPlayerEloValue);
-  const team2Elos = team2.map(getLatestPlayerEloValue);
+  const team1Elos = team1.map(player => getEloValue(player, match));
+  const team2Elos = team2.map(player => getEloValue(player, match));
 
   if ([...team1Elos, ...team2Elos].some(elo => elo === null)) return null;
 
@@ -388,6 +427,14 @@ function getMatchWinProbability(match) {
     team1: team1Probability,
     team2: 100 - team1Probability
   };
+}
+
+function getMatchWinProbability(match) {
+  return getMatchWinProbabilityFromElos(match, getLatestPlayerEloValue);
+}
+
+function getHistoricalMatchWinProbability(match) {
+  return getMatchWinProbabilityFromElos(match, getPlayerEloBeforeMatch);
 }
 
 function renderFirmenRanking() {
@@ -732,12 +779,19 @@ function renderSpiele() {
       const viewerWon  = (viewerInT1 && m.sieger === 1) || (viewerInT2 && m.sieger === 2);
       const viewerLost = (viewerInT1 && m.sieger === 2) || (viewerInT2 && m.sieger === 1);
       const viewerResultClass = viewerWon ? 'viewer-win' : viewerLost ? 'viewer-loss' : '';
+      const probability = getHistoricalMatchWinProbability(m);
+      const leftProbability = probability ? `<span class="mc-result-prob">${probability.team1}%</span>` : '';
+      const rightProbability = probability ? `<span class="mc-result-prob">${probability.team2}%</span>` : '';
       return `<div class="mc played ${isViewerMatch(m) ? `viewer-match ${viewerResultClass}` : ''}">        <div class="mc-meta"><span class="mc-nr">${formatMatchMeta(m)}</span></div>
         <div class="mc-team mc-team-1 ${t1w?'win':''}">
           <div class="mc-players">${renderTeamPlayers(m.team1.spieler)}</div>
         </div>
         <div class="mc-score">
-          <div class="mc-score-main">${s1}:${s2}</div>
+          <div class="mc-result-row">
+            ${leftProbability}
+            <div class="mc-score-main">${s1}:${s2}</div>
+            ${rightProbability}
+          </div>
           <div class="mc-score-detail">${m.ergebnis}</div>
         </div>
         <div class="mc-team mc-team-2 ${t2w?'win':''}">

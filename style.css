@@ -602,9 +602,13 @@
     .mc-players { font-size: 1.1rem; }
     .mc-player-sep { margin: 0 0.3em; }
     .mc-score { text-align: center; }
+    .mc-result-row { display: flex; align-items: baseline; justify-content: center; gap: 12px; }
     .mc-score-main { font-family: 'Bebas Neue', sans-serif; font-size: 2rem; letter-spacing: 0.05em; color: var(--text); line-height: 1; }
     .mc-score-detail { font-size: 0.85rem; color: var(--dim); margin-top: 3px; }
-    .mc-prob { font-size: 0.85rem; color: var(--dim); margin-bottom: 4px; }
+    .mc-prob,
+    .mc-result-prob { font-size: 0.85rem; color: var(--dim); }
+    .mc-prob { margin-bottom: 4px; }
+    .mc-result-prob { min-width: 34px; text-align: center; }
     .mc-pending-label { font-size: 0.85rem; color: var(--dim); text-align: center; }
     .mc-nr { font-family: 'DM Mono', monospace; font-size: 0.85rem; color: var(--dim); text-align: left; }
 
@@ -727,6 +731,9 @@
       .mc-player-sep { display: none; }
       .mc-score-main { font-size: 2rem; }
       .mc-score-detail { font-size: 0.85rem; }
-      .mc-prob { font-size: 0.85rem; white-space: nowrap; }
+      .mc-prob,
+      .mc-result-prob { font-size: 0.85rem; white-space: nowrap; }
+      .mc-result-row { gap: 7px; }
+      .mc-result-prob { min-width: 30px; }
       .mc-nr { text-align: left; }
     }

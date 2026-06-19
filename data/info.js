@@ -254,10 +254,50 @@ const PADEL_INFO = {
     },
     {
       spieltag: 4,
-      startDate: null,
-      endDate: null,
-      title: "Spieltag 4",
-      teaser: "Artikel folgt."
+      startDate: "2026-06-22",
+      endDate: "2026-07-05",
+      title: "Neue Statistiken, aber ein alter Boykott",
+      meta: "SPIELTAG 4  ·  22. JUNI - 3. JULI 2026",
+      teaser: "In den letzten Wochen ist viel passiert. Spiele wurden nachgeholt, Überraschungen geliefert, Favoritenrollen umgeschrieben.",
+      body: [
+        { type: "p", text: "In den letzten Wochen ist viel passiert. Spiele wurden nachgeholt, Überraschungen geliefert, Favoritenrollen umgeschrieben. Irene W. hat mit Marcel M. sensationell ihren ersten Saisonsieg eingefahren. Der als Geheimfavorit gehandelte Lukas P. musste bei seinem Ligadebüt in Spiel 5 gleich eine 0:2-Niederlage hinnehmen und steht weiterhin bei null Punkten. Marco M. und Marcel M. haben Christoph L. und Raphael H. in Spiel 7 mit einem vernichtenden 6:1, 6:1 vom Platz gefegt. Und Jonas L. hat in Spiel 8 seinen Siegeszug fortgesetzt und sich mit drei Siegen aus drei Spielen an die Tabellenspitze geschoben - punktgleich mit Marcel M., der ihm mit ebenfalls acht Zählern im Nacken sitzt." },
+        { type: "p", text: "Die Tabelle hat sich ordentlich durchgeschüttelt. Und passend dazu gibt es eine Neuigkeit, die das ganze Erlebnis auf ein neues Level hebt." },
+
+        { type: "h", text: "Neuer Auftritt: Die Padel-Liga hat jetzt eine eigene Webseite" },
+        { type: "p", text: "Ab sofort hat die Padel-Liga 2026 hiermit ein digitales Zuhause. Eine Rangliste, ein Elo-Verlauf als interaktiver Graph, eine überarbeitete Spielübersicht mit Gewinnwahrscheinlichkeiten und vieles mehr. Wer wissen will, wie die eigenen Chancen stehen, bekommt hier die schonungslose Wahrheit in Prozentzahlen serviert. Die Liga wird transparenter, die Ausreden weniger." },
+
+        { type: "h", text: "Spiel 13 - Die Sensation will Serie" },
+        { type: "match", text: "Chris M. & Raphael H. vs. Ludwig W. & Irene W.", result: "54 : 46 %", resultLabel: "Gewinnwahrscheinlichkeit" },
+        { type: "p", text: "Was für eine Entwicklung: Irene W., die als blutiger Anfänger ins Turnier ging und erst zum zweiten Mal in ihrem Leben einen Padelschläger in der Hand hielt, hat mit Marcel M. in Spiel 3 ihren ersten Saisonsieg geholt. Jetzt bekommt sie den aktuellen Fünften Ludwig W. an die Seite. Auf der anderen Seite des Netzes trifft Irene erneut auf Chris M., den sie gerade erst geschlagen hat. Klappt der nächste Streich?" },
+        { type: "p", text: "Irene gibt sich jedenfalls selbstbewusst - auf ihre eigene Art:" },
+        { type: "quote", text: "Raphi spielt Tennis, Ludwig ist gut. Das gewinnen wir, aber Ludwig muss laufen!", author: "Irene W." },
+        { type: "p", text: "Ludwig ist gewarnt: Laufen ist angesagt. Die Gewinnwahrscheinlichkeit sieht das Duell mit 54:46 als das ausgeglichenste des gesamten Spieltags. Chris M. auf Platz 7 und Raphael H. auf Platz 10 - beide zuletzt mit durchwachsenen Ergebnissen - werden alles daran setzen, die Aufsteigerin zu stoppen." },
+
+        { type: "h", text: "Spiel 14 - Team 1 Favorit - Team 2 weiß es" },
+        { type: "match", text: "Cristian B. & Lukas P. vs. Christoph L. & Martin B.", result: "63 : 37 %", resultLabel: "Gewinnwahrscheinlichkeit" },
+        { type: "p", text: "Lukas P. hat nach seiner überraschenden Debütniederlage etwas gutzumachen: null Punkte auf Platz 15. Das ist nicht das, was man vom einstigen Geheimfavoriten erwartet hat. An seiner Seite steht Cristian B. Die Gewinnwahrscheinlichkeit spricht mit 63:37 eine klare Sprache zugunsten von Team 1." },
+        { type: "p", text: "Christoph L., der sich in der Rolle des Underdogs offenbar wohlfühlt, reagiert mit entwaffnender Ehrlichkeit:" },
+        { type: "quote", text: "Pfuuuu. Das gewinnen wir! Ah warte. Mit dem Martin gegen Lukas und Cristian? Das verlieren wir.", author: "Christoph L." },
+        { type: "p", text: "Selten hat ein Spieler die eigenen Chancen so realistisch eingeschätzt. Ob Martin B. und Christoph L. die Statistik Lügen strafen können, oder ob die Zahlen recht behalten, wird Spiel 14 zeigen." },
+
+        { type: "h", text: "Spiel 15 - 86 zu 14: Die Statistik kennt kein Erbarmen" },
+        { type: "match", text: "Marco M. & Andreas L. vs. Leonie R. & Niklas K.", result: "86 : 14 %", resultLabel: "Gewinnwahrscheinlichkeit" },
+        { type: "p", text: "Es gibt Gewinnwahrscheinlichkeiten, die Mut machen. Und es gibt 14 Prozent. Leonie R. und Niklas K. - Platz 18 und 17 der Tabelle, zusammen null Siege aus vier Spielen - gehen als das statistisch schwächste Team des Spieltags ins Rennen. Auf die Zahl angesprochen, reagiert Niklas erschrocken:" },
+        { type: "quote", text: "Echt? So wenig? Das ist ja dramatisch.", author: "Niklas K." },
+        { type: "p", text: "Nach seinem verkorksten Saisonstart hat vielleicht die Urlaubspause und das zweifache Padel spielen (Niklas betont, es war kein Training) gut getan. Seine Partnerin Leonie R. hat ihren Presseboykott derweil offiziell beendet, war aber dennoch zu keiner Aussage bereit." },
+        { type: "p", text: "Auf der anderen Seite des Netzes wartet mit Marco M. und Andreas L. ein Team, das auf dem Papier keine Wünsche offen lässt. Marco M. hat sich mit seinem 6:1, 6:1 in Spiel 7 auf Platz 4 katapultiert, sechs Punkte aus zwei Spielen. Andreas L. bringt Tenniserfahrung und Kampfgeist mit. 86 Prozent sind eine Ansage, aber dramatisch muss nicht gleich hoffnungslos heißen." },
+
+        { type: "h", text: "Spiel 16 - Der Spirit-König will's wieder wissen" },
+        { type: "match", text: "Marcel M. & Florian Z. vs. Agnes K. & Jonas L.", result: "61 : 39 %", resultLabel: "Gewinnwahrscheinlichkeit" },
+        { type: "p", text: "Marcel M. ist der Mann der Stunde. Drei Spiele, drei Siege, acht Punkte, Tabellenplatz 2, nur die Spieldifferenz trennt ihn von der Tabellenführung. Und sein Erfolgsrezept? Dasselbe wie am ersten Tag. Auf die Frage nach Spiel 16 verweist er auf den Triumph mit Irene in Spiel 3:" },
+        { type: "quote", text: "Wird spannend, aber mit dem selben Spirit wie mit Irene ... Also das war Wahnsinn. Es gab so viele Golden Points, aber mit diesem Spirit haben wir die Mehrheit für uns entschieden. Wie ich am Anfang gesagt habe: Der Spirit wird entscheidend sein.", author: "Marcel M." },
+        { type: "p", text: "Technik oder Spirit? Marcel hat seine Antwort längst gegeben. Doch diesmal steht ihm kein geringerer als Jonas L. gegenüber: Tabellenführer, drei Siege aus drei Spielen, das beste Punkteverhältnis der Liga mit 30:5. An seiner Seite Agnes K., die nach ihrer Niederlage in Spiel 1 auf Wiedergutmachung sinnt, ebenso wie Florian Z. auf der anderen Seite." },
+        { type: "p", text: "61:39 für Team Marcel, aber gegen Jonas L. ist kein Vorsprung sicher. Das könnte das Topspiel des Spieltags werden." },
+
+        { type: "h", text: "Spieltag 4 - auf einen Blick" },
+        { type: "p", text: "Die Liga hat sich verändert. Jonas L. und Marcel M. thronen mit je acht Punkten und makelloser Bilanz an der Spitze, dahinter ein dichtes Mittelfeld, in dem ein einziger Sieg mehrere Plätze gutmachen kann. Lukas P. schuldet der Liga noch den Beweis, dass die Vorschusslorbeeren des Bürofunks berechtigt waren. Und am unteren Ende der Tabelle kämpfen Leonie R. und Niklas K. mit 14 Prozent gegen die Mathematik." },
+        { type: "p", text: "Alle Spiele, Elo-Verläufe und Gewinnwahrscheinlichkeiten gibt es ab sofort auf dieser neuen Liga-Webseite." }
+      ]
     },
     {
       spieltag: 5,

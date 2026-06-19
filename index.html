@@ -582,10 +582,16 @@ function renderArticleCard(article) {
 function renderArticleBlock(block) {
   if (block.type === 'h') return `<h4>${block.text}</h4>`;
   if (block.type === 'match') {
-    const [matchup, result] = block.text.split(/\s*\|\s*Ergebnis:\s*/);
+    let matchup = block.text;
+    let result = block.result;
+    let resultLabel = block.resultLabel || 'Ergebnis';
+    if (!result) {
+      [matchup, result] = block.text.split(/\s*\|\s*Ergebnis:\s*/);
+      resultLabel = 'Ergebnis';
+    }
     return `<div class="article-match">
       <span>${matchup}</span>
-      ${result ? `<span class="article-match-result">Ergebnis: ${result}</span>` : ''}
+      ${result ? `<span class="article-match-result">${resultLabel}: ${result}</span>` : ''}
     </div>`;
   }
   if (block.type === 'quote') {

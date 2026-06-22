@@ -132,7 +132,6 @@ const PADEL_INFO = {
       endDate: "2026-05-24",
       title: "Der Aufschlag ist gemacht - die Padel-Liga 2026 startet!",
       meta: "SPIELTAG 1  ·  11. MAI - 22. MAI 2026",
-      teaser: "Es ist so weit: Die Padel-Liga 2026 öffnet ihre Tore. Mit dem ersten Spieltag fallen endlich die ersten Bälle.",
       body: [
         { type: "p", text: "Es ist so weit: Die Padel-Liga 2026 der Unternehmensgruppe Headsquare, Hanako und Envidual öffnet ihre Tore. Mit dem ersten Spieltag - ausgetragen im Zeitfenster vom 11. bis 22. Mai - fallen endlich die ersten Bälle. Die Spannung unter den 18 Teilnehmerinnen und Teilnehmern könnte kaum größer sein, die ersten Ergebnisse werden sehnlichst erwartet." },
 
@@ -169,7 +168,6 @@ const PADEL_INFO = {
       endDate: "2026-06-07",
       title: "Weiter geht's - der zweite Spieltag steht in den Startlöchern",
       meta: "SPIELTAG 2  ·  25. MAI - 5. JUNI 2026",
-      teaser: "Die Tinte der ersten Ergebnisse ist kaum trocken, da wartet schon der zweite Spieltag. Neue Paarungen, alte Rivalitäten und ein bereits gespieltes Match prägen das nächste Kapitel.",
       body: [
         { type: "p", text: "Die Tinte der ersten Ergebnisse ist kaum trocken, da wartet schon der zweite Spieltag. Spieltag 1 hat gezeigt, wozu diese Liga fähig ist und Spieltag 2 legt nach. Mit neuen Paarungen, alten Rivalitäten in neuer Verkleidung und einem Spiel, das bereits gespielt ist, wird der Spieltag zum nächsten Kapitel einer Liga, die gerade erst Fahrt aufnimmt." },
 
@@ -209,7 +207,6 @@ const PADEL_INFO = {
       endDate: "2026-06-21",
       title: "Die Liga zeigt Zähne",
       meta: "SPIELTAG 3  ·  8. JUNI - 19. JUNI 2026",
-      teaser: "Zwei Spieltage sind absolviert, der dritte steht in den Startlöchern. Die Tabelle nimmt Formen an, doch für viele beginnt die Liga jetzt erst richtig.",
       body: [
         { type: "p", text: "Zwei Spieltage sind absolviert, der dritte steht in den Startlöchern. Die aktuelle Bilanz lautet: Von acht Spielen der ersten beiden Spieltage sind vier gespielt." },
         { type: "p", text: "Und trotzdem: Die Tabelle nimmt Formen an. Ludwig W thront mit sechs Punkten an der Spitze. Jonas L hat letzten Mittwoch nachgelegt. Gleichzeitig stehen sieben von achtzehn SpielerInnen noch bei null - kein Spiel, kein Punkt, kein Satz. Für sie ist die Liga bisher ein Versprechen, das noch eingelöst werden muss. Spieltag 3 soll das ändern." },
@@ -258,7 +255,6 @@ const PADEL_INFO = {
       endDate: "2026-07-05",
       title: "Neue Statistiken, aber ein alter Boykott",
       meta: "SPIELTAG 4  ·  22. JUNI - 3. JULI 2026",
-      teaser: "In den letzten Wochen ist viel passiert. Spiele wurden nachgeholt, Überraschungen geliefert, Favoritenrollen umgeschrieben.",
       body: [
         { type: "p", text: "In den letzten Wochen ist viel passiert. Spiele wurden nachgeholt, Überraschungen geliefert, Favoritenrollen umgeschrieben. Irene W. hat mit Marcel M. sensationell ihren ersten Saisonsieg eingefahren. Der als Geheimfavorit gehandelte Lukas P. musste bei seinem Ligadebüt in Spiel 5 gleich eine 0:2-Niederlage hinnehmen und steht weiterhin bei null Punkten. Marco M. und Marcel M. haben Christoph L. und Raphael H. in Spiel 7 mit einem vernichtenden 6:1, 6:1 vom Platz gefegt. Und Jonas L. hat in Spiel 8 seinen Siegeszug fortgesetzt und sich mit drei Siegen aus drei Spielen an die Tabellenspitze geschoben - punktgleich mit Marcel M., der ihm mit ebenfalls acht Zählern im Nacken sitzt." },
         { type: "p", text: "Die Tabelle hat sich ordentlich durchgeschüttelt. Und passend dazu gibt es eine Neuigkeit, die das ganze Erlebnis auf ein neues Level hebt." },
@@ -303,22 +299,19 @@ const PADEL_INFO = {
       spieltag: 5,
       startDate: null,
       endDate: null,
-      title: "Spieltag 5",
-      teaser: "Artikel folgt."
+      title: "Spieltag 5"
     },
     {
       spieltag: 6,
       startDate: null,
       endDate: null,
-      title: "Spieltag 6",
-      teaser: "Artikel folgt."
+      title: "Spieltag 6"
     },
     {
       spieltag: 7,
       startDate: null,
       endDate: null,
-      title: "Spieltag 7",
-      teaser: "Artikel folgt."
+      title: "Spieltag 7"
     }
   ]
 };

@@ -574,7 +574,6 @@ function renderArticleCard(article) {
   return `<article class="article-card">
     <div class="article-meta">${meta}</div>
     <h3>${article.title}</h3>
-    ${article.teaser ? `<p>${article.teaser}</p>` : ''}
     ${article.body ? `<div class="article-body">${article.body.map(renderArticleBlock).join('')}</div>` : ''}
   </article>`;
 }

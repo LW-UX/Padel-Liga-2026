@@ -239,6 +239,12 @@
       align-items: start;
     }
     .home-side { display: grid; gap: 18px; }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+      margin-bottom: 1.5rem;
+    }
     .widget,
     .info-card {
       background: var(--surface);
@@ -265,6 +271,20 @@
     .clean-list { display: grid; gap: 0.65rem; list-style: none; color: var(--dim); line-height: 1.42; }
     .clean-list li { position: relative; padding-left: 1rem; }
     .clean-list li::before { content: ""; position: absolute; left: 0; top: 0.62em; width: 5px; height: 5px; border-radius: 50%; background: var(--accent2); }
+    .stat-main {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 4rem;
+      line-height: 0.9;
+      color: var(--accent);
+      letter-spacing: 0.02em;
+      margin-bottom: 0.75rem;
+    }
+    .stat-copy {
+      color: var(--dim);
+      font-size: 0.95rem;
+      line-height: 1.45;
+    }
+    .stat-meta-line { display: block; margin-top: 0.2rem; line-height: 1.35; }
     .text-link {
       display: inline-flex;
       margin-top: 1rem;
@@ -710,8 +730,10 @@
         font-size: 0.78rem;
       }
       .home-grid,
+      .stats-grid,
       .info-layout { grid-template-columns: 1fr; }
       .home-grid { gap: 12px; }
+      .stats-grid { gap: 12px; }
       .home-article-preview {
         position: relative;
         max-height: 250px;

@@ -23,7 +23,7 @@
     <button class="active" data-section="start" onclick="nav('start',this)">Home</button>
     <button data-section="rangliste" onclick="nav('rangliste',this)">Rangliste</button>
     <button data-section="spiele" onclick="nav('spiele',this)">Spiele</button>
-    <button data-section="verlauf" onclick="nav('verlauf',this)">Verlauf</button>
+    <button data-section="verlauf" onclick="nav('verlauf',this)">Statistik</button>
     <button data-section="infos" onclick="nav('infos',this)">Infos</button>
   </nav>
 </header>
@@ -79,9 +79,15 @@
 
   <!-- RANGLISTE -->
   <section id="rangliste" class="section">
-    <div class="sh">
-      <div class="sh-title">RANGLISTE</div>
-      <div class="sh-meta" id="rl-meta"></div>
+    <div class="sh sh-with-control">
+      <div class="sh-heading">
+        <div class="sh-title">RANGLISTE</div>
+        <div class="sh-meta" id="rl-meta"></div>
+      </div>
+      <div class="match-scope-toggle" id="ranking-sort-toggle" aria-label="Rangliste sortieren">
+        <button type="button" class="active" onclick="setRankingSort('points')">Punkte</button>
+        <button type="button" onclick="setRankingSort('elo')">Elo</button>
+      </div>
     </div>
     <div class="ranking-wrap">
       <table class="rt">
@@ -110,7 +116,7 @@
         <tbody id="rl-body"></tbody>
       </table>
     </div>
-    <div class="sh-meta ranking-note">Sortierung: Punkte · Siege · Spiel-Differenz · gewonnene Spiele</div>
+    <div class="sh-meta ranking-note" id="rl-sort-note">Sortierung: Punkte · Siege · Spiel-Differenz · gewonnene Spiele</div>
     <div class="sh" style="margin-top: 2.5rem;">
       <div class="sh-title">FIRMEN-RANGLISTE</div>
       <div class="sh-meta" id="fr-meta"></div>
@@ -145,9 +151,23 @@
     <div class="sh-meta ranking-note">Sortierung: Punkte pro Teilnehmer · Spiel-Differenz</div>
   </section>
 
-  <!-- VERLAUF -->
+  <!-- STATISTIK -->
   <section id="verlauf" class="section">
-    <div class="sh"><div class="sh-title">VERLAUF</div></div>
+    <div class="sh"><div class="sh-title">STATISTIK</div></div>
+    <div class="stats-grid">
+      <article class="widget">
+        <div class="widget-label">Favoriten-Check</div>
+        <div id="favorite-check"></div>
+      </article>
+      <article class="widget">
+        <div class="widget-label">Dominanteste Spiele</div>
+        <div id="dominant-matches"></div>
+      </article>
+      <article class="widget">
+        <div class="widget-label">Biggest Upsets</div>
+        <div id="biggest-upsets"></div>
+      </article>
+    </div>
     <div class="chart-box">
       <div class="chart-box-title">Elo-Score</div>
       <div class="filter-controls">
@@ -202,6 +222,7 @@
 const VIEWER_STORAGE_KEY = 'padel-liga-viewer';
 let selectedViewerId = localStorage.getItem(VIEWER_STORAGE_KEY) || 'sb';
 let showOnlyViewerMatches = false;
+let rankingSortMode = 'points';
 
 function getViewerOptions() {
   return [
@@ -305,6 +326,20 @@ function updateMatchScopeToggle() {
   buttons[0].classList.toggle('active', !showOnlyViewerMatches);
   buttons[1].classList.toggle('active', showOnlyViewerMatches);
   buttons[1].disabled = !canFilter;
+}
+
+function setRankingSort(mode) {
+  rankingSortMode = mode === 'elo' ? 'elo' : 'points';
+  renderRanking();
+}
+
+function updateRankingSortToggle() {
+  const toggle = document.getElementById('ranking-sort-toggle');
+  if (!toggle) return;
+
+  const buttons = toggle.querySelectorAll('button');
+  buttons[0].classList.toggle('active', rankingSortMode === 'points');
+  buttons[1].classList.toggle('active', rankingSortMode === 'elo');
 }
 
 // ── NAV ───────────────────────────────────────────────────────────
@@ -485,9 +520,13 @@ function renderFirmenRanking() {
 }
 
 function renderRanking() {
-  const withStats = getRankedPlayers();
+  updateRankingSortToggle();
+  const withStats = getRankedPlayers(PADEL_DATA.matches, rankingSortMode);
   const firmaShort = { Envidual: 'Env', Headsquare: 'Hsq', Hanako: 'Han' };
   document.getElementById('rl-meta').textContent = withStats.length + ' Spieler';
+  document.getElementById('rl-sort-note').textContent = rankingSortMode === 'elo'
+    ? 'Sortierung: Elo · Punkte · Siege · Spiel-Differenz'
+    : 'Sortierung: Punkte · Siege · Spiel-Differenz · gewonnene Spiele';
   document.getElementById('rl-body').innerHTML = withStats.map((p, i) => {
     const spielDiffStr = p.stats.spiele > 0 ? (p.stats.spielDiff >= 0 ? `+${p.stats.spielDiff}` : `${p.stats.spielDiff}`) : '—';
     const spielDiffClass = p.stats.spielDiff > 0 ? 'pos' : p.stats.spielDiff < 0 ? 'neg' : 'neu';
@@ -505,14 +544,23 @@ function renderRanking() {
   renderFirmenRanking();
 }
 
-function getRankedPlayers(matches = PADEL_DATA.matches) {
+function getRankedPlayers(matches = PADEL_DATA.matches, sortMode = 'points') {
   const withStats = PADEL_DATA.players.map(p => ({ ...p, stats: getPlayerStats(p, matches) }));
-  withStats.sort((a,b) =>
-    b.stats.punkte     - a.stats.punkte     ||
-    b.stats.siege      - a.stats.siege      ||
-    b.stats.spielDiff  - a.stats.spielDiff  ||
-    b.stats.saetzeDiff - a.stats.saetzeDiff
-  );
+  if (sortMode === 'elo') {
+    withStats.sort((a, b) =>
+      (getLatestPlayerEloValue(b) ?? -Infinity) - (getLatestPlayerEloValue(a) ?? -Infinity) ||
+      b.stats.punkte - a.stats.punkte ||
+      b.stats.siege - a.stats.siege ||
+      b.stats.spielDiff - a.stats.spielDiff
+    );
+  } else {
+    withStats.sort((a,b) =>
+      b.stats.punkte     - a.stats.punkte     ||
+      b.stats.siege      - a.stats.siege      ||
+      b.stats.spielDiff  - a.stats.spielDiff  ||
+      b.stats.saetzeDiff - a.stats.saetzeDiff
+    );
+  }
   return withStats;
 }
 
@@ -656,6 +704,145 @@ function renderHome() {
       </div>`;
     }).join('')
     : '<div class="empty-state">Keine weiteren Spiele terminiert.</div>';
+}
+
+function formatTeamName(players) {
+  return players.join(' & ');
+}
+
+function getWinnerTeam(match) {
+  if (match.sieger === 1) return match.team1.spieler;
+  if (match.sieger === 2) return match.team2.spieler;
+  return [];
+}
+
+function getWinnerProbability(match) {
+  const probability = getHistoricalMatchWinProbability(match);
+  if (!probability || match.sieger === null) return null;
+
+  return match.sieger === 1 ? probability.team1 : probability.team2;
+}
+
+function formatMatchNumberLabel(match) {
+  return `Spiel ${getMatchNumber(match)}`;
+}
+
+function formatWinnerResult(match) {
+  return formatResultForPlayer(match.ergebnis, match.sieger === 1);
+}
+
+function getMatchGameStats(match) {
+  const scores = [...String(match.ergebnis || '').matchAll(/(\d+)\s*:\s*(\d+)/g)];
+  let team1Games = 0;
+  let team2Games = 0;
+
+  scores.forEach(score => {
+    const team1Score = Number(score[1]);
+    const team2Score = Number(score[2]);
+    if (team1Score > 7 || team2Score > 7) return;
+
+    team1Games += team1Score;
+    team2Games += team2Score;
+  });
+
+  const winnerGames = match.sieger === 1 ? team1Games : team2Games;
+  const loserGames = match.sieger === 1 ? team2Games : team1Games;
+
+  return {
+    team1Games,
+    team2Games,
+    winnerGames,
+    loserGames,
+    diff: winnerGames - loserGames
+  };
+}
+
+function getPlayedMatchesWithProbability() {
+  return PADEL_DATA.matches
+    .filter(match => match.sieger !== null)
+    .map(match => ({
+      match,
+      probability: getHistoricalMatchWinProbability(match)
+    }))
+    .filter(item => item.probability);
+}
+
+function renderFavoriteCheck() {
+  const matches = getPlayedMatchesWithProbability()
+    .filter(({ probability }) => probability.team1 !== probability.team2);
+
+  if (!matches.length) {
+    document.getElementById('favorite-check').innerHTML = '<div class="empty-state">Noch keine Favoriten-Daten.</div>';
+    return;
+  }
+
+  const favoriteWins = matches.filter(({ match, probability }) => {
+    const favorite = probability.team1 > probability.team2 ? 1 : 2;
+    return match.sieger === favorite;
+  }).length;
+  const favoriteRate = Math.round((favoriteWins / matches.length) * 100);
+
+  document.getElementById('favorite-check').innerHTML = `
+    <div class="stat-main">${favoriteRate}%</div>
+    <div class="stat-copy">Favoriten gewinnen ${favoriteWins} von ${matches.length} Spielen.</div>
+  `;
+}
+
+function renderDominantMatches() {
+  const dominantMatches = PADEL_DATA.matches
+    .filter(match => match.sieger !== null)
+    .map(match => ({ match, gameStats: getMatchGameStats(match) }))
+    .filter(item => Number.isFinite(item.gameStats.diff) && item.gameStats.diff > 0)
+    .sort((a, b) =>
+      b.gameStats.diff - a.gameStats.diff ||
+      a.gameStats.loserGames - b.gameStats.loserGames ||
+      getMatchNumber(a.match) - getMatchNumber(b.match)
+    )
+    .slice(0, 3);
+
+  document.getElementById('dominant-matches').innerHTML = dominantMatches.length
+    ? dominantMatches.map((item, index) => `
+      <div class="mini-rank-row r${index + 1}">
+        <span class="mini-rank-pos">${index + 1}</span>
+        <div>
+          <div class="mini-rank-name">${formatTeamName(getWinnerTeam(item.match))}</div>
+          <div class="mini-match-meta stat-meta-line">${formatMatchNumberLabel(item.match)} · ${formatWinnerResult(item.match)} · +${item.gameStats.diff}</div>
+        </div>
+      </div>
+    `).join('')
+    : '<div class="empty-state">Noch keine gespielten Matches.</div>';
+}
+
+function renderBiggestUpsets() {
+  const upsets = getPlayedMatchesWithProbability()
+    .map(({ match }) => ({
+      match,
+      winnerProbability: getWinnerProbability(match)
+    }))
+    .filter(item => Number.isFinite(item.winnerProbability) && item.winnerProbability < 50)
+    .sort((a, b) =>
+      a.winnerProbability - b.winnerProbability ||
+      getMatchNumber(a.match) - getMatchNumber(b.match)
+    )
+    .slice(0, 3);
+
+  document.getElementById('biggest-upsets').innerHTML = upsets.length
+    ? upsets.map((item, index) => `
+      <div class="mini-rank-row r${index + 1}">
+        <span class="mini-rank-pos">${index + 1}</span>
+        <div>
+          <div class="mini-rank-name">${formatTeamName(getWinnerTeam(item.match))}</div>
+          <div class="mini-match-meta stat-meta-line">${formatMatchNumberLabel(item.match)} · nur ${item.winnerProbability}% Siegchance</div>
+        </div>
+      </div>
+    `).join('')
+    : '<div class="empty-state">Noch kein Außenseiter-Sieg.</div>';
+}
+
+function renderStatistik() {
+  renderFavoriteCheck();
+  renderDominantMatches();
+  renderBiggestUpsets();
 }
 
 function expandHomeArticle() {
@@ -1470,6 +1657,7 @@ updateViewerPicker();
 renderHome();
 renderRanking();
 renderSpiele();
+renderStatistik();
 renderInfos();
 </script>
 </body>

@@ -284,7 +284,15 @@
       font-size: 0.95rem;
       line-height: 1.45;
     }
-    .stat-meta-line { display: block; margin-top: 0.2rem; line-height: 1.35; }
+    .stat-team-players .mc-player-sep { color: var(--dim); margin: 0 0.2rem; }
+    .stat-meta-line {
+      display: block;
+      margin-top: 0.2rem;
+      color: var(--dim);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.82rem;
+      line-height: 1.35;
+    }
     .text-link {
       display: inline-flex;
       margin-top: 1rem;
@@ -684,7 +692,7 @@
     .mc-team.win .mc-players { font-weight: 600; color: var(--text); }
     .mc-team:not(.win) .mc-players { color: var(--muted); }
     .mc-players { font-size: 1.1rem; }
-    .mc-player-sep { margin: 0 0.3em; }
+    .mc-player-sep { margin: 0 0.3em; color: var(--muted); font-weight: 400; }
     .mc-score { text-align: center; }
     .mc-result-row { display: flex; align-items: baseline; justify-content: center; gap: 12px; }
     .mc-score-main { font-family: 'Bebas Neue', sans-serif; font-size: 2rem; letter-spacing: 0.05em; color: var(--text); line-height: 1; }

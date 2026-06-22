@@ -710,6 +710,10 @@ function formatTeamName(players) {
   return players.join(' & ');
 }
 
+function renderStatTeamPlayers(players) {
+  return `<span class="stat-team-players">${renderTeamPlayers(players)}</span>`;
+}
+
 function getWinnerTeam(match) {
   if (match.sieger === 1) return match.team1.spieler;
   if (match.sieger === 2) return match.team2.spieler;
@@ -805,8 +809,8 @@ function renderDominantMatches() {
       <div class="mini-rank-row r${index + 1}">
         <span class="mini-rank-pos">${index + 1}</span>
         <div>
-          <div class="mini-rank-name">${formatTeamName(getWinnerTeam(item.match))}</div>
-          <div class="mini-match-meta stat-meta-line">${formatMatchNumberLabel(item.match)} · ${formatWinnerResult(item.match)} · +${item.gameStats.diff}</div>
+          <div class="mini-rank-name">${renderStatTeamPlayers(getWinnerTeam(item.match))}</div>
+          <div class="stat-meta-line">${formatMatchNumberLabel(item.match)} · ${formatWinnerResult(item.match)} · +${item.gameStats.diff}</div>
         </div>
       </div>
     `).join('')
@@ -831,8 +835,8 @@ function renderBiggestUpsets() {
       <div class="mini-rank-row r${index + 1}">
         <span class="mini-rank-pos">${index + 1}</span>
         <div>
-          <div class="mini-rank-name">${formatTeamName(getWinnerTeam(item.match))}</div>
-          <div class="mini-match-meta stat-meta-line">${formatMatchNumberLabel(item.match)} · nur ${item.winnerProbability}% Siegchance</div>
+          <div class="mini-rank-name">${renderStatTeamPlayers(getWinnerTeam(item.match))}</div>
+          <div class="stat-meta-line">${formatMatchNumberLabel(item.match)} · nur ${item.winnerProbability}% Siegchance</div>
         </div>
       </div>
     `).join('')

@@ -492,9 +492,6 @@ function renderFirmenRanking() {
       punkte    += s.punkte;
       spielDiff += s.spielDiff;
     });
-    // Spiele werden doppelt gezählt (Teamspiel), daher halbieren
-    spiele = Math.round(spiele / 2);
-    siege  = Math.round(siege  / 2);
     const pktPerTN = players.length > 0 ? (punkte / players.length) : 0;
     return { firma, teilnehmer: players.length, spiele, siege, punkte, spielDiff, pktPerTN };
   });

@@ -226,6 +226,11 @@ function isSelectedPlayer(playerName) {
   return isParticipantView() && getSelectedViewer().name === playerName;
 }
 
+function isSelectedViewerFirma(firma) {
+  const selectedPlayer = PADEL_DATA.players.find(player => player.id === selectedViewerId);
+  return Boolean(selectedPlayer && selectedPlayer.firma === firma);
+}
+
 function isViewerMatch(match) {
   return isParticipantView() &&
     [...match.team1.spieler, ...match.team2.spieler].includes(getSelectedViewer().name);
@@ -466,7 +471,7 @@ function renderFirmenRanking() {
   document.getElementById('fr-body').innerHTML = stats.map((f, i) => {
     const diffStr   = f.spiele > 0 ? (f.spielDiff >= 0 ? `+${f.spielDiff}` : `${f.spielDiff}`) : '—';
     const diffClass = f.spielDiff > 0 ? 'pos' : f.spielDiff < 0 ? 'neg' : 'neu';
-    return `<tr class="r${i+1}">
+    return `<tr class="r${i+1} ${isSelectedViewerFirma(f.firma) ? 'viewer-highlight' : ''}">
       <td class="rn l">${i+1}</td>
       <td class="l"><span class="pname">${f.firma}</span><span class="firma-badge firma-${f.firma}">${f.firma}</span></td>
       <td class="num-val">${f.teilnehmer}</td>
@@ -559,6 +564,10 @@ function formatMatchMeta(match) {
   return `${match.id.replace('spiel','Spiel ')} | ${formatMatchDate(match)}`;
 }
 
+function getPendingMatchLabel(match) {
+  return match.uhrzeit ? 'Terminiert' : 'Ausstehend';
+}
+
 function getCurrentArticle() {
   const todayKey = toDateKey(new Date());
   const current = PADEL_INFO.articles.find(article => {
@@ -640,7 +649,7 @@ function renderHome() {
           <div class="mini-match-team mini-match-team-1">${renderTeamPlayers(m.team1.spieler)}</div>
           <div class="mini-match-status">
             <div class="mini-match-prob">${probabilityHtml}</div>
-            <div class="mini-match-label">Ausstehend</div>
+            <div class="mini-match-label">${getPendingMatchLabel(m)}</div>
           </div>
           <div class="mini-match-team mini-match-team-2">${renderTeamPlayers(m.team2.spieler)}</div>
         </div>
@@ -773,7 +782,7 @@ function renderSpiele() {
           </div>
           <div class="mc-score">
             ${probabilityHtml}
-            <div class="mc-pending-label">Ausstehend</div>
+            <div class="mc-pending-label">${getPendingMatchLabel(m)}</div>
           </div>
           <div class="mc-team mc-team-2">
             <div class="mc-players">${renderTeamPlayers(m.team2.spieler)}</div>

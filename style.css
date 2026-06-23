@@ -679,8 +679,8 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      width: 15px;
-      height: 15px;
+      width: 14px;
+      height: 14px;
       border: 1px solid var(--border);
       border-radius: 50%;
       color: var(--muted);
@@ -766,7 +766,7 @@
     .firma-Hanako     { background: rgba(255,255,255,0.1); color: var(--hanako); }
     .firma-Headsquare { background: rgba(0.0.0.0); color: rgba(231,7,19,0.7); }
 
-    .elo-val    { font-family: 'DM Mono', monospace; font-size: 1rem; font-weight: 400; color: var(--dim); }
+    .elo-val    { font-family: 'DM Mono', monospace; font-size: 1rem; font-weight: 400; color: var(--text); }
     .punkte-val { font-family: 'DM Mono', monospace; font-size: 1rem; font-weight: 700; color: var(--accent); }
     .num-val    { font-family: 'DM Mono', monospace; font-size: 1rem; color: var(--text); }
     .pos { color: var(--positiv); }

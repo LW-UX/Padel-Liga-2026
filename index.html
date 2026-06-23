@@ -100,9 +100,9 @@
           <col class="col-gv extended-col">
           <col class="col-diff">
           <col class="col-elo">
+          <col class="col-form extended-col">
           <col class="col-winrate extended-col">
           <col class="col-placement-factor extended-col">
-          <col class="col-form extended-col">
         </colgroup>
         <thead>
           <tr>
@@ -114,6 +114,7 @@
             <th class="extended-col">G:V</th>
             <th>Diff.</th>
             <th>Elo</th>
+            <th class="extended-col">Form (Last 3)</th>
             <th class="extended-col">Sieg-%</th>
             <th class="extended-col">
               <span class="th-help-wrap">Platzierungsfaktor
@@ -121,7 +122,6 @@
                 <span class="help-tooltip">Ø Platz Mitspieler · Ø Platz Gegenspieler · Differenz. Positive Werte bedeuten: Die Gegner waren im Schnitt stärker platziert als die Mitspieler.</span>
               </span>
             </th>
-            <th class="extended-col">Form</th>
           </tr>
         </thead>
         <tbody id="rl-body"></tbody>
@@ -704,9 +704,9 @@ function renderRanking() {
       <td class="num-val extended-col">${p.stats.spiele > 0 ? p.stats.spieleGV : '—'}</td>
       <td class="num-val"><span class="${p.stats.spiele > 0 ? spielDiffClass : 'neu'}">${spielDiffStr}</span></td>
       <td class="elo-val">${getLatestPlayerElo(p)}</td>
+      <td class="extended-col form-val">${extras.form}</td>
       <td class="num-val extended-col">${extras.winQuote === null ? '—' : `${extras.winQuote}%`}</td>
       <td class="num-val extended-col placement-factor-val">${formatPlacementFactor(extras.placementFactor)}</td>
-      <td class="extended-col form-val">${extras.form}</td>
     </tr>`;
   }).join('');
   renderFirmenRanking();

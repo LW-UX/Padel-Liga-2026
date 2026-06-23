@@ -748,7 +748,8 @@
     .form-chip:first-child { margin-left: 0; }
     .form-win { background: var(--positiv); }
     .form-loss { background: var(--negativ); color: var(--text); }
-    .form-tiebreak { background: #f5a03a; color: #000; }
+    .form-win.form-tiebreak { background: color-mix(in srgb, var(--positiv) 25%, orange); }
+    .form-loss.form-tiebreak { background: color-mix(in srgb, var(--negativ) 25%, orange); color: #000; }
     .form-recency-0 { opacity: 1; }
     .form-recency-1 { opacity: 0.68; }
     .form-recency-2 { opacity: 0.42; }

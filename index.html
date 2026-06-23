@@ -371,7 +371,10 @@ function getPlayerStats(player, matches = PADEL_DATA.matches) {
     else if (mySetCount === 1 && oppSetCount === 2) punkte += 1;
     if (won) siege++;
     m.ergebnis.split(',').forEach(part => {
-      const clean = part.trim().replace('–', '').trim();
+      const clean = part
+        .split(/[–-]/)[0]
+        .replace(/\s*\([^)]*\)/g, '')
+        .trim();
       const match = clean.match(/^(\d+):(\d+)$/);
       if (match) {
         const g1 = parseInt(match[1]), g2 = parseInt(match[2]);

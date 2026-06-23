@@ -84,33 +84,51 @@
         <div class="sh-title">RANGLISTE</div>
         <div class="sh-meta" id="rl-meta"></div>
       </div>
-      <div class="match-scope-toggle" id="ranking-sort-toggle" aria-label="Rangliste sortieren">
-        <button type="button" class="active" onclick="setRankingSort('points')">Punkte</button>
-        <button type="button" onclick="setRankingSort('elo')">Elo</button>
+      <div class="ranking-controls">
+        <div class="match-scope-toggle ranking-sort-toggle" id="ranking-sort-toggle" aria-label="Rangliste sortieren">
+          <button type="button" class="active" onclick="setRankingSort('points')">Punkte</button>
+          <button type="button" onclick="setRankingSort('elo')">Elo</button>
+          <button type="button" onclick="setRankingSort('placement')">Pl-Fkt.</button>
+        </div>
+        <div class="match-scope-toggle" id="ranking-view-toggle" aria-label="Ranglistenansicht">
+          <button type="button" class="active" onclick="setRankingView('compact')">Kompakt</button>
+          <button type="button" onclick="setRankingView('expanded')">Erweitert</button>
+        </div>
       </div>
     </div>
     <div class="ranking-wrap">
-      <table class="rt">
+      <table class="rt ranking-table compact" id="ranking-table">
         <colgroup>
           <col class="col-rank">
           <col class="col-name">
           <col class="col-games">
           <col class="col-wins">
           <col class="col-points">
-          <col class="col-gv">
+          <col class="col-gv extended-col">
           <col class="col-diff">
           <col class="col-elo">
+          <col class="col-winrate extended-col">
+          <col class="col-placement-factor extended-col">
+          <col class="col-form extended-col">
         </colgroup>
         <thead>
           <tr>
-            <th class="l rn">#</th>
-            <th class="l">Spieler</th>
+            <th class="l rn sticky-rank">#</th>
+            <th class="l sticky-name">Spieler</th>
             <th>Partien</th>
             <th>Siege</th>
             <th>Punkte</th>
-            <th>G:V</th>
+            <th class="extended-col">G:V</th>
             <th>Diff.</th>
             <th>Elo</th>
+            <th class="extended-col">Sieg-%</th>
+            <th class="extended-col">
+              <span class="th-help-wrap">Pl-Fkt.
+                <span class="help-icon" tabindex="0" aria-label="Platzierungsfaktor erklären" title="Ø Platz Mitspieler · Ø Platz Gegenspieler · Differenz. Positive Werte bedeuten: Die Gegner waren im Schnitt stärker platziert als die Mitspieler.">?</span>
+                <span class="help-tooltip">Ø Platz Mitspieler · Ø Platz Gegenspieler · Differenz. Positive Werte bedeuten: Die Gegner waren im Schnitt stärker platziert als die Mitspieler.</span>
+              </span>
+            </th>
+            <th class="extended-col">Form</th>
           </tr>
         </thead>
         <tbody id="rl-body"></tbody>
@@ -223,6 +241,7 @@ const VIEWER_STORAGE_KEY = 'padel-liga-viewer';
 let selectedViewerId = localStorage.getItem(VIEWER_STORAGE_KEY) || 'sb';
 let showOnlyViewerMatches = false;
 let rankingSortMode = 'points';
+let rankingViewMode = 'compact';
 
 function getViewerOptions() {
   return [
@@ -330,7 +349,7 @@ function updateMatchScopeToggle() {
 }
 
 function setRankingSort(mode) {
-  rankingSortMode = mode === 'elo' ? 'elo' : 'points';
+  rankingSortMode = ['elo', 'placement'].includes(mode) ? mode : 'points';
   renderRanking();
 }
 
@@ -339,8 +358,23 @@ function updateRankingSortToggle() {
   if (!toggle) return;
 
   const buttons = toggle.querySelectorAll('button');
-  buttons[0].classList.toggle('active', rankingSortMode === 'points');
-  buttons[1].classList.toggle('active', rankingSortMode === 'elo');
+  buttons[0]?.classList.toggle('active', rankingSortMode === 'points');
+  buttons[1]?.classList.toggle('active', rankingSortMode === 'elo');
+  buttons[2]?.classList.toggle('active', rankingSortMode === 'placement');
+}
+
+function setRankingView(mode) {
+  rankingViewMode = mode === 'expanded' ? 'expanded' : 'compact';
+  renderRanking();
+}
+
+function updateRankingViewToggle() {
+  const toggle = document.getElementById('ranking-view-toggle');
+  if (!toggle) return;
+
+  const buttons = toggle.querySelectorAll('button');
+  buttons[0].classList.toggle('active', rankingViewMode === 'compact');
+  buttons[1].classList.toggle('active', rankingViewMode === 'expanded');
 }
 
 // ── NAV ───────────────────────────────────────────────────────────
@@ -520,26 +554,166 @@ function renderFirmenRanking() {
   }).join('');
 }
 
+function getRankingPositionMap(sortMode = 'points') {
+  return new Map(getRankedPlayers(PADEL_DATA.matches, sortMode)
+    .map((player, index) => [player.name, index + 1]));
+}
+
+function getPlayerMatches(player) {
+  return PADEL_DATA.matches.filter(match =>
+    match.team1.spieler.includes(player.name) || match.team2.spieler.includes(player.name)
+  );
+}
+
+function getPlayerMatchTeamIndex(player, match) {
+  if (match.team1.spieler.includes(player.name)) return 1;
+  if (match.team2.spieler.includes(player.name)) return 2;
+  return null;
+}
+
+function getPlayerMatchProbability(player, match) {
+  const probability = match.sieger === null
+    ? getMatchWinProbability(match)
+    : getHistoricalMatchWinProbability(match);
+  const teamIndex = getPlayerMatchTeamIndex(player, match);
+
+  if (!probability || !teamIndex) return null;
+  return teamIndex === 1 ? probability.team1 : probability.team2;
+}
+
+function getPlayerWinQuote(player) {
+  const probabilities = getPlayerMatches(player)
+    .map(match => getPlayerMatchProbability(player, match))
+    .filter(probability => Number.isFinite(probability));
+
+  if (!probabilities.length) return null;
+
+  return Math.round(probabilities.reduce((sum, probability) => sum + probability, 0) / probabilities.length);
+}
+
+function average(values) {
+  const numericValues = values.filter(value => Number.isFinite(value));
+  if (!numericValues.length) return null;
+
+  return numericValues.reduce((sum, value) => sum + value, 0) / numericValues.length;
+}
+
+function formatDecimal(value) {
+  return Number.isFinite(value) ? value.toFixed(1) : '—';
+}
+
+function formatSignedDecimal(value) {
+  if (!Number.isFinite(value)) return '—';
+  const rounded = Number(value.toFixed(1));
+  if (Object.is(rounded, -0) || rounded === 0) return '0.0';
+  return rounded > 0 ? `+${rounded.toFixed(1)}` : rounded.toFixed(1);
+}
+
+function getPlayerPlacementFactor(player, rankMap) {
+  const partnerPlaces = [];
+  const opponentPlaces = [];
+
+  getPlayerMatches(player).forEach(match => {
+    const teamIndex = getPlayerMatchTeamIndex(player, match);
+    if (!teamIndex) return;
+
+    const team = teamIndex === 1 ? match.team1.spieler : match.team2.spieler;
+    const opponents = teamIndex === 1 ? match.team2.spieler : match.team1.spieler;
+    const partnerAverage = average(team
+      .filter(name => name !== player.name)
+      .map(name => rankMap.get(name)));
+    const opponentAverage = average(opponents.map(name => rankMap.get(name)));
+
+    if (partnerAverage !== null) partnerPlaces.push(partnerAverage);
+    if (opponentAverage !== null) opponentPlaces.push(opponentAverage);
+  });
+
+  const partnerAverage = average(partnerPlaces);
+  const opponentAverage = average(opponentPlaces);
+  const diff = partnerAverage !== null && opponentAverage !== null
+    ? partnerAverage - opponentAverage
+    : null;
+
+  return { partnerAverage, opponentAverage, diff };
+}
+
+function formatPlacementFactor(factor) {
+  if (!factor || !Number.isFinite(factor.diff)) return '—';
+
+  const diffClass = factor.diff > 0 ? 'pos' : factor.diff < 0 ? 'neg' : 'neu';
+  return `<span class="pf-muted">${formatDecimal(factor.partnerAverage)}</span> / <span class="pf-muted">${formatDecimal(factor.opponentAverage)}</span> / <span class="${diffClass}">${formatSignedDecimal(factor.diff)}</span>`;
+}
+
+function getPlayerForm(player) {
+  return getPlayerMatches(player)
+    .filter(match => match.sieger !== null)
+    .sort((a, b) => getMatchOrderKey(b).localeCompare(getMatchOrderKey(a)))
+    .slice(0, 3)
+    .map(match => {
+      const teamIndex = getPlayerMatchTeamIndex(player, match);
+      const [team1Sets, team2Sets] = String(match.saetze || '').split(':').map(Number);
+      const mySets = teamIndex === 1 ? team1Sets : team2Sets;
+      const opponentSets = teamIndex === 1 ? team2Sets : team1Sets;
+      const won = match.sieger === teamIndex;
+      const tieBreak = mySets === 1 && opponentSets === 2 || mySets === 2 && opponentSets === 1;
+      const title = `${formatMatchNumberLabel(match)}: ${won ? 'Sieg' : 'Niederlage'}${tieBreak ? ' im Match-Tie-Break' : ''}`;
+
+      return `<span class="form-chip ${won ? 'form-win' : 'form-loss'} ${tieBreak ? 'form-tiebreak' : ''}" title="${escapeHtml(title)}">${won ? 'S' : 'N'}</span>`;
+    })
+    .join('') || '<span class="neu">—</span>';
+}
+
+function getPlayerRankingExtras(player, rankMap) {
+  return {
+    winQuote: getPlayerWinQuote(player),
+    placementFactor: getPlayerPlacementFactor(player, rankMap),
+    form: getPlayerForm(player)
+  };
+}
+
+function getPlacementAdjustedRank(player, rankMap) {
+  const currentRank = rankMap.get(player.name);
+  const factor = getPlayerPlacementFactor(player, rankMap);
+
+  if (!Number.isFinite(currentRank)) return Infinity;
+  if (!Number.isFinite(factor.diff)) return currentRank;
+
+  return currentRank - factor.diff;
+}
+
 function renderRanking() {
   updateRankingSortToggle();
+  updateRankingViewToggle();
+  const table = document.getElementById('ranking-table');
+  table.classList.toggle('expanded', rankingViewMode === 'expanded');
+  table.classList.toggle('compact', rankingViewMode === 'compact');
+
   const withStats = getRankedPlayers(PADEL_DATA.matches, rankingSortMode);
+  const rankMap = getRankingPositionMap('points');
   const firmaShort = { Envidual: 'Env', Headsquare: 'Hsq', Hanako: 'Han' };
   document.getElementById('rl-meta').textContent = withStats.length + ' Spieler';
-  document.getElementById('rl-sort-note').textContent = rankingSortMode === 'elo'
-    ? 'Sortierung: Elo · Punkte · Siege · Spiel-Differenz'
-    : 'Sortierung: Punkte · Siege · Spiel-Differenz · gewonnene Spiele';
+  const sortNotes = {
+    points: 'Sortierung: Punkte · Siege · Spiel-Differenz · gewonnene Spiele',
+    elo: 'Sortierung: Elo · Punkte · Siege · Spiel-Differenz',
+    placement: 'Sortierung: bereinigter Rang aus Punkte-Platz minus Platzierungsfaktor'
+  };
+  document.getElementById('rl-sort-note').textContent = sortNotes[rankingSortMode] || sortNotes.points;
   document.getElementById('rl-body').innerHTML = withStats.map((p, i) => {
+    const extras = getPlayerRankingExtras(p, rankMap);
     const spielDiffStr = p.stats.spiele > 0 ? (p.stats.spielDiff >= 0 ? `+${p.stats.spielDiff}` : `${p.stats.spielDiff}`) : '—';
     const spielDiffClass = p.stats.spielDiff > 0 ? 'pos' : p.stats.spielDiff < 0 ? 'neg' : 'neu';
     return `<tr class="r${Math.min(i+1,4)} ${isSelectedPlayer(p.name) ? 'viewer-highlight' : ''}">
-      <td class="rn l">${i+1}</td>
-      <td class="l"><span class="pname">${p.name}</span><span class="firma-badge firma-${p.firma}"><span class="firma-full">${p.firma}</span><span class="firma-short">${firmaShort[p.firma] || p.firma}</span></span></td>
+      <td class="rn l sticky-rank">${i+1}</td>
+      <td class="l sticky-name"><span class="pname">${p.name}</span><span class="firma-badge firma-${p.firma}"><span class="firma-full">${p.firma}</span><span class="firma-short">${firmaShort[p.firma] || p.firma}</span></span></td>
       <td class="num-val">${p.stats.spiele}</td>
       <td class="num-val">${p.stats.siege}</td>
       <td class="punkte-val">${p.stats.punkte}</td>
-      <td class="num-val">${p.stats.spiele > 0 ? p.stats.spieleGV : '—'}</td>
+      <td class="num-val extended-col">${p.stats.spiele > 0 ? p.stats.spieleGV : '—'}</td>
       <td class="num-val"><span class="${p.stats.spiele > 0 ? spielDiffClass : 'neu'}">${spielDiffStr}</span></td>
       <td class="elo-val">${getLatestPlayerElo(p)}</td>
+      <td class="num-val extended-col">${extras.winQuote === null ? '—' : `${extras.winQuote}%`}</td>
+      <td class="num-val extended-col placement-factor-val">${formatPlacementFactor(extras.placementFactor)}</td>
+      <td class="extended-col form-val">${extras.form}</td>
     </tr>`;
   }).join('');
   renderFirmenRanking();
@@ -550,6 +724,14 @@ function getRankedPlayers(matches = PADEL_DATA.matches, sortMode = 'points') {
   if (sortMode === 'elo') {
     withStats.sort((a, b) =>
       (getLatestPlayerEloValue(b) ?? -Infinity) - (getLatestPlayerEloValue(a) ?? -Infinity) ||
+      b.stats.punkte - a.stats.punkte ||
+      b.stats.siege - a.stats.siege ||
+      b.stats.spielDiff - a.stats.spielDiff
+    );
+  } else if (sortMode === 'placement') {
+    const rankMap = getRankingPositionMap('points');
+    withStats.sort((a, b) =>
+      getPlacementAdjustedRank(a, rankMap) - getPlacementAdjustedRank(b, rankMap) ||
       b.stats.punkte - a.stats.punkte ||
       b.stats.siege - a.stats.siege ||
       b.stats.spielDiff - a.stats.spielDiff
@@ -705,10 +887,6 @@ function renderHome() {
       </div>`;
     }).join('')
     : '<div class="empty-state">Keine weiteren Spiele terminiert.</div>';
-}
-
-function formatTeamName(players) {
-  return players.join(' & ');
 }
 
 function renderStatTeamPlayers(players) {

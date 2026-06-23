@@ -230,6 +230,28 @@
     .match-scope-toggle.disabled button {
       cursor: default;
     }
+    .ranking-sort-toggle {
+      gap: 12px;
+      padding: 0;
+      border: 0;
+      border-radius: 0;
+      background: transparent;
+    }
+    .ranking-sort-toggle button {
+      border-radius: 0;
+      border-bottom: 2px solid transparent;
+      padding: 0.35rem 0;
+    }
+    .ranking-sort-toggle button.active {
+      background: transparent;
+      border-color: var(--accent);
+    }
+    .ranking-controls {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
 
     /* ── HOME / INFO WIDGETS ── */
     .home-grid {
@@ -557,6 +579,15 @@
     .ranking-wrap { overflow-x: auto; margin-bottom: 0.75rem; }
     .ranking-note { margin-bottom: 4rem; }
     table.rt { width: 100%; border-collapse: collapse; margin-bottom: 1rem;}
+    .ranking-table { --rank-col-left: 0px; --name-col-left: 52px; }
+    .ranking-table.expanded { min-width: 1160px; }
+    .ranking-table.compact .extended-col { display: none; }
+    .ranking-table.compact col.extended-col { display: none; }
+    .ranking-table .col-rank { width: 52px; }
+    .ranking-table .col-name { width: 300px; }
+    .ranking-table .col-winrate { width: 96px; }
+    .ranking-table .col-placement-factor { width: 170px; }
+    .ranking-table .col-form { width: 110px; }
     table.rt th {
       text-align: right; font-size: 0.7rem; font-weight: 600; letter-spacing: 0.12em;
       text-transform: uppercase; color: var(--dim); padding: 10px 16px;
@@ -564,6 +595,11 @@
     }
     table.rt th.l { text-align: left; }
     table.rt td { padding: 14px 16px; border-bottom: 1px solid var(--border); text-align: right; }
+    table.ranking-table th,
+    table.ranking-table td {
+      padding-left: 24px;
+      padding-right: 24px;
+    }
     table.rt td.l { text-align: left; }
     table.rt tr:last-child td { border-bottom: none; }
     table.rt tbody tr { transition: background 0.1s; }
@@ -579,6 +615,123 @@
       color: var(--accent);
       font-weight: 700;
     }
+    .ranking-table.expanded .sticky-rank,
+    .ranking-table.expanded .sticky-name {
+      position: sticky;
+      z-index: 4;
+      background: var(--bg);
+    }
+    .ranking-table.expanded .sticky-rank { left: var(--rank-col-left); }
+    .ranking-table.expanded .sticky-name {
+      left: var(--name-col-left);
+      box-shadow: 12px 0 18px rgba(0,0,0,0.22);
+      white-space: nowrap;
+    }
+    .ranking-table .sticky-name {
+      white-space: nowrap;
+    }
+    .ranking-table.expanded thead .sticky-rank,
+    .ranking-table.expanded thead .sticky-name {
+      z-index: 6;
+      background: var(--bg);
+    }
+    .ranking-table.expanded tbody tr:nth-child(even) .sticky-rank,
+    .ranking-table.expanded tbody tr:nth-child(even) .sticky-name {
+      background: var(--row-alt);
+    }
+    .ranking-table.expanded tbody tr:hover .sticky-rank,
+    .ranking-table.expanded tbody tr:hover .sticky-name {
+      background: var(--surface);
+    }
+    .ranking-table.expanded tbody tr.viewer-highlight .sticky-rank,
+    .ranking-table.expanded tbody tr.viewer-highlight .sticky-name {
+      background: color-mix(in srgb, var(--accent) 20%, var(--bg));
+    }
+    .ranking-table .sticky-name .pname,
+    .ranking-table .sticky-name .firma-badge {
+      white-space: nowrap;
+    }
+    .th-help-wrap {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 5px;
+    }
+    .help-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 15px;
+      height: 15px;
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      color: var(--muted);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.68rem;
+      font-weight: 700;
+      cursor: help;
+      outline: none;
+      text-transform: none;
+      letter-spacing: 0;
+    }
+    .help-tooltip {
+      position: absolute;
+      right: 0;
+      top: calc(100% + 8px);
+      z-index: 60;
+      width: 260px;
+      padding: 0.65rem 0.75rem;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: rgba(12,12,15,0.98);
+      color: var(--dim);
+      box-shadow: 0 14px 36px rgba(0,0,0,0.35);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 400;
+      line-height: 1.35;
+      letter-spacing: 0;
+      text-align: left;
+      text-transform: none;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.12s ease;
+    }
+    table.ranking-table th:hover .help-tooltip,
+    .th-help-wrap:hover .help-tooltip,
+    .th-help-wrap:focus-within .help-tooltip {
+      opacity: 1;
+    }
+    .placement-factor-val {
+      white-space: nowrap;
+    }
+    .pf-muted {
+      color: var(--dim);
+    }
+    .form-val {
+      white-space: nowrap;
+      text-align: right;
+      padding-top: 12px !important;
+      padding-bottom: 12px !important;
+    }
+    .form-chip {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      color: #000;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 700;
+      margin-left: 4px;
+    }
+    .form-chip:first-child { margin-left: 0; }
+    .form-win { background: var(--positiv); }
+    .form-loss { background: var(--negativ); color: var(--text); }
+    .form-tiebreak { opacity: 0.68; }
 
     .rn { font-family: 'DM Mono', monospace; font-size: 1rem; color: var(--dim); width: 36px; text-align: left !important; }
     .r1 .rn { color: var(--accent); font-weight: 700; }
@@ -737,6 +890,9 @@
         padding: 0.32rem 0.6rem;
         font-size: 0.78rem;
       }
+      .ranking-controls {
+        justify-content: flex-start;
+      }
       .home-grid,
       .stats-grid,
       .info-layout { grid-template-columns: 1fr; }
@@ -769,16 +925,58 @@
       .info-card { padding: 1rem; }
       .ranking-wrap { margin-left: 0; margin-right: 0; }
       table.rt { min-width: 500px; }
+      .ranking-table {
+        --rank-col-left: 0px;
+        --name-col-left: 42px;
+      }
+      .ranking-table.expanded { min-width: 980px; }
       table.rt .col-rank { width: 42px; }
       table.rt .col-name { width: 160px; }
       table.rt .col-games,
       table.rt .col-wins,
       table.rt .col-points,
       table.rt .col-diff,
-      table.rt .col-elo { width: 72px; }
+      table.rt .col-elo,
+      table.rt .col-winrate,
+      table.rt .col-form { width: 72px; }
+      table.rt .col-winrate { width: 86px; }
       table.rt .col-gv { width: 102px; }
+      table.rt .col-placement-factor { width: 160px; }
       table.rt th { padding: 8px 4px; letter-spacing: 0.09em; }
       table.rt td { padding: 11px 4px; }
+      .ranking-table .sticky-rank,
+      .ranking-table .sticky-name {
+        position: sticky;
+        z-index: 4;
+        background: var(--bg);
+      }
+      .ranking-table .sticky-rank { left: var(--rank-col-left); }
+      .ranking-table .sticky-name {
+        left: var(--name-col-left);
+        box-shadow: 10px 0 16px rgba(0,0,0,0.22);
+      }
+      .ranking-table thead .sticky-rank,
+      .ranking-table thead .sticky-name {
+        z-index: 6;
+        background: var(--bg);
+      }
+      .ranking-table tbody tr:nth-child(even) .sticky-rank,
+      .ranking-table tbody tr:nth-child(even) .sticky-name {
+        background: var(--row-alt);
+      }
+      .ranking-table tbody tr:hover .sticky-rank,
+      .ranking-table tbody tr:hover .sticky-name {
+        background: var(--surface);
+      }
+      .ranking-table tbody tr.viewer-highlight .sticky-rank,
+      .ranking-table tbody tr.viewer-highlight .sticky-name {
+        background: color-mix(in srgb, var(--accent) 20%, var(--bg));
+      }
+      .help-tooltip {
+        right: auto;
+        left: 0;
+        width: min(260px, calc(100vw - 32px));
+      }
       .rn { width: 28px; padding-left: 12px !important;}
       .pname { font-size: 1rem; white-space: nowrap; }
       .firma-badge {

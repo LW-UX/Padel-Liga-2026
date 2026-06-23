@@ -114,7 +114,7 @@
             <th class="extended-col">G:V</th>
             <th>Diff.</th>
             <th>Elo</th>
-            <th class="extended-col">Form (Last 3)</th>
+            <th class="extended-col">Letzte 3</th>
             <th class="extended-col">Sieg-%</th>
             <th class="extended-col">
               <span class="th-help-wrap">Platzierungsfaktor
@@ -642,7 +642,7 @@ function getPlayerForm(player) {
     .filter(match => match.sieger !== null)
     .sort((a, b) => getMatchOrderKey(b).localeCompare(getMatchOrderKey(a)))
     .slice(0, 3)
-    .map(match => {
+    .map((match, index) => {
       const teamIndex = getPlayerMatchTeamIndex(player, match);
       const [team1Sets, team2Sets] = String(match.saetze || '').split(':').map(Number);
       const mySets = teamIndex === 1 ? team1Sets : team2Sets;
@@ -651,7 +651,7 @@ function getPlayerForm(player) {
       const tieBreak = mySets === 1 && opponentSets === 2 || mySets === 2 && opponentSets === 1;
       const title = `${formatMatchNumberLabel(match)}: ${won ? 'Sieg' : 'Niederlage'}${tieBreak ? ' im Match-Tie-Break' : ''}`;
 
-      return `<span class="form-chip ${won ? 'form-win' : 'form-loss'} ${tieBreak ? 'form-tiebreak' : ''}" title="${escapeHtml(title)}">${won ? 'S' : 'N'}</span>`;
+      return `<span class="form-chip form-recency-${index} ${won ? 'form-win' : 'form-loss'} ${tieBreak ? 'form-tiebreak' : ''}" title="${escapeHtml(title)}">${won ? 'S' : 'N'}</span>`;
     })
     .join('') || '<span class="neu">—</span>';
 }

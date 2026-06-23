@@ -748,7 +748,11 @@
     .form-chip:first-child { margin-left: 0; }
     .form-win { background: var(--positiv); }
     .form-loss { background: var(--negativ); color: var(--text); }
-    .form-tiebreak { opacity: 0.68; }
+    .form-win.form-tiebreak { background: color-mix(in srgb, var(--positiv) 72%, #f5a03a); }
+    .form-loss.form-tiebreak { background: color-mix(in srgb, var(--negativ) 72%, #f5a03a); }
+    .form-recency-0 { opacity: 1; }
+    .form-recency-1 { opacity: 0.68; }
+    .form-recency-2 { opacity: 0.42; }
 
     .rn { font-family: 'DM Mono', monospace; font-size: 1rem; color: var(--dim); width: 36px; text-align: left !important; }
     .r1 .rn { color: var(--accent); font-weight: 700; }

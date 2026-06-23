@@ -84,16 +84,14 @@
         <div class="sh-title">RANGLISTE</div>
         <div class="sh-meta" id="rl-meta"></div>
       </div>
-      <div class="ranking-controls">
-        <div class="match-scope-toggle ranking-sort-toggle" id="ranking-sort-toggle" aria-label="Rangliste sortieren">
-          <button type="button" class="active" onclick="setRankingSort('points')">Punkte</button>
-          <button type="button" onclick="setRankingSort('elo')">Elo</button>
-          <button type="button" onclick="setRankingSort('placement')">Pl-Fkt.</button>
-        </div>
-        <div class="match-scope-toggle" id="ranking-view-toggle" aria-label="Ranglistenansicht">
-          <button type="button" class="active" onclick="setRankingView('compact')">Kompakt</button>
-          <button type="button" onclick="setRankingView('expanded')">Erweitert</button>
-        </div>
+      <div class="match-scope-toggle ranking-sort-toggle" id="ranking-sort-toggle" aria-label="Rangliste sortieren">
+        <button type="button" class="active" onclick="setRankingSort('points')">Punkte</button>
+        <button type="button" onclick="setRankingSort('elo')">Elo</button>
+        <button type="button" onclick="setRankingSort('placement')">Platzierungsfaktor</button>
+      </div>
+      <div class="match-scope-toggle ranking-view-toggle" id="ranking-view-toggle" aria-label="Ranglistenansicht">
+        <button type="button" class="active" onclick="setRankingView('compact')">Kompakt</button>
+        <button type="button" onclick="setRankingView('expanded')">Erweitert</button>
       </div>
     </div>
     <div class="ranking-wrap">
@@ -123,7 +121,7 @@
             <th>Elo</th>
             <th class="extended-col">Sieg-%</th>
             <th class="extended-col">
-              <span class="th-help-wrap">Pl-Fkt.
+              <span class="th-help-wrap">Platzierungsfaktor
                 <span class="help-icon" tabindex="0" aria-label="Platzierungsfaktor erklären" title="Ø Platz Mitspieler · Ø Platz Gegenspieler · Differenz. Positive Werte bedeuten: Die Gegner waren im Schnitt stärker platziert als die Mitspieler.">?</span>
                 <span class="help-tooltip">Ø Platz Mitspieler · Ø Platz Gegenspieler · Differenz. Positive Werte bedeuten: Die Gegner waren im Schnitt stärker platziert als die Mitspieler.</span>
               </span>
@@ -641,7 +639,7 @@ function formatPlacementFactor(factor) {
   if (!factor || !Number.isFinite(factor.diff)) return '—';
 
   const diffClass = factor.diff > 0 ? 'pos' : factor.diff < 0 ? 'neg' : 'neu';
-  return `<span class="pf-muted">${formatDecimal(factor.partnerAverage)}</span> / <span class="pf-muted">${formatDecimal(factor.opponentAverage)}</span> / <span class="${diffClass}">${formatSignedDecimal(factor.diff)}</span>`;
+  return `<span class="pf-muted">${formatDecimal(factor.partnerAverage)}</span><span class="pf-muted"> / </span><span class="pf-muted">${formatDecimal(factor.opponentAverage)}</span><span class="pf-muted"> / </span><span class="${diffClass}">${formatSignedDecimal(factor.diff)}</span>`;
 }
 
 function getPlayerForm(player) {

@@ -198,6 +198,12 @@
     /* ── SECTION HEADER ── */
     .sh { display: flex; align-items: baseline; gap: 12px; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border); }
     .sh-with-control { align-items: center; justify-content: space-between; }
+    #rangliste > .sh-with-control {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+      align-items: center;
+      gap: 18px;
+    }
     .sh-heading { display: flex; align-items: baseline; gap: 12px; }
     .sh-title { font-family: 'Bebas Neue', sans-serif; font-size: 2rem; letter-spacing: 0.05em; }
     .sh-meta { font-size: 0.85rem; color: var(--dim); }
@@ -231,6 +237,7 @@
       cursor: default;
     }
     .ranking-sort-toggle {
+      justify-self: center;
       gap: 12px;
       padding: 0;
       border: 0;
@@ -251,6 +258,9 @@
       justify-content: flex-end;
       gap: 8px;
       flex-wrap: wrap;
+    }
+    .ranking-view-toggle {
+      justify-self: end;
     }
 
     /* ── HOME / INFO WIDGETS ── */
@@ -580,13 +590,13 @@
     .ranking-note { margin-bottom: 4rem; }
     table.rt { width: 100%; border-collapse: collapse; margin-bottom: 1rem;}
     .ranking-table { --rank-col-left: 0px; --name-col-left: 52px; }
-    .ranking-table.expanded { min-width: 1160px; }
+    .ranking-table.expanded { min-width: 1260px; }
     .ranking-table.compact .extended-col { display: none; }
     .ranking-table.compact col.extended-col { display: none; }
     .ranking-table .col-rank { width: 52px; }
     .ranking-table .col-name { width: 300px; }
-    .ranking-table .col-winrate { width: 96px; }
-    .ranking-table .col-placement-factor { width: 170px; }
+    .ranking-table .col-winrate { width: 118px; }
+    .ranking-table .col-placement-factor { width: 220px; }
     .ranking-table .col-form { width: 110px; }
     table.rt th {
       text-align: right; font-size: 0.7rem; font-weight: 600; letter-spacing: 0.12em;
@@ -614,6 +624,13 @@
     table.rt tbody tr.viewer-highlight .pname {
       color: var(--accent);
       font-weight: 700;
+    }
+    .ranking-table .sticky-rank {
+      width: 52px;
+      min-width: 52px;
+      max-width: 52px;
+      padding-left: 12px;
+      padding-right: 8px;
     }
     .ranking-table.expanded .sticky-rank,
     .ranking-table.expanded .sticky-name {
@@ -882,6 +899,24 @@
         align-items: flex-start;
         gap: 0.8rem;
       }
+      #rangliste > .sh-with-control {
+        grid-template-columns: minmax(0, 1fr) auto;
+        align-items: center;
+        gap: 0.75rem 0.8rem;
+      }
+      #rangliste .sh-heading {
+        grid-column: 1;
+        grid-row: 1;
+      }
+      #ranking-view-toggle {
+        grid-column: 2;
+        grid-row: 1;
+      }
+      #ranking-sort-toggle {
+        grid-column: 1 / -1;
+        grid-row: 2;
+        justify-self: center;
+      }
       .sh-heading {
         flex-wrap: wrap;
         row-gap: 0.2rem;
@@ -889,9 +924,6 @@
       .match-scope-toggle button {
         padding: 0.32rem 0.6rem;
         font-size: 0.78rem;
-      }
-      .ranking-controls {
-        justify-content: flex-start;
       }
       .home-grid,
       .stats-grid,
@@ -939,11 +971,18 @@
       table.rt .col-elo,
       table.rt .col-winrate,
       table.rt .col-form { width: 72px; }
-      table.rt .col-winrate { width: 86px; }
+      table.rt .col-winrate { width: 102px; }
       table.rt .col-gv { width: 102px; }
-      table.rt .col-placement-factor { width: 160px; }
+      table.rt .col-placement-factor { width: 190px; }
       table.rt th { padding: 8px 4px; letter-spacing: 0.09em; }
       table.rt td { padding: 11px 4px; }
+      .ranking-table .sticky-rank {
+        width: 42px;
+        min-width: 42px;
+        max-width: 42px;
+        padding-left: 12px;
+        padding-right: 4px;
+      }
       .ranking-table .sticky-rank,
       .ranking-table .sticky-name {
         position: sticky;

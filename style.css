@@ -590,7 +590,7 @@
     .ranking-note { margin-bottom: 4rem; }
     table.rt { width: 100%; border-collapse: collapse; margin-bottom: 1rem;}
     .ranking-table { --rank-col-left: 0px; --name-col-left: 52px; }
-    .ranking-table.expanded { min-width: 1260px; }
+    .ranking-table.expanded { min-width: 1300px; }
     .ranking-table.compact .extended-col { display: none; }
     .ranking-table.compact col.extended-col { display: none; }
     .ranking-table .col-rank { width: 52px; }
@@ -902,7 +902,8 @@
       #rangliste > .sh-with-control {
         grid-template-columns: minmax(0, 1fr) auto;
         align-items: center;
-        gap: 0.75rem 0.8rem;
+        gap: 0.35rem 0.8rem;
+        margin-bottom: 0;
       }
       #rangliste .sh-heading {
         grid-column: 1;

@@ -205,8 +205,9 @@ Positive Werte bedeuten: Die Gegner waren im Schnitt stärker platziert als die 
         <div class="sh-meta" id="sp-meta"></div>
       </div>
       <div class="match-scope-toggle" id="match-scope-toggle" aria-label="Spielplan filtern">
-        <button type="button" class="active" onclick="setMatchScope(false)">Alle</button>
-        <button type="button" onclick="setMatchScope(true)">Meine</button>
+        <button type="button" class="active" onclick="setMatchScope('all')">Alle</button>
+        <button type="button" onclick="setMatchScope('open')">Offen</button>
+        <button type="button" onclick="setMatchScope('mine')">Meine</button>
       </div>
     </div>
     <div id="spielplan"></div>
@@ -233,7 +234,7 @@ Positive Werte bedeuten: Die Gegner waren im Schnitt stärker platziert als die 
 // ── VIEWER ────────────────────────────────────────────────────────
 const VIEWER_STORAGE_KEY = 'padel-liga-viewer';
 let selectedViewerId = localStorage.getItem(VIEWER_STORAGE_KEY) || 'sb';
-let showOnlyViewerMatches = false;
+let matchScope = 'all';
 let rankingSortMode = 'points';
 let rankingViewMode = 'compact';
 
@@ -290,7 +291,7 @@ function closeViewerMenu() {
 function selectViewer(id) {
   selectedViewerId = id;
   localStorage.setItem(VIEWER_STORAGE_KEY, selectedViewerId);
-  if (!isParticipantView()) showOnlyViewerMatches = false;
+  if (!isParticipantView() && matchScope === 'mine') matchScope = 'all';
   updateViewerPicker();
   updateChartViewerFocus();
   renderHome();
@@ -327,8 +328,9 @@ document.addEventListener('keydown', event => {
   if (event.key === 'Escape') closeViewerMenu();
 });
 
-function setMatchScope(onlyMine) {
-  showOnlyViewerMatches = isParticipantView() && onlyMine;
+function setMatchScope(scope) {
+  matchScope = ['all', 'open', 'mine'].includes(scope) ? scope : 'all';
+  if (matchScope === 'mine' && !isParticipantView()) matchScope = 'all';
   renderSpiele();
 }
 
@@ -338,12 +340,12 @@ function updateMatchScopeToggle() {
 
   const buttons = toggle.querySelectorAll('button');
   const canFilter = isParticipantView();
-  if (!canFilter) showOnlyViewerMatches = false;
+  if (!canFilter && matchScope === 'mine') matchScope = 'all';
 
-  toggle.classList.toggle('disabled', !canFilter);
-  buttons[0].classList.toggle('active', !showOnlyViewerMatches);
-  buttons[1].classList.toggle('active', showOnlyViewerMatches);
-  buttons[1].disabled = !canFilter;
+  buttons[0].classList.toggle('active', matchScope === 'all');
+  buttons[1].classList.toggle('active', matchScope === 'open');
+  buttons[2].classList.toggle('active', matchScope === 'mine');
+  buttons[2].disabled = !canFilter;
 }
 
 function setRankingSort(mode) {
@@ -1155,7 +1157,8 @@ function renderSpiele() {
   const spielplanHtml = spieltage.map(st => {
     const matches = PADEL_DATA.matches
       .filter(m => m.spieltag === st)
-      .filter(m => !showOnlyViewerMatches || isViewerMatch(m))
+      .filter(m => matchScope !== 'open' || m.sieger === null)
+      .filter(m => matchScope !== 'mine' || isViewerMatch(m))
       .sort(compareMatchesByNumber);
     if (!matches.length) return '';
 

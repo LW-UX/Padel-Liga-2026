@@ -172,12 +172,12 @@ Positive Werte bedeuten: Die Gegner waren im Schnitt stärker platziert als die 
         <div id="favorite-check"></div>
       </article>
       <article class="widget">
-        <div class="widget-label">Dominanteste Spiele</div>
-        <div id="dominant-matches"></div>
+        <div class="widget-label">Überraschungen</div>
+        <div id="biggest-upsets"></div>
       </article>
       <article class="widget">
-        <div class="widget-label">Biggest Upsets</div>
-        <div id="biggest-upsets"></div>
+        <div class="widget-label">Dominanteste Spiele</div>
+        <div id="dominant-matches"></div>
       </article>
     </div>
     <div class="chart-box">
@@ -989,7 +989,7 @@ function renderFavoriteCheck() {
 
   document.getElementById('favorite-check').innerHTML = `
     <div class="stat-main">${favoriteRate}%</div>
-    <div class="stat-copy">Favoriten gewinnen ${favoriteWins} von ${matches.length} Spielen.</div>
+    <div class="stat-copy">Favoriten gewannen ${favoriteWins} von ${matches.length} Spielen.</div>
   `;
 }
 

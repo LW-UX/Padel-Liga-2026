@@ -653,6 +653,11 @@
       white-space: nowrap;
       padding-left: 8px;
     }
+    .player-cell-inner {
+      display: inline-flex;
+      align-items: center;
+      white-space: nowrap;
+    }
     .ranking-table.expanded thead .sticky-rank,
     .ranking-table.expanded thead .sticky-name {
       z-index: 6;
@@ -994,12 +999,12 @@
       .ranking-table {
         --rank-col-left: 0px;
         --name-col-left: 70px;
-        table-layout: fixed;
+        table-layout: auto;
       }
       .ranking-table.compact { min-width: 562px; }
-      .ranking-table.expanded { min-width: 1060px; }
+      .ranking-table.expanded { min-width: 1012px; }
       table.rt .col-rank { width: 70px; }
-      table.rt .col-name { width: 160px; }
+      table.rt .col-name { width: auto; }
       table.rt .col-games,
       table.rt .col-wins,
       table.rt .col-points,
@@ -1007,8 +1012,8 @@
       table.rt .col-elo,
       table.rt .col-winrate,
       table.rt .col-form { width: 72px; }
-      table.rt .col-winrate { width: 132px; }
-      table.rt .col-gv { width: 102px; }
+      table.rt .col-winrate { width: 84px; }
+      table.rt .col-gv { width: 76px; }
       table.rt .col-placement-factor { width: 190px; }
       table.rt th { padding: 8px 4px; letter-spacing: 0.09em; }
       table.rt td { padding: 11px 4px; }
@@ -1043,8 +1048,10 @@
       .ranking-table .sticky-rank { left: var(--rank-col-left); }
       .ranking-table .sticky-name {
         left: var(--name-col-left);
-        box-shadow: 10px 0 16px rgba(0,0,0,0.22);
         padding-left: 8px;
+        padding-right: 2px;
+        width: max-content;
+        min-width: max-content;
       }
       .ranking-table thead .sticky-rank,
       .ranking-table thead .sticky-name {
@@ -1064,9 +1071,9 @@
         background: color-mix(in srgb, var(--accent) 20%, var(--bg));
       }
       .help-tooltip {
-        right: auto;
-        left: 0;
-        width: min(260px, calc(100vw - 32px));
+        right: 0;
+        left: auto;
+        width: min(240px, calc(100vw - 32px));
       }
       .ranking-table .rn { width: 70px; padding-left: 12px !important;}
       .points-rank-ref {

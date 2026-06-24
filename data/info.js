@@ -62,15 +62,41 @@ const PADEL_INFO = {
       intro: "Die Zählweise ist bis auf eine Ausnahme komplett identisch zum Tennis.",
       groups: [
         {
-          title: "Grundlagen",
+          title: "Zählfolge",
           items: [
-            "Die Punktfolge lautet 15, 30, 40 und mit dem vierten Punkt ist das Spiel gewonnen.",
-            "Bei Einstand wird statt des traditionellen Vorteils nur ein einziger entscheidender Punkt gespielt.",
-            "Das empfangende Doppel hat bei Einstand die Wahl, ob der Aufschlag links oder rechts erfolgen soll.",
-            "Einen Satz gewinnt die Mannschaft, die zuerst sechs Spiele mit einem Vorteil von zwei Spielen gewinnt.",
-            "Bei 6:6 wird ein Tie-Break gespielt.",
-            "Das Match gewinnt die Mannschaft, die zwei Sätze gewinnt.",
-            "Bei 1:1 Sätzen entscheidet ein Match-Tie-Break bis 10 Punkte mit zwei Punkten Vorteil."
+            "Die Punktfolge lautet 15, 30, 40 und mit dem vierten Punkt ist das Spiel gewonnen."
+          ]
+        },
+        {
+          title: "Einstand",
+          items: [
+            "Bei Einstand (40:40) wird statt des traditionellen Vorteils nur ein einziger, entscheidender Punkt gespielt. Das empfangende Doppel hat die Wahl, ob der Aufschlag auf der linken oder rechten Seite des Spielfelds erfolgen soll."
+          ]
+        },
+        {
+          title: "Satzgewinn",
+          items: [
+            "Einen Satz gewinnt die Mannschaft, die zuerst sechs Spiele mit einem Vorteil von zwei Spielen gewinnt. Bei einem Gleichstand von fünf Spielen muss also bis sieben zu fünf gespielt werden. Falls es zum Gleichstand von sechs Spielen kommt, wird wie im Tennis ein Tie-Break gespielt."
+          ]
+        },
+        {
+          title: "Tie-Break",
+          items: [
+            "Im Tie-Break schlägt die Mannschaft und der Spieler auf, der dies auch bei normaler Fortsetzung des Spiels getan hätte. Der erste Spieler hat dabei nur einen Aufschlag, danach wechselt das Aufschlagrecht zwischen den beiden Teams nach jeweils zwei gespielten Punkten.",
+            "Die Mannschaften tauschen im Tie-Break nach jeweils sechs gespielten Punkten die Spielfeldseite.",
+            "Den Tie-Break gewinnt die Mannschaft, die zuerst sieben Punkte mit zwei Punkten Vorteil erspielt."
+          ]
+        },
+        {
+          title: "Sieger",
+          items: [
+            "Das Match gewinnt die Mannschaft, die zwei Sätze gewinnt. Gewinnen beide Mannschaften einen Satz, wird wie im Tennis ein Match-Tie-Break gespielt."
+          ]
+        },
+        {
+          title: "Match-Tie-Break",
+          items: [
+            "Der Ablauf des Match-Tie-Breaks ist identisch wie der Tie-Break. Der einzige Unterschied ist, dass eine Mannschaft zuerst zehn Punkte mit zwei Punkten Vorteil erspielen muss."
           ]
         }
       ],

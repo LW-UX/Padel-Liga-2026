@@ -201,7 +201,7 @@ Positive Werte bedeuten: Die Gegner waren im Schnitt stärker platziert als die 
   <section id="spiele" class="section">
     <div class="sh sh-with-control">
       <div class="sh-heading">
-        <div class="sh-title">SPIELPLAN</div>
+        <div class="sh-title">SPIELE</div>
         <div class="sh-meta" id="sp-meta"></div>
       </div>
       <div class="match-scope-toggle" id="match-scope-toggle" aria-label="Spielplan filtern">
@@ -1174,7 +1174,7 @@ function renderSpiele() {
   updateMatchScopeToggle();
   const spieltage = [...new Set(PADEL_DATA.matches.map(m => m.spieltag))].sort((a,b)=>a-b);
   const played = PADEL_DATA.matches.filter(m => m.sieger !== null).length;
-  document.getElementById('sp-meta').textContent = `${played} / ${PADEL_DATA.matches.length} Spiele`;
+  document.getElementById('sp-meta').textContent = `${played}/${PADEL_DATA.matches.length}`;
   const spielplanHtml = spieltage.map(st => {
     const matches = PADEL_DATA.matches
       .filter(m => m.spieltag === st)

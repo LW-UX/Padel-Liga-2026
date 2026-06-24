@@ -595,7 +595,7 @@
     .ranking-table.compact col.extended-col { display: none; }
     .ranking-table .col-rank { width: 52px; }
     .ranking-table .col-name { width: 300px; }
-    .ranking-table .col-winrate { width: 118px; }
+    .ranking-table .col-winrate { width: 132px; }
     .ranking-table .col-placement-factor { width: 220px; }
     .ranking-table .col-form { width: 110px; }
     table.rt th {
@@ -967,7 +967,7 @@
         table-layout: fixed;
       }
       .ranking-table.compact { min-width: 562px; }
-      .ranking-table.expanded { min-width: 1030px; }
+      .ranking-table.expanded { min-width: 1060px; }
       table.rt .col-rank { width: 42px; }
       table.rt .col-name { width: 160px; }
       table.rt .col-games,
@@ -977,7 +977,7 @@
       table.rt .col-elo,
       table.rt .col-winrate,
       table.rt .col-form { width: 72px; }
-      table.rt .col-winrate { width: 102px; }
+      table.rt .col-winrate { width: 132px; }
       table.rt .col-gv { width: 102px; }
       table.rt .col-placement-factor { width: 190px; }
       table.rt th { padding: 8px 4px; letter-spacing: 0.09em; }

@@ -237,6 +237,10 @@ let showOnlyViewerMatches = false;
 let rankingSortMode = 'points';
 let rankingViewMode = 'compact';
 
+function isMobileViewport() {
+  return window.matchMedia('(max-width: 768px)').matches;
+}
+
 function getViewerOptions() {
   return [
     { id: 'sb', name: 'Auswählen', short: '-/-' },
@@ -365,10 +369,11 @@ function setRankingView(mode) {
 function updateRankingViewToggle() {
   const toggle = document.getElementById('ranking-view-toggle');
   if (!toggle) return;
+  const effectiveRankingViewMode = isMobileViewport() ? 'expanded' : rankingViewMode;
 
   const buttons = toggle.querySelectorAll('button');
-  buttons[0].classList.toggle('active', rankingViewMode === 'compact');
-  buttons[1].classList.toggle('active', rankingViewMode === 'expanded');
+  buttons[0].classList.toggle('active', effectiveRankingViewMode === 'compact');
+  buttons[1].classList.toggle('active', effectiveRankingViewMode === 'expanded');
 }
 
 // ── NAV ───────────────────────────────────────────────────────────
@@ -679,8 +684,9 @@ function renderRanking() {
   updateRankingSortToggle();
   updateRankingViewToggle();
   const table = document.getElementById('ranking-table');
-  table.classList.toggle('expanded', rankingViewMode === 'expanded');
-  table.classList.toggle('compact', rankingViewMode === 'compact');
+  const effectiveRankingViewMode = isMobileViewport() ? 'expanded' : rankingViewMode;
+  table.classList.toggle('expanded', effectiveRankingViewMode === 'expanded');
+  table.classList.toggle('compact', effectiveRankingViewMode === 'compact');
 
   const withStats = getRankedPlayers(PADEL_DATA.matches, rankingSortMode);
   const rankMap = getRankingPositionMap('points');
@@ -785,8 +791,28 @@ function formatMatchDate(match) {
   return time ? `${date} ${time}` : date;
 }
 
-function formatMatchMeta(match) {
-  return `${match.id.replace('spiel','Spiel ')} | ${formatMatchDate(match)}`;
+function formatRelativeMatchDate(match) {
+  const dateKey = toDateKey(match.datum);
+  const todayKey = toDateKey(new Date());
+  const date = parseDateValue(dateKey);
+  const today = parseDateValue(todayKey);
+  const time = formatMatchTime(match.uhrzeit);
+
+  if (!date || !today) return formatMatchDate(match);
+
+  const dayDiff = Math.round((date.getTime() - today.getTime()) / (24 * 60 * 60 * 1000));
+  const relativeLabel = dayDiff === -1
+    ? 'Gestern'
+    : dayDiff === 0 ? 'Heute' : dayDiff === 1 ? 'Morgen' : null;
+
+  if (!relativeLabel) return formatMatchDate(match);
+
+  return time ? `${relativeLabel} ${time}` : relativeLabel;
+}
+
+function formatMatchMeta(match, options = {}) {
+  const date = options.relative ? formatRelativeMatchDate(match) : formatMatchDate(match);
+  return `${match.id.replace('spiel','Spiel ')} | ${date}`;
 }
 
 function getPendingMatchLabel(match) {
@@ -869,7 +895,7 @@ function renderHome() {
       const probability = getMatchWinProbability(m);
       const probabilityHtml = probability ? `${probability.team1}% : ${probability.team2}%` : '—';
       return `<div class="mini-match-row ${isViewerMatch(m) ? 'viewer-match' : ''}">
-        <div class="mini-match-meta">${formatMatchMeta(m)}</div>
+        <div class="mini-match-meta">${formatMatchMeta(m, { relative: true })}</div>
         <div class="mini-match-grid">
           <div class="mini-match-team mini-match-team-1">${renderTeamPlayers(m.team1.spieler)}</div>
           <div class="mini-match-status">
@@ -1140,7 +1166,7 @@ function renderSpiele() {
           ? `<div class="mc-prob">${probability.team1}% : ${probability.team2}%</div>`
           : '';
         return `<div class="mc pending ${isViewerMatch(m) ? 'viewer-match' : ''}">
-          <div class="mc-meta"><span class="mc-nr">${formatMatchMeta(m)}</span></div>
+          <div class="mc-meta"><span class="mc-nr">${formatMatchMeta(m, { relative: true })}</span></div>
           <div class="mc-team mc-team-1">
             <div class="mc-players">${renderTeamPlayers(m.team1.spieler)}</div>
           </div>
@@ -1163,7 +1189,7 @@ function renderSpiele() {
       const probability = getHistoricalMatchWinProbability(m);
       const leftProbability = probability ? `<span class="mc-result-prob">${probability.team1}%</span>` : '';
       const rightProbability = probability ? `<span class="mc-result-prob">${probability.team2}%</span>` : '';
-      return `<div class="mc played ${isViewerMatch(m) ? `viewer-match ${viewerResultClass}` : ''}">        <div class="mc-meta"><span class="mc-nr">${formatMatchMeta(m)}</span></div>
+      return `<div class="mc played ${isViewerMatch(m) ? `viewer-match ${viewerResultClass}` : ''}">        <div class="mc-meta"><span class="mc-nr">${formatMatchMeta(m, { relative: true })}</span></div>
         <div class="mc-team mc-team-1 ${t1w?'win':''}">
           <div class="mc-players">${renderTeamPlayers(m.team1.spieler)}</div>
         </div>
@@ -1836,6 +1862,9 @@ renderRanking();
 renderSpiele();
 renderStatistik();
 renderInfos();
+
+const mobileViewportQuery = window.matchMedia('(max-width: 768px)');
+mobileViewportQuery.addEventListener?.('change', renderRanking);
 </script>
 </body>
 </html>

@@ -560,6 +560,25 @@ function getRankingPositionMap(sortMode = 'points') {
     .map((player, index) => [player.name, index + 1]));
 }
 
+function formatSignedInteger(value) {
+  if (!Number.isFinite(value)) return '—';
+  if (value === 0) return '±0';
+  return value > 0 ? `+${value}` : `${value}`;
+}
+
+function renderPointsRankReference(currentRank, pointsRank) {
+  if (rankingSortMode === 'points' || !Number.isFinite(pointsRank)) return '';
+
+  const delta = pointsRank - currentRank;
+  const deltaClass = delta > 0 ? 'pos' : delta < 0 ? 'neg' : 'neu';
+  const deltaLabel = formatSignedInteger(delta);
+
+  return `<span class="points-rank-ref" title="Punkte-Rang ${pointsRank}, Veränderung ${deltaLabel}">
+    <span class="points-rank-num">${pointsRank}</span>
+    <span class="points-rank-delta ${deltaClass}">${deltaLabel}</span>
+  </span>`;
+}
+
 function getPlayerMatches(player) {
   return PADEL_DATA.matches.filter(match =>
     match.team1.spieler.includes(player.name) || match.team2.spieler.includes(player.name)
@@ -701,11 +720,13 @@ function renderRanking() {
   };
   document.getElementById('rl-sort-note').textContent = sortNotes[rankingSortMode] || sortNotes.points;
   document.getElementById('rl-body').innerHTML = withStats.map((p, i) => {
+    const currentRank = i + 1;
+    const pointsRank = rankMap.get(p.name);
     const extras = getPlayerRankingExtras(p, rankMap);
     const spielDiffStr = p.stats.spiele > 0 ? (p.stats.spielDiff >= 0 ? `+${p.stats.spielDiff}` : `${p.stats.spielDiff}`) : '—';
     const spielDiffClass = p.stats.spielDiff > 0 ? 'pos' : p.stats.spielDiff < 0 ? 'neg' : 'neu';
-    return `<tr class="r${Math.min(i+1,4)} ${isSelectedPlayer(p.name) ? 'viewer-highlight' : ''}">
-      <td class="rn l sticky-rank">${i+1}</td>
+    return `<tr class="r${Math.min(currentRank,4)} ${isSelectedPlayer(p.name) ? 'viewer-highlight' : ''}">
+      <td class="rn l sticky-rank"><span class="rank-cell-inner"><span class="rank-main">${currentRank}</span>${renderPointsRankReference(currentRank, pointsRank)}</span></td>
       <td class="l sticky-name"><span class="pname">${p.name}</span><span class="firma-badge firma-${p.firma}"><span class="firma-full">${p.firma}</span><span class="firma-short">${firmaShort[p.firma] || p.firma}</span></span></td>
       <td class="num-val">${p.stats.spiele}</td>
       <td class="num-val">${p.stats.siege}</td>

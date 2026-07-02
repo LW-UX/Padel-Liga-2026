@@ -619,6 +619,9 @@
     table.rt tbody tr { transition: background 0.1s; }
     table.rt tbody tr:nth-child(even) { background: var(--row-alt); }
     table.rt tbody tr:hover { background: var(--surface); }
+    table.rt tbody tr.top-four-highlight td:first-child {
+      box-shadow: inset 3px 0 0 var(--dim);
+    }
     table.rt tbody tr.viewer-highlight td {
       background: rgba(212,245,58,0.12);
     }

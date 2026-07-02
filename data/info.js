@@ -323,9 +323,51 @@ const PADEL_INFO = {
     },
     {
       spieltag: 5,
-      startDate: null,
-      endDate: null,
-      title: "Spieltag 5"
+      startDate: "2026-07-06",
+      endDate: "2026-07-19",
+      title: "Neuer König, alte Kämpfer",
+      meta: "SPIELTAG 5  ·  6. JULI - 17. JULI 2026",
+      body: [
+        { type: "p", text: "Die Padel-Liga 2026 hat eine neue Nummer eins: Sie heißt Luca W. Mit drei Siegen aus drei Spielen, neun Punkten und einer Differenz von +22 hat sich der Envidual-Mann an die Tabellenspitze geschoben. Der Weg dorthin führte über niemand Geringeren als Marcel M. Der Spirit-König ist also verwundbar." },
+        { type: "p", text: "Aber Marcel war nicht der einzige, den es erwischte. In Spiel 13 besiegten Chris M. und Raphael H. das Team aus Ludwig W. und Irene W. mit 7:6 und 6:2. Ludwigs erste Niederlage der Saison bedeutet für den Ex-Tabellenführer das Abrutschen auf Platz 6." },
+        { type: "p", text: "Damit stehen alle fünf Envidual-Spieler in den Top 6. Nur Marco M. von Headsquare auf Platz 4 verhindert die totale Dominanz des Jung-Unternehmens. Headsquare und Hanako müssen sich Sorgen machen." },
+
+        { type: "h", text: "Ankündigung: Die Top 4 spielen um den Titel" },
+        { type: "p", text: "Die Ligaleitung hat das Finale enthüllt und es wird spektakulär: Die besten vier Spieler nach Abschluss aller sechs Spieltage qualifizieren sich für ein Final Four. Dort spielt jeder gegen jeden, ein Satz pro Konstellation. Wer hier gewinnt, wird erster Padel-Liga-Champion der Unternehmensgruppe." },
+
+        { type: "h", text: "Spiel 17 - Luca gegen Ludwig" },
+        { type: "match", text: "Martin B. & Luca W. vs. Florian Z. & Ludwig W.", result: "40 : 60 %", resultLabel: "Gewinnwahrscheinlichkeit" },
+        { type: "p", text: "Das Topspiel des Spieltags. Tabellenführer Luca W. gegen den auf Platz 6 abgerutschten Ludwig W. Beide mit einem Elo-Rating jenseits der 1000, beide mit der Hoffnung, die Liga zu gewinnen. Die Frage ist: Wer hat den besseren Partner an seiner Seite?" },
+        { type: "p", text: "Florian Z. (Platz 14, ein Spiel, null Punkte) hat die passende Analyse:" },
+        { type: "quote", text: "Meine Einschätzung ist ganz klar. Das Spiel ist Luca gegen Ludwig. Und es kommt drauf an, wer von Martin und mir den besseren Tag hat, um seinen Partner besser zu unterstützen.", author: "Florian Z." },
+        { type: "p", text: "Flos Ehrlichkeit ehrt ihn und sein Gegenüber Martin B. dürfte sie teilen. Es ist das Duell zweier Topstars mit zwei Partnern, die noch nach ihrem ersten Punkt suchen. Luca W. bleibt trotz Favoritenstatus bescheiden:" },
+        { type: "quote", text: "Es wird am Ende auch Glück eine Rolle spielen.", author: "Luca W." },
+
+        { type: "h", text: "Spiel 18 - Greta hofft, Jonas jagt" },
+        { type: "match", text: "Chris M. & Agnes K. vs. Jonas L. & Greta P.", result: "46 : 54 %", resultLabel: "Gewinnwahrscheinlichkeit" },
+        { type: "p", text: "Drei Spiele, null Siege, Differenz von -17. Gretas Saison liest sich bislang wie ein Drama in drei Akten. Am nächsten kam sie in Spiel 12, als sie sich mit Andreas L. erst im Match-Tie-Break bei 6:10 die Segel streichen musste. Ein Sieg, der zum Greifen nah war, und der umso mehr schmerzte." },
+        { type: "quote", text: "Ich hoffe auf meinen ersten Sieg. Diesmal wirklich.", author: "Greta P." },
+        { type: "p", text: "An ihrer Seite steht mit Jonas L. einer der erfolgreichsten Spieler der Liga: Platz 2, drei Siege, acht Punkte, makellose Bilanz. Wenn jemand Greta zum ersten Sieg führen kann, dann er. Auf der anderen Seite stehen Chris M. und Agnes K., die wie Greta noch auf ihren Durchbruch wartet. Die Gewinnwahrscheinlichkeit ist mit 54:46 denkbar knapp. Gretas Moment könnte gekommen sein." },
+
+        { type: "h", text: "Spiel 19 - Drei Tennisspieler und ein Mann mit einer Mission" },
+        { type: "match", text: "Raphael H. & Andreas L. vs. Lukas P. & Niklas K.", result: "75 : 25 %", resultLabel: "Gewinnwahrscheinlichkeit" },
+        { type: "p", text: "75 zu 25. Auf dem Papier eine klare Sache für Raphael H. und Andreas L. Doch Andreas selbst sieht das anders:" },
+        { type: "quote", text: "Ne, so deutlich ist diese Partie nicht. Das ist auf jeden Fall 50:50. Ich freue mich, mit dem Raphi zu spielen.", author: "Andreas L." },
+        { type: "p", text: "Und er hat einen Punkt, denn drei der vier Spieler auf dem Platz kommen vom Tennis. Raphael H., Andreas L. und Lukas P. gehören zu den erfahrensten Schlägersportlern der Liga. Lukas P. hat nach seinem holprigen Debüt zuletzt mit zwei Siegen in Folge bewiesen, dass er den Vorschusslorbeeren durchaus gerecht werden kann. Sein Elo von 1130 ist der dritthöchste der Liga." },
+        { type: "p", text: "Und Niklas K.? Platz 16 nach drei Niederlagen. Aber wer Lukas P. an seiner Seite hat, darf sich mehr zutrauen als 25 Prozent." },
+
+        { type: "h", text: "Spiel 20 - Christoph sieht schwarz, Cristian sieht nur Siege" },
+        { type: "match", text: "Christoph L. & Irene W. vs. Marco M. & Cristian B.", result: "29 : 71 %", resultLabel: "Gewinnwahrscheinlichkeit" },
+        { type: "p", text: "Wo andere Spieler ihre Chancen schönreden, liefert Christoph Partie für Partie die schonungsloseste Selbsteinschätzung des gesamten Turniers:" },
+        { type: "quote", text: "Uh, das ist ein Problem. Das verlieren wir 0:6, 0:6.", author: "Christoph L." },
+        { type: "p", text: "Nach dem \"Pfuuuu, das verlieren wir\" von Spieltag 4 setzt Christoph einen neuen Maßstab in Sachen Ehrlichkeit. Und die 29 Prozent Siegwahrscheinlichkeit geben ihm nicht gerade Unrecht. Auf der Gegenseite steht ein Cristian B., der nach seiner überstandenen Rippenprellung vor Tatendrang sprüht:" },
+        { type: "quote", text: "Ich bin wieder fit. Also gewinne ich ab jetzt jedes Spiel. Ich meine, beim letzten Mal, wo ich wieder fit war, hatten wir das beste Ergebnis der Liga.", author: "Cristian B." },
+        { type: "p", text: "Er meint das 6:1, 6:0 mit Lukas P. in Spiel 14, tatsächlich das deutlichste Ergebnis der bisherigen Liga. Für Christoph und Irene wird es ein langer Nachmittag, oder eben ein kurzer." },
+
+        { type: "h", text: "Der Blick auf die Tabelle - und das große Ziel" },
+        { type: "p", text: "Mit der Ankündigung des Final Four hat jede Platzierung ein neues Gewicht bekommen. Aktuell stehen Luca W., Jonas L., Marcel M. und Marco M. auf den begehrten vier Plätzen, aber dahinter lauern fünf Spieler mit sechs Punkten, die nur einen Sieg vom Einzug ins Final Four entfernt sind. Ein einziger Sieg kann den Unterschied zwischen Finale und Zuschauerrang bedeuten." },
+        { type: "p", text: "Spieltag 5. Die Liga biegt auf die Zielgerade ein. Und die Frage ist nicht mehr, wer oben steht, sondern wer es ins Final Four schafft." }
+      ]
     },
     {
       spieltag: 6,

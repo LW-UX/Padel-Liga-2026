@@ -4,7 +4,7 @@ const PADEL_INFO = {
     "Partner und Gegner werden jedes Spiel neu gelost.",
     "Es gibt kein fixes Spieldatum, sondern Zeitfenster. Die Spieler stimmen sich selbst ab.",
     "Ein Spiel hat 2 Gewinnsätze, bei 1:1 entscheidet der Match-Tie-Break bis 10 Punkte.",
-    "Spieler mit den meisten Punkten nach 6 Spielen gewinnt die Liga."
+    "Die besten 4 Spieler nach 6 Spieltagen qualifizieren sich für das Final Four."
   ],
 
   sections: [

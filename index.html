@@ -714,7 +714,7 @@ function renderRanking() {
   const firmaShort = { Envidual: 'Env', Headsquare: 'Hsq', Hanako: 'Han' };
   document.getElementById('rl-meta').textContent = withStats.length + ' Spieler';
   const sortNotes = {
-    points: 'Sortierung: Punkte · Siege · Spiel-Differenz · gewonnene Spiele',
+    points: 'Top 4: Final-Four-Qualifikation  |  Sortierung: Punkte · Siege · Spiel-Differenz · gewonnene Spiele',
     elo: 'Sortierung: Elo · Punkte · Siege · Spiel-Differenz',
     placement: 'Sortierung: bereinigter Rang aus Punkte-Platz minus Platzierungsfaktor'
   };
@@ -725,7 +725,8 @@ function renderRanking() {
     const extras = getPlayerRankingExtras(p, rankMap);
     const spielDiffStr = p.stats.spiele > 0 ? (p.stats.spielDiff >= 0 ? `+${p.stats.spielDiff}` : `${p.stats.spielDiff}`) : '—';
     const spielDiffClass = p.stats.spielDiff > 0 ? 'pos' : p.stats.spielDiff < 0 ? 'neg' : 'neu';
-    return `<tr class="r${Math.min(currentRank,4)} ${isSelectedPlayer(p.name) ? 'viewer-highlight' : ''}">
+    const isTopFourQualifier = pointsRank <= 4;
+    return `<tr class="r${Math.min(currentRank,4)} ${isTopFourQualifier ? 'top-four-highlight' : ''} ${isSelectedPlayer(p.name) ? 'viewer-highlight' : ''}">
       <td class="rn l sticky-rank"><span class="rank-cell-inner"><span class="rank-main">${currentRank}</span>${renderPointsRankReference(currentRank, pointsRank)}</span></td>
       <td class="l sticky-name"><span class="player-cell-inner"><span class="pname">${p.name}</span><span class="firma-badge firma-${p.firma}"><span class="firma-full">${p.firma}</span><span class="firma-short">${firmaShort[p.firma] || p.firma}</span></span></span></td>
       <td class="num-val">${p.stats.spiele}</td>

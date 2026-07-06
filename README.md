@@ -12,7 +12,8 @@ padel-liga/
 │   ├── seasons.js              ← Verfügbare Saisons und Standard-Saison
 │   ├── data2026.js             ← Saison 2026: Spieler, Spiele, Kurzinfos, Artikel
 │   └── info.js                 ← Globale Regeltexte und allgemeine Infos
-└── padel_elo_rechner_v4.html   ← separater Elo-Rechner
+└── tools/
+    └── elo-calculator.html     ← internes Werkzeug zur Elo-Berechnung
 ```
 
 ## Auf GitHub Pages veröffentlichen
@@ -52,6 +53,8 @@ Nach jedem Spiel öffnest du die passende Saisondatei, zum Beispiel `data/data20
 ```
 
 Saisonabhängige Texte wie Kurzinfos und Artikel liegen ebenfalls in der Saisondatei. Allgemeine Regeln und Infos liegen in `data/info.js`.
+
+Der Elo-Rechner in `tools/elo-calculator.html` ist ein internes Hilfsmittel und nicht in der Webseite verlinkt.
 
 ## Alte Saisons öffnen
 

@@ -207,6 +207,7 @@
     .sh-heading { display: flex; align-items: baseline; gap: 12px; }
     .sh-title { font-family: 'Bebas Neue', sans-serif; font-size: 2rem; letter-spacing: 0.05em; }
     .sh-meta { font-size: 0.85rem; color: var(--dim); }
+    .section-subheading { margin-top: 2.5rem; }
     .match-scope-toggle {
       display: inline-flex;
       flex: 0 0 auto;
@@ -829,7 +830,7 @@
       padding: 2px 8px; border-radius: 100px; border: 1px solid var(--border);
       background: transparent; color: var(--muted); cursor: pointer; transition: all 0.15s;
     }
-    .fb.on { color: #000; border-color: transparent; }
+    .fb.on { background: var(--player-color); color: #000; border-color: transparent; }
     .fb-toggle {
       font-family: 'DM Sans', sans-serif; font-size: 0.85rem; font-weight: 500;
       padding: 4px 12px; border-radius: 100px; border: 1px solid var(--border);

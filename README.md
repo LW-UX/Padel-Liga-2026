@@ -4,9 +4,15 @@
 
 ```
 padel-liga/
-├── index.html        ← Hauptseite (Rangliste, Verlauf, Spiele, Admin)
-└── data/
-    └── data.js       ← Alle Spieler- und Spieldaten (hier aktualisieren!)
+├── index.html                  ← Seitenstruktur
+├── style.css                   ← Layout und Design
+├── js/
+│   └── app.js                  ← Navigation, Berechnungen und Darstellung
+├── data/
+│   ├── seasons.js              ← Verfügbare Saisons und Standard-Saison
+│   ├── data2026.js             ← Saison 2026: Spieler, Spiele, Kurzinfos, Artikel
+│   └── info.js                 ← Globale Regeltexte und allgemeine Infos
+└── padel_elo_rechner_v4.html   ← separater Elo-Rechner
 ```
 
 ## Auf GitHub Pages veröffentlichen
@@ -20,7 +26,7 @@ padel-liga/
 
 ## Daten aktualisieren
 
-Nach jedem Spiel öffnest du `data/data.js` und aktualisierst:
+Nach jedem Spiel öffnest du die passende Saisondatei, zum Beispiel `data/data2026.js`, und aktualisierst:
 
 ### Spieler-Elo aktualisieren
 ```js
@@ -45,8 +51,14 @@ Nach jedem Spiel öffnest du `data/data.js` und aktualisierst:
 }
 ```
 
-## Admin-Passwort
+Saisonabhängige Texte wie Kurzinfos und Artikel liegen ebenfalls in der Saisondatei. Allgemeine Regeln und Infos liegen in `data/info.js`.
 
-Standard: `padel2026`
+## Alte Saisons öffnen
 
-Zum Ändern: In `index.html` die Zeile `const ADMIN_PW = 'padel2026';` anpassen.
+Die Saison kann über die URL ausgewählt werden:
+
+```text
+index.html?saison=2026
+```
+
+Ohne Parameter wird die Standard-Saison aus `data/seasons.js` geladen.

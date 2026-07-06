@@ -118,14 +118,14 @@ const PADEL_DATA = {
     { id: "spiel7",  spieltag: 2, datum: "2026-06-12", uhrzeit: "07.30", team1: { spieler: ["Christoph L.","Raphael H."]  }, team2: { spieler: ["Marco M.",     "Marcel M."] }, ergebnis: "1:6, 1:6", saetze: "0:2", sieger: 2 },
     { id: "spiel8",  spieltag: 2, datum: "2026-06-17", uhrzeit: "12.00", team1: { spieler: ["Chris M.",    "Jonas L."]    }, team2: { spieler: ["Irene W.",     "Leonie R."] }, ergebnis: "6:0, 6:2", saetze: "2:0", sieger: 1 },
     // SPIELTAG 3
-    { id: "spiel9",  spieltag: 3, datum: "2026-06-08", uhrzeit: null, team1: { spieler: ["Cristian B.", "Chris M."]    }, team2: { spieler: ["Raphael H.",   "Leonie R."] }, ergebnis: null, saetze: null, sieger: null },
+    { id: "spiel9",  spieltag: 3, datum: "2026-07-07", uhrzeit: "07.30", team1: { spieler: ["Cristian B.", "Chris M."]    }, team2: { spieler: ["Raphael H.",   "Leonie R."] }, ergebnis: null, saetze: null, sieger: null },
     { id: "spiel10", spieltag: 3, datum: "2026-07-09", uhrzeit: "12.00", team1: { spieler: ["Agnes K.",    "Lukas P."]    }, team2: { spieler: ["Ludwig W.",    "Marco M."]  }, ergebnis: null, saetze: null, sieger: null },
     { id: "spiel11", spieltag: 3, datum: "2026-06-08", uhrzeit: null, team1: { spieler: ["Christoph L.","Florian Z."]  }, team2: { spieler: ["Luca W.",      "Irene W."]  }, ergebnis: null, saetze: null, sieger: null },
     { id: "spiel12", spieltag: 3, datum: "2026-06-03", uhrzeit: "12.30", team1: { spieler: ["Greta P.",    "Andreas L."]  }, team2: { spieler: ["Marcel M.",    "Jonas L."]  }, ergebnis: "1:6, 6:3 – 6:10", saetze: "1:2", sieger: 2 },
     // SPIELTAG 4
     { id: "spiel13", spieltag: 4, datum: "2026-06-23", uhrzeit: "07.30", team1: { spieler: ["Chris M.",    "Raphael H."]  }, team2: { spieler: ["Ludwig W.",    "Irene W."]  }, ergebnis: "7:6 (11:9), 6:2", saetze: "2:0", sieger: 1 },
     { id: "spiel14", spieltag: 4, datum: "2026-06-25", uhrzeit: "12.00", team1: { spieler: ["Cristian B.", "Lukas P."]    }, team2: { spieler: ["Christoph L.", "Martin B."] }, ergebnis: "6:1, 6:0", saetze: "2:0", sieger: 1 },
-    { id: "spiel15", spieltag: 4, datum: "2026-07-07", uhrzeit: "07.30", team1: { spieler: ["Marco M.",    "Andreas L."]  }, team2: { spieler: ["Leonie R.",    "Niklas K."] }, ergebnis: null, saetze: null, sieger: null },
+    { id: "spiel15", spieltag: 4, datum: "2026-06-22", uhrzeit: null, team1: { spieler: ["Marco M.",    "Andreas L."]  }, team2: { spieler: ["Leonie R.",    "Niklas K."] }, ergebnis: null, saetze: null, sieger: null },
     { id: "spiel16", spieltag: 4, datum: "2026-06-22", uhrzeit: null, team1: { spieler: ["Marcel M.",   "Florian Z."]  }, team2: { spieler: ["Agnes K.",     "Jonas L."]  }, ergebnis: null, saetze: null, sieger: null },
     // SPIELTAG 5
     { id: "spiel17", spieltag: 5, datum: "2026-07-06", uhrzeit: null, team1: { spieler: ["Martin B.",   "Luca W."]     }, team2: { spieler: ["Florian Z.",   "Ludwig W."] }, ergebnis: null, saetze: null, sieger: null },

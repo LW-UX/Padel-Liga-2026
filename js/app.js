@@ -245,8 +245,31 @@ document.addEventListener('click', event => {
   if (picker && !picker.contains(event.target)) closeViewerMenu();
 });
 
+document.addEventListener('mouseover', event => {
+  const formChip = event.target.closest('[data-form-match-id]');
+  if (formChip) showFormTooltip(formChip);
+});
+
+document.addEventListener('mouseout', event => {
+  const formChip = event.target.closest('[data-form-match-id]');
+  if (formChip && !formChip.contains(event.relatedTarget)) hideFormTooltip();
+});
+
+document.addEventListener('focusin', event => {
+  const formChip = event.target.closest('[data-form-match-id]');
+  if (formChip) showFormTooltip(formChip);
+});
+
+document.addEventListener('focusout', event => {
+  const formChip = event.target.closest('[data-form-match-id]');
+  if (formChip) hideFormTooltip();
+});
+
 document.addEventListener('keydown', event => {
-  if (event.key === 'Escape') closeViewerMenu();
+  if (event.key === 'Escape') {
+    closeViewerMenu();
+    hideFormTooltip();
+  }
 });
 
 function setMatchScope(scope) {
@@ -599,7 +622,13 @@ function getPlayerForm(player) {
       const tieBreak = mySets === 1 && opponentSets === 2 || mySets === 2 && opponentSets === 1;
       const title = `${formatMatchNumberLabel(match)}: ${won ? 'Sieg' : 'Niederlage'}${tieBreak ? ' im Match-Tie-Break' : ''}`;
 
-      return `<span class="form-chip form-recency-${index} ${won ? 'form-win' : 'form-loss'} ${tieBreak ? 'form-tiebreak' : ''}" title="${escapeHtml(title)}">${won ? 'S' : 'N'}</span>`;
+      return `<span
+        class="form-chip form-recency-${index} ${won ? 'form-win' : 'form-loss'} ${tieBreak ? 'form-tiebreak' : ''}"
+        tabindex="0"
+        aria-label="${escapeHtml(title)}"
+        data-form-player="${escapeHtml(player.name)}"
+        data-form-match-id="${escapeHtml(match.id)}"
+      >${won ? 'S' : 'N'}</span>`;
     })
     .join('') || '<span class="neu">—</span>';
 }
@@ -1394,6 +1423,10 @@ function getPlayerMatchContext(playerName, match) {
   };
 }
 
+function getMatchById(matchId) {
+  return PADEL_DATA.matches.find(match => match.id === matchId) || null;
+}
+
 function formatStatDiff(diff) {
   if (!Number.isFinite(diff)) return '—';
   return diff >= 0 ? `+${diff}` : `${diff}`;
@@ -1428,6 +1461,40 @@ function getOrCreateChartTooltip(chartInstance, className = 'chart-custom-toolti
   return tooltip;
 }
 
+function getOrCreateFormTooltip() {
+  let tooltip = document.querySelector('.form-custom-tooltip');
+
+  if (!tooltip) {
+    tooltip = document.createElement('div');
+    tooltip.className = 'chart-custom-tooltip form-custom-tooltip';
+    document.body.appendChild(tooltip);
+  }
+
+  return tooltip;
+}
+
+function renderEloStyleTooltipItem({
+  playerName,
+  elo,
+  delta,
+  deltaClass = 'neu',
+  gameLabel = '',
+  matchContext = null,
+  showElo = true
+}) {
+  return `<div class="elo-tooltip-item">
+    <div class="elo-tooltip-name">${escapeHtml(playerName)}</div>
+    ${showElo ? `<div class="elo-tooltip-main">Elo: ${escapeHtml(elo)} ${delta ? `<span class="elo-tooltip-delta ${deltaClass}">${escapeHtml(delta)}</span>` : ''}</div>` : ''}
+    ${matchContext ? `
+      <div>Ergebnis: ${escapeHtml(matchContext.result)}</div>
+      <div>Mit: ${escapeHtml(matchContext.partner)}</div>
+      <div>vs. ${escapeHtml(matchContext.opponents)}</div>
+    ` : gameLabel ? `
+      <div>${escapeHtml(gameLabel)}</div>
+    ` : ''}
+  </div>`;
+}
+
 function positionChartTooltip(chartInstance, tooltip, tooltipEl) {
   const isMobile = window.matchMedia('(max-width: 768px)').matches;
 
@@ -1452,6 +1519,70 @@ function positionChartTooltip(chartInstance, tooltip, tooltipEl) {
   tooltipEl.style.transform = 'translate(12px, -50%)';
 }
 
+function positionFormTooltip(anchor, tooltipEl) {
+  const rect = anchor.getBoundingClientRect();
+  const gap = 10;
+  const viewportPadding = 12;
+  const isMobile = window.matchMedia('(max-width: 768px)').matches;
+
+  tooltipEl.style.opacity = 1;
+  tooltipEl.style.transform = 'none';
+  tooltipEl.style.left = `${viewportPadding}px`;
+  tooltipEl.style.top = `${rect.bottom + gap}px`;
+
+  const tooltipWidth = tooltipEl.offsetWidth || 240;
+  const tooltipHeight = tooltipEl.offsetHeight || 80;
+
+  if (isMobile) {
+    const top = Math.min(rect.bottom + gap, window.innerHeight - tooltipHeight - viewportPadding);
+    tooltipEl.style.left = `${viewportPadding}px`;
+    tooltipEl.style.right = `${viewportPadding}px`;
+    tooltipEl.style.top = `${Math.max(top, viewportPadding)}px`;
+    return;
+  }
+
+  tooltipEl.style.right = 'auto';
+
+  let left = rect.right + gap;
+  if (left + tooltipWidth > window.innerWidth - viewportPadding) {
+    left = rect.left - tooltipWidth - gap;
+  }
+  if (left < viewportPadding) left = viewportPadding;
+
+  let top = rect.top + rect.height / 2 - tooltipHeight / 2;
+  top = Math.max(viewportPadding, Math.min(top, window.innerHeight - tooltipHeight - viewportPadding));
+
+  tooltipEl.style.left = `${left}px`;
+  tooltipEl.style.top = `${top}px`;
+}
+
+function showFormTooltip(anchor) {
+  const match = getMatchById(anchor.dataset.formMatchId);
+  const playerName = anchor.dataset.formPlayer;
+  const matchContext = getPlayerMatchContext(playerName, match);
+  const tooltipEl = getOrCreateFormTooltip();
+
+  if (!match || !matchContext) {
+    tooltipEl.style.opacity = 0;
+    return;
+  }
+
+  tooltipEl.innerHTML = `
+    <div class="elo-tooltip-title">${escapeHtml(formatMatchMeta(match))}</div>
+    ${renderEloStyleTooltipItem({
+      playerName,
+      matchContext,
+      showElo: false
+    })}
+  `;
+  positionFormTooltip(anchor, tooltipEl);
+}
+
+function hideFormTooltip() {
+  const tooltipEl = document.querySelector('.form-custom-tooltip');
+  if (tooltipEl) tooltipEl.style.opacity = 0;
+}
+
 function externalEloTooltip(context) {
   const { chart: chartInstance, tooltip } = context;
   const tooltipEl = getOrCreateChartTooltip(chartInstance);
@@ -1474,17 +1605,14 @@ function externalEloTooltip(context) {
       const gameLabel = item.dataset.gameLabels?.[item.dataIndex] || '';
       const matchContext = item.dataset.matchContexts?.[item.dataIndex];
 
-      return `<div class="elo-tooltip-item">
-        <div class="elo-tooltip-name">${escapeHtml(item.dataset.label)}</div>
-        <div class="elo-tooltip-main">Elo: ${escapeHtml(item.parsed.y)} ${delta ? `<span class="elo-tooltip-delta ${deltaClass}">${escapeHtml(delta)}</span>` : ''}</div>
-        ${matchContext ? `
-          <div>Ergebnis: ${escapeHtml(matchContext.result)}</div>
-          <div>Mit: ${escapeHtml(matchContext.partner)}</div>
-          <div>vs. ${escapeHtml(matchContext.opponents)}</div>
-        ` : gameLabel ? `
-          <div>${escapeHtml(gameLabel)}</div>
-        ` : ''}
-      </div>`;
+      return renderEloStyleTooltipItem({
+        playerName: item.dataset.label,
+        elo: item.parsed.y,
+        delta,
+        deltaClass,
+        gameLabel,
+        matchContext
+      });
     }).join('')}
   `;
 

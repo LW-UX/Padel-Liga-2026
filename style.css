@@ -760,7 +760,10 @@
       font-size: 0.72rem;
       font-weight: 700;
       margin-left: 4px;
+      cursor: help;
+      outline: none;
     }
+    .form-chip:focus-visible { box-shadow: 0 0 0 2px var(--text); }
     .form-chip:first-child { margin-left: 0; }
     .form-win { background: var(--positiv); }
     .form-loss { background: var(--negativ); color: var(--text); }
@@ -856,6 +859,10 @@
       line-height: 1.35;
       padding: 0.7rem 0.8rem;
       box-shadow: 0 14px 36px rgba(0,0,0,0.35);
+    }
+    .form-custom-tooltip {
+      position: fixed;
+      max-width: min(260px, calc(100vw - 24px));
     }
     .elo-tooltip-title {
       color: var(--muted);

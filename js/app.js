@@ -1427,6 +1427,50 @@ function getMatchById(matchId) {
   return PADEL_DATA.matches.find(match => match.id === matchId) || null;
 }
 
+function getPlayerByName(playerName) {
+  return PADEL_DATA.players.find(player => player.name === playerName) || null;
+}
+
+function getPlayerHistoryEntryForMatch(player, match) {
+  if (!player || !match) return null;
+  const matchNumber = getMatchNumber(match);
+
+  return (player.history || []).find(historyEntry =>
+    getMatchNumber(historyEntry.spiel) === matchNumber &&
+    Number.isFinite(Number(historyEntry.elo))
+  ) || null;
+}
+
+function getPlayerPreviousHistoryEntry(player, historyEntry) {
+  if (!player || !historyEntry) return null;
+  const currentOrderKey = getHistoryOrderKey(historyEntry);
+
+  return (player.history || [])
+    .filter(entry =>
+      entry !== historyEntry &&
+      getHistoryOrderKey(entry) < currentOrderKey &&
+      Number.isFinite(Number(entry.elo))
+    )
+    .sort((a, b) => getHistoryOrderKey(b).localeCompare(getHistoryOrderKey(a)))[0] || null;
+}
+
+function getPlayerMatchEloTooltipData(playerName, match) {
+  const player = getPlayerByName(playerName);
+  const historyEntry = getPlayerHistoryEntryForMatch(player, match);
+  if (!historyEntry) return { elo: '', delta: '', deltaClass: 'neu' };
+
+  const previousHistoryEntry = getPlayerPreviousHistoryEntry(player, historyEntry);
+  const elo = Number(historyEntry.elo);
+  const previousElo = previousHistoryEntry ? Number(previousHistoryEntry.elo) : null;
+  const delta = previousElo === null ? null : elo - previousElo;
+
+  return {
+    elo,
+    delta: formatEloDelta(delta),
+    deltaClass: delta > 0 ? 'pos' : delta < 0 ? 'neg' : 'neu'
+  };
+}
+
 function formatStatDiff(diff) {
   if (!Number.isFinite(diff)) return '—';
   return diff >= 0 ? `+${diff}` : `${diff}`;
@@ -1567,12 +1611,15 @@ function showFormTooltip(anchor) {
     return;
   }
 
+  const eloTooltipData = getPlayerMatchEloTooltipData(playerName, match);
+
   tooltipEl.innerHTML = `
     <div class="elo-tooltip-title">${escapeHtml(formatMatchMeta(match))}</div>
     ${renderEloStyleTooltipItem({
       playerName,
+      ...eloTooltipData,
       matchContext,
-      showElo: false
+      showElo: true
     })}
   `;
   positionFormTooltip(anchor, tooltipEl);

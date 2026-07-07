@@ -81,6 +81,11 @@ window.PADEL_SEASON = {
           "date": "2026-06-23",
           "elo": 956,
           "spiel": "Spiel 13"
+        },
+        {
+          "date": "2026-07-07",
+          "elo": 1006,
+          "spiel": "Spiel 9"
         }
       ]
     },
@@ -137,6 +142,11 @@ window.PADEL_SEASON = {
           "date": "2026-06-25",
           "elo": 866,
           "spiel": "Spiel 14"
+        },
+        {
+          "date": "2026-07-07",
+          "elo": 925,
+          "spiel": "Spiel 9"
         }
       ]
     },
@@ -262,6 +272,11 @@ window.PADEL_SEASON = {
           "date": "2026-06-17",
           "elo": 678,
           "spiel": "Spiel 8"
+        },
+        {
+          "date": "2026-07-07",
+          "elo": 649,
+          "spiel": "Spiel 9"
         }
       ]
     },
@@ -486,6 +501,11 @@ window.PADEL_SEASON = {
           "date": "2026-06-23",
           "elo": 1095,
           "spiel": "Spiel 13"
+        },
+        {
+          "date": "2026-07-07",
+          "elo": 1015,
+          "spiel": "Spiel 9"
         }
       ]
     }
@@ -676,9 +696,9 @@ window.PADEL_SEASON = {
           "Leonie R."
         ]
       },
-      "ergebnis": null,
-      "saetze": null,
-      "sieger": null
+      "ergebnis": "1:6, 6:3 – 10:5",
+      "saetze": "2:1",
+      "sieger": 1
     },
     {
       "id": "spiel10",

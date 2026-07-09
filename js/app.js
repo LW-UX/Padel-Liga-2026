@@ -1467,6 +1467,7 @@ function renderSpiele() {
 function getOpenMatches() {
   return PADEL_DATA.matches
     .filter(match => match.sieger === null)
+    .filter(countsForRanking)
     .sort(compareMatchesByNumber);
 }
 
@@ -1851,20 +1852,14 @@ function renderCalculatorMatchCard(match) {
 
 function renderCalculatorRanking() {
   const body = document.getElementById('calculator-ranking-body');
-  const meta = document.getElementById('calculator-meta');
-  if (!body || !meta) return;
+  if (!body) return;
 
   const previousRankingPositions = getCalculatorRowPositions(body, '.calculator-ranking-row');
   const miniRanking = document.getElementById('calculator-mini-ranking');
   const previousMiniPositions = getCalculatorRowPositions(miniRanking, '.calculator-mini-rank-row');
-  const openMatches = getOpenMatches();
-  const simulatedResults = openMatches
-    .map(match => parseCalculatorResult(match))
-    .filter(result => result.match);
   const rankedPlayers = getRankedPlayers(getCalculatorSimulatedMatches());
   const activePlayerIds = getActiveCalculatorPlayerIds();
 
-  meta.textContent = `${simulatedResults.length}/${openMatches.length} simuliert`;
   renderCalculatorMiniRanking(rankedPlayers, previousMiniPositions, activePlayerIds);
   body.innerHTML = rankedPlayers.map((player, index) => {
     const diffStr = player.stats.spiele > 0 ? formatStatDiff(player.stats.spielDiff) : '—';

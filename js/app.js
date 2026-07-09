@@ -1942,6 +1942,8 @@ function renderCalculator() {
     ? openMatches.map(renderCalculatorMatchCard).join('')
     : '<div class="empty-state">Keine offenen Spiele.</div>';
   renderCalculatorRanking();
+}
+
 function getMatchdayInfo(spieltag) {
   return (PADEL_DATA.matchdays || []).find(matchday => matchday.spieltag === spieltag) || null;
 }

@@ -1148,6 +1148,17 @@
       padding-top: 8px;
       padding-bottom: 8px;
     }
+    .calculator-ranking-row,
+    .calculator-mini-rank-row {
+      transform-origin: center;
+      will-change: transform;
+    }
+    table.calculator-ranking-table tbody tr.calculator-active-match-player td {
+      background: rgba(212,245,58,0.12);
+    }
+    table.calculator-ranking-table tbody tr.calculator-active-match-player .pname {
+      color: var(--text);
+    }
     .calculator-ranking-table .col-rank { width: 44px; }
     .calculator-ranking-table .col-name { width: auto; }
     .calculator-ranking-table .col-games,
@@ -1419,7 +1430,7 @@
       }
       #calculator-mini-ranking {
         display: grid;
-        gap: 2px;
+        gap: 0;
       }
       .calculator-mini-rank-row {
         display: grid;
@@ -1432,23 +1443,33 @@
       .calculator-mini-rank-row.top-four-highlight {
         box-shadow: inset 2px 0 0 var(--dim);
       }
+      .calculator-mini-rank-row.calculator-active-match-player {
+        background: rgba(212,245,58,0.25);
+      }
       .calculator-mini-rank-pos {
         color: var(--text);
         font-family: 'DM Mono', monospace;
         font-size: 0.75rem;
         font-weight: 700;
-        padding-left: 4px;
+        padding-left: 8px;
       }
       .calculator-mini-rank-initials {
         color: var(--dim);
         font-family: 'DM Mono', monospace;
         font-size: 0.68rem;
-        font-weight: 700;
+        font-weight: 400;
         justify-self: center;
         min-width: 0;
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
+      }
+      .calculator-mini-rank-row.viewer-highlight .calculator-mini-rank-initials {
+        color: var(--accent);
+        font-weight: 700;
+      }
+      .calculator-mini-rank-row.viewer-highlight {
+        box-shadow: inset 3px 0 0 var(--accent);
       }
       .calculator-mini-rank-row.r1 .calculator-mini-rank-pos,
       .calculator-mini-rank-row:nth-child(1) .calculator-mini-rank-pos { color: var(--accent); }

@@ -7,6 +7,7 @@ let matchScope = 'all';
 let rankingSortMode = 'points';
 let rankingViewMode = 'compact';
 let calculatorResults = new Map();
+let activeCalculatorMatchId = null;
 
 function getViewerStorageKey() {
   return `${VIEWER_STORAGE_KEY_PREFIX}:${selectedSeason?.id || 'default'}`;
@@ -90,6 +91,7 @@ function resetSeasonState() {
   rankingSortMode = 'points';
   rankingViewMode = 'compact';
   calculatorResults = new Map();
+  activeCalculatorMatchId = null;
   activeP = new Set(PADEL_DATA.players.map(player => player.id));
   chart?.destroy();
   placementChart?.destroy();
@@ -278,6 +280,11 @@ document.addEventListener('mouseout', event => {
 });
 
 document.addEventListener('focusin', event => {
+  const calculatorScoreInput = event.target.closest('[data-calculator-score]');
+  if (calculatorScoreInput) {
+    setActiveCalculatorMatch(calculatorScoreInput.dataset.calculatorMatchId);
+  }
+
   const formChip = event.target.closest('[data-form-match-id]');
   if (formChip) showFormTooltip(formChip);
 });
@@ -1420,6 +1427,7 @@ function getCalculatorSimulatedMatches() {
 }
 
 function updateCalculatorScore(input) {
+  setActiveCalculatorMatch(input.dataset.calculatorMatchId, false);
   const entry = getCalculatorEntry(input.dataset.calculatorMatchId);
   const part = input.dataset.calculatorPart;
   const teamIndex = Number(input.dataset.calculatorTeam);
@@ -1448,6 +1456,7 @@ function initializeCalculatorPairDefaults(matchId, part, changedTeamIndex) {
 
 function stepCalculatorScore(button) {
   const matchId = button.dataset.calculatorMatchId;
+  setActiveCalculatorMatch(matchId, false);
   const part = button.dataset.calculatorPart;
   const teamIndex = Number(button.dataset.calculatorTeam);
   const delta = Number(button.dataset.calculatorStep);
@@ -1468,7 +1477,28 @@ function stepCalculatorScore(button) {
 
 function resetCalculator() {
   calculatorResults = new Map();
+  activeCalculatorMatchId = null;
   renderCalculator();
+}
+
+function setActiveCalculatorMatch(matchId, rerender = true) {
+  if (!matchId || activeCalculatorMatchId === matchId) return;
+
+  activeCalculatorMatchId = matchId;
+  if (rerender) renderCalculatorRanking();
+}
+
+function getActiveCalculatorPlayerIds() {
+  const activeMatch = activeCalculatorMatchId
+    ? PADEL_DATA.matches.find(match => match.id === activeCalculatorMatchId)
+    : null;
+
+  if (!activeMatch) return new Set();
+
+  const activeNames = new Set([...activeMatch.team1.spieler, ...activeMatch.team2.spieler]);
+  return new Set(PADEL_DATA.players
+    .filter(player => activeNames.has(player.name))
+    .map(player => player.id));
 }
 
 function renderCalculatorScoreInput(match, part, teamIndex, label, value) {
@@ -1610,19 +1640,24 @@ function renderCalculatorRanking() {
   const meta = document.getElementById('calculator-meta');
   if (!body || !meta) return;
 
+  const previousRankingPositions = getCalculatorRowPositions(body, '.calculator-ranking-row');
+  const miniRanking = document.getElementById('calculator-mini-ranking');
+  const previousMiniPositions = getCalculatorRowPositions(miniRanking, '.calculator-mini-rank-row');
   const openMatches = getOpenMatches();
   const simulatedResults = openMatches
     .map(match => parseCalculatorResult(match))
     .filter(result => result.match);
   const rankedPlayers = getRankedPlayers(getCalculatorSimulatedMatches());
+  const activePlayerIds = getActiveCalculatorPlayerIds();
 
   meta.textContent = `${simulatedResults.length}/${openMatches.length} simuliert`;
-  renderCalculatorMiniRanking(rankedPlayers);
+  renderCalculatorMiniRanking(rankedPlayers, previousMiniPositions, activePlayerIds);
   body.innerHTML = rankedPlayers.map((player, index) => {
     const diffStr = player.stats.spiele > 0 ? formatStatDiff(player.stats.spielDiff) : '—';
     const diffClass = player.stats.spielDiff > 0 ? 'pos' : player.stats.spielDiff < 0 ? 'neg' : 'neu';
+    const activeMatchClass = activePlayerIds.has(player.id) ? 'calculator-active-match-player' : '';
 
-    return `<tr class="r${Math.min(index + 1, 4)} ${index < 4 ? 'top-four-highlight' : ''} ${isSelectedPlayer(player.name) ? 'viewer-highlight' : ''}">
+    return `<tr class="calculator-ranking-row r${Math.min(index + 1, 4)} ${index < 4 ? 'top-four-highlight' : ''} ${activeMatchClass} ${isSelectedPlayer(player.name) ? 'viewer-highlight' : ''}" data-calculator-player="${escapeHtml(player.id)}">
       <td class="rn l">${index + 1}</td>
       <td class="l"><span class="pname">${player.name}</span></td>
       <td class="num-val">${player.stats.spiele}</td>
@@ -1630,18 +1665,58 @@ function renderCalculatorRanking() {
       <td class="num-val"><span class="${player.stats.spiele > 0 ? diffClass : 'neu'}">${diffStr}</span></td>
     </tr>`;
   }).join('');
+  animateCalculatorRows(body, '.calculator-ranking-row', previousRankingPositions);
 }
 
-function renderCalculatorMiniRanking(rankedPlayers) {
+function renderCalculatorMiniRanking(rankedPlayers, previousPositions = null, activePlayerIds = new Set()) {
   const miniRanking = document.getElementById('calculator-mini-ranking');
   if (!miniRanking) return;
 
-  miniRanking.innerHTML = rankedPlayers.map((player, index) => `
-    <div class="calculator-mini-rank-row ${index < 4 ? 'top-four-highlight' : ''}">
+  miniRanking.innerHTML = rankedPlayers.map((player, index) => {
+    const activeMatchClass = activePlayerIds.has(player.id) ? 'calculator-active-match-player' : '';
+    return `
+    <div class="calculator-mini-rank-row ${index < 4 ? 'top-four-highlight' : ''} ${activeMatchClass} ${isSelectedPlayer(player.name) ? 'viewer-highlight' : ''}" data-calculator-player="${escapeHtml(player.id)}">
       <span class="calculator-mini-rank-pos">${index + 1}</span>
       <span class="calculator-mini-rank-initials">${escapeHtml(player.initials || player.name)}</span>
-    </div>
-  `).join('');
+    </div>`;
+  }).join('');
+  animateCalculatorRows(miniRanking, '.calculator-mini-rank-row', previousPositions);
+}
+
+function getCalculatorRowPositions(container, rowSelector) {
+  if (!container) return null;
+
+  return new Map([...container.querySelectorAll(rowSelector)]
+    .map(row => [row.dataset.calculatorPlayer, row.getBoundingClientRect().top])
+    .filter(([playerId, top]) => playerId && Number.isFinite(top)));
+}
+
+function animateCalculatorRows(container, rowSelector, previousPositions) {
+  if (!container || !previousPositions?.size) return;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  container.querySelectorAll(rowSelector).forEach(row => {
+    const previousTop = previousPositions.get(row.dataset.calculatorPlayer);
+    if (!Number.isFinite(previousTop)) return;
+
+    const currentTop = row.getBoundingClientRect().top;
+    const deltaY = previousTop - currentTop;
+    if (Math.abs(deltaY) < 1) return;
+
+    row.style.transition = 'none';
+    row.style.transform = `translateY(${deltaY}px)`;
+    row.getBoundingClientRect();
+
+    requestAnimationFrame(() => {
+      row.style.transition = 'transform 520ms cubic-bezier(0.2, 0.8, 0.2, 1)';
+      row.style.transform = 'translateY(0)';
+
+      window.setTimeout(() => {
+        row.style.transition = '';
+        row.style.transform = '';
+      }, 540);
+    });
+  });
 }
 
 function renderCalculator() {

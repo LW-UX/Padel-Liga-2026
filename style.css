@@ -1256,7 +1256,7 @@
       will-change: transform;
     }
     table.calculator-ranking-table tbody tr.calculator-active-match-player td {
-      background: color-mix(in srgb, var(--accent2) 14%, transparent);
+      background: color-mix(in srgb, var(--text) 14%, transparent);
     }
     table.calculator-ranking-table tbody tr.calculator-active-match-player .pname {
       color: var(--accent2);
@@ -1445,10 +1445,10 @@
         left: auto;
         width: min(240px, calc(100vw - 32px));
       }
-      .ranking-table .rn { width: var(--mobile-rank-col-width); padding-left: 12px !important;}
+      .ranking-table .rn { width: var(--mobile-rank-col-width); padding-left: 18px !important;}
       .ranking-table[data-ranking-sort="points"] .sticky-rank,
       .ranking-table[data-ranking-sort="points"] .rn {
-        padding-left: 6px !important;
+        padding-left: 12px !important;
         padding-right: 2px;
       }
       .ranking-table[data-ranking-sort="points"] .sticky-name {

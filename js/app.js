@@ -80,14 +80,14 @@ function applySeasonMetadata() {
   const label = PADEL_DATA.label || selectedSeason.label || selectedSeason.id;
   const title = PADEL_DATA.title || `Padel-Liga ${label}`;
   const organizations = PADEL_DATA.organizations || [];
+  const organizationLabel = organizations.join('  ×  ');
+  const heroOrganizations = document.getElementById('hero-orgs');
 
   document.title = title;
   document.querySelectorAll('[data-season-label]').forEach(element => {
     element.textContent = label;
   });
-  document.getElementById('hero-orgs').textContent = organizations.length
-    ? `  ·  ${organizations.join('  ×  ')}`
-    : '';
+  if (heroOrganizations) heroOrganizations.textContent = organizationLabel;
 }
 
 function resetSeasonState() {
@@ -277,6 +277,14 @@ document.addEventListener('input', event => {
   updateCalculatorScore(calculatorScoreInput);
 });
 
+document.addEventListener('pointerdown', event => {
+  const calculatorScoreInput = event.target.closest('[data-calculator-score]');
+  if (!calculatorScoreInput) return;
+
+  clearCalculatorScoreInput(calculatorScoreInput);
+  setActiveCalculatorMatch(calculatorScoreInput.dataset.calculatorMatchId);
+});
+
 document.addEventListener('mouseover', event => {
   const formChip = event.target.closest('[data-form-match-id]');
   if (formChip) showFormTooltip(formChip);
@@ -290,6 +298,7 @@ document.addEventListener('mouseout', event => {
 document.addEventListener('focusin', event => {
   const calculatorScoreInput = event.target.closest('[data-calculator-score]');
   if (calculatorScoreInput) {
+    clearCalculatorScoreInput(calculatorScoreInput);
     setActiveCalculatorMatch(calculatorScoreInput.dataset.calculatorMatchId);
   }
 
@@ -366,7 +375,26 @@ function nav(id, el) {
   document.getElementById(id).classList.add('active');
   const activeButton = el || document.querySelector(`nav button[data-section="${id}"]`);
   if (activeButton) activeButton.classList.add('active');
+  scrollToTopInstantly();
   if (id === 'verlauf') initChart();
+}
+
+function scrollToTopInstantly() {
+  const root = document.documentElement;
+  const navigation = document.querySelector('.site-nav');
+  const header = document.querySelector('.site-header');
+  const targetTop = header ? header.offsetHeight : 0;
+  const navigationTop = navigation ? navigation.getBoundingClientRect().top : 0;
+
+  if (!navigation || navigationTop > 1) return;
+
+  root.classList.add('instant-scroll');
+  window.scrollTo(0, targetTop);
+  root.scrollTop = targetTop;
+  document.body.scrollTop = targetTop;
+  requestAnimationFrame(() => {
+    root.classList.remove('instant-scroll');
+  });
 }
 
 // ── RANKING ───────────────────────────────────────────────────────
@@ -816,6 +844,7 @@ function renderRanking() {
   updateRankingSortToggle();
   updateRankingViewToggle();
   const table = document.getElementById('ranking-table');
+  table.dataset.rankingSort = rankingSortMode;
   const effectiveRankingViewMode = isMobileViewport() ? 'expanded' : rankingViewMode;
   table.classList.toggle('expanded', effectiveRankingViewMode === 'expanded');
   table.classList.toggle('compact', effectiveRankingViewMode === 'compact');
@@ -1497,7 +1526,7 @@ function parseCalculatorScorePair(rawTeam1, rawTeam2) {
     return { invalid: true, message: 'Nur ganze Zahlen ab 0' };
   }
 
-  if (values[0] === values[1]) return { invalid: true, message: 'Ein Satz braucht einen Gewinner' };
+  if (values[0] === values[1]) return { invalid: true, message: 'Gewinner notwendig' };
 
   return { team1: values[0], team2: values[1], winner: values[0] > values[1] ? 1 : 2 };
 }
@@ -1512,7 +1541,7 @@ function validateRegularSet(rawTeam1, rawTeam2) {
     (winnerScore === 7 && (loserScore === 5 || loserScore === 6));
 
   if (!isValid) {
-    return { invalid: true, message: 'Satz bitte als 6:x, 7:5 oder 7:6 eintragen' };
+    return { invalid: true, message: '6:X, 7:5 oder 7:6 eintragen' };
   }
 
   return score;
@@ -1651,6 +1680,19 @@ function updateCalculatorScore(input) {
   input.value = value;
   entry[part][teamIndex] = value;
   initializeCalculatorPairDefaults(input.dataset.calculatorMatchId, part, teamIndex);
+  renderCalculatorMatchStatus(input.dataset.calculatorMatchId);
+  renderCalculatorRanking();
+}
+
+function clearCalculatorScoreInput(input) {
+  if (!input.value) return;
+
+  const entry = getCalculatorEntry(input.dataset.calculatorMatchId);
+  const part = input.dataset.calculatorPart;
+  const teamIndex = Number(input.dataset.calculatorTeam);
+
+  input.value = '';
+  entry[part][teamIndex] = '';
   renderCalculatorMatchStatus(input.dataset.calculatorMatchId);
   renderCalculatorRanking();
 }
@@ -1970,7 +2012,26 @@ function formatMatchdayLabel(spieltag) {
 }
 
 // ── CHART ─────────────────────────────────────────────────────────
-const COLORS = ['#d4f53a','#3af5b4','#3a8ff5','#f5a03a','#f53ab4','#a03af5','#f5f53a','#3af5f5','#f53a5a','#7af53a','#f57a3a','#3a5af5','#f53af5','#5af5f5','#f5c43a','#3af58a','#f5503a','#c43af5'];
+const COLORS = [
+  '#6EF79C',
+  '#C96EF7',
+  '#F7F76E',
+  '#6EC9F7',
+  '#F76E9C',
+  '#6EF76E',
+  '#9C6EF7',
+  '#F7C96E',
+  '#6EF7F7',
+  '#F76EC9',
+  '#9CF76E',
+  '#6E6EF7',
+  '#F79C6E',
+  '#6EF7C9',
+  '#F76EF7',
+  '#C9F76E',
+  '#6E9CF7',
+  '#F76E6E'
+];
 const GRAY = '#444444';
 const CHART_DIM_ALPHA = 'CC';
 const CHART_GRAY_MIX = 0.38;

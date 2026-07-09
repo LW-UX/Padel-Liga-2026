@@ -4,7 +4,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Padel-Liga</title>
+  <meta name="theme-color" content="#07080C">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="Padel-Liga">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎾</text></svg>">
+  <link rel="manifest" href="manifest.webmanifest">
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <script src="data/seasons.js"></script>
   <script src="data/info.js"></script>
@@ -12,21 +17,9 @@
 </head>
 <body>
 
-<header>
-  <button class="logo" data-nav-target="start">PADEL·LIGA <span data-season-label>2026</span></button>
-  <nav>
-    <button class="active" data-section="start">Home</button>
-    <button data-section="rangliste">Rangliste</button>
-    <button data-section="spiele">Spiele</button>
-    <button data-section="rechner">Rechner</button>
-    <button data-section="verlauf">Statistik</button>
-    <button data-section="infos">Infos</button>
-  </nav>
-</header>
-
-<div class="hero">
-  <div>
-    <div class="hero-eyebrow"><span class="hero-season">Saison </span><span data-season-label>2026</span><span class="hero-orgs" id="hero-orgs"> &nbsp;·&nbsp; Headsquare &nbsp;×&nbsp; Hanako &nbsp;×&nbsp; Envidual</span></div>
+<header class="site-header">
+  <div class="hero">
+    <div class="hero-eyebrow" id="hero-orgs">Headsquare × Hanako × Envidual</div>
     <div class="hero-title-row">
       <h1>PADEL<em>LIGA</em></h1>
       <div class="viewer-picker" id="viewer-picker">
@@ -38,7 +31,16 @@
       </div>
     </div>
   </div>
-</div>
+</header>
+
+<nav class="site-nav" aria-label="Hauptnavigation">
+  <button class="active" data-section="start">Home</button>
+  <button data-section="rangliste">Rangliste</button>
+  <button data-section="spiele">Spiele</button>
+  <button data-section="rechner">Rechner</button>
+  <button data-section="verlauf">Statistik</button>
+  <button data-section="infos">Infos</button>
+</nav>
 
 <main>
 
@@ -55,6 +57,10 @@
           <div class="widget-label">Top 4</div>
           <div id="home-ranking"></div>
           <button class="text-link" data-nav-target="rangliste">Zur Rangliste</button>
+          <div class="home-widget-note">
+            Prognose wagen?
+            <button class="text-link inline-link" data-nav-target="rechner">Zum Rechner</button>
+          </div>
         </article>
 
         <article class="widget">
@@ -310,6 +316,6 @@ Positive Werte bedeuten: Die Gegner waren im Schnitt stärker platziert als die 
 
 </main>
 
-<script src="js/app.js?v=2026-07-09-final-four-sort"></script>
+<script src="js/app.js?v=2026-07-09-theme-stat-colors"></script>
 </body>
 </html>

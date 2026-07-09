@@ -804,14 +804,19 @@ function renderHomeMatchCard(match, options = {}) {
     ? String(match.saetze || '—')
     : probability ? `${probability.team1}% : ${probability.team2}%` : '—';
   const centerLabel = isPlayed ? match.ergebnis : getPendingMatchLabel(match);
-  const team1Class = isPlayed && match.sieger === 1 ? ' mini-match-winner' : '';
-  const team2Class = isPlayed && match.sieger === 2 ? ' mini-match-winner' : '';
+  const team1Class = isPlayed
+    ? match.sieger === 1 ? ' mini-match-winner' : ' mini-match-loser'
+    : '';
+  const team2Class = isPlayed
+    ? match.sieger === 2 ? ' mini-match-winner' : ' mini-match-loser'
+    : '';
+  const statusClass = isPlayed ? ' mini-match-status-played' : '';
 
   return `<div class="mini-match-row ${isViewerMatch(match) ? 'viewer-match' : ''}">
     <div class="mini-match-meta">${formatMatchMeta(match, { relative: options.relative !== false })}</div>
     <div class="mini-match-grid">
       <div class="mini-match-team mini-match-team-1${team1Class}">${renderTeamPlayers(match.team1.spieler)}</div>
-      <div class="mini-match-status">
+      <div class="mini-match-status${statusClass}">
         <div class="mini-match-prob">${centerMain}</div>
         <div class="mini-match-label">${centerLabel}</div>
       </div>

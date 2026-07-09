@@ -371,19 +371,26 @@
       text-decoration: none;
     }
     .inline-link { margin-top: 0; }
-    .home-widget-note {
+    .home-widget-links {
       display: flex;
       align-items: baseline;
       justify-content: space-between;
       gap: 0.75rem;
-      flex-wrap: nowrap;
-      margin-top: 0.45rem;
+      margin-top: 1rem;
+    }
+    .home-widget-note {
+      display: flex;
+      align-items: baseline;
+      justify-content: flex-end;
+      gap: 0.35rem;
+      margin-top: 0;
+      margin-left: auto;
       color: var(--dim);
       font-size: 0.85rem;
       line-height: 1.35;
+      white-space: nowrap;
     }
     .home-widget-note .inline-link {
-      margin-left: auto;
       flex: 0 0 auto;
       white-space: nowrap;
     }

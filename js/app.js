@@ -55,6 +55,14 @@ function loadScript(src) {
   });
 }
 
+function countsForRanking(match) {
+  return match?.countsForRanking !== false;
+}
+
+function isSingleSetMatch(match) {
+  return match?.format === 'single-set';
+}
+
 async function loadActiveSeason() {
   selectedSeason = getDefaultSeasonOption();
   if (!selectedSeason) throw new Error('Keine Saison in data/seasons.js gefunden.');
@@ -364,6 +372,7 @@ function nav(id, el) {
 // ── RANKING ───────────────────────────────────────────────────────
 function getPlayerStats(player, matches = PADEL_DATA.matches) {
   const played = matches.filter(m =>
+    countsForRanking(m) &&
     m.sieger !== null &&
     (m.team1.spieler.includes(player.name) || m.team2.spieler.includes(player.name))
   );
@@ -528,6 +537,127 @@ function renderFirmenRanking() {
   }).join('');
 }
 
+function getFinalFourMatches() {
+  return PADEL_DATA.matches
+    .filter(match => !countsForRanking(match))
+    .sort(compareMatchesByNumber);
+}
+
+function getFinalFourPlayerNames(matches) {
+  const preferredOrder = ['Erster', 'Zweiter', 'Dritter', 'Vierter'];
+  const names = new Set(matches.flatMap(match => [
+    ...match.team1.spieler,
+    ...match.team2.spieler
+  ]));
+
+  return [
+    ...preferredOrder.filter(name => names.has(name)),
+    ...[...names].filter(name => !preferredOrder.includes(name))
+  ];
+}
+
+function getSingleSetGameStats(match, playerName) {
+  const score = String(match.ergebnis || '').match(/(\d+)\s*:\s*(\d+)/);
+  if (!score) return { won: 0, lost: 0, diff: 0 };
+
+  const teamIndex = getPlayerMatchTeamIndex({ name: playerName }, match);
+  if (!teamIndex) return { won: 0, lost: 0, diff: 0 };
+
+  const team1Games = Number(score[1]);
+  const team2Games = Number(score[2]);
+  const won = teamIndex === 1 ? team1Games : team2Games;
+  const lost = teamIndex === 1 ? team2Games : team1Games;
+
+  return { won, lost, diff: won - lost };
+}
+
+function getSingleSetGameDiff(match, playerName) {
+  return getSingleSetGameStats(match, playerName).diff;
+}
+
+function getFinalFourHeadToHeadWins(playerName, opponentName, matches) {
+  return matches.filter(match => {
+    if (match.sieger === null) return false;
+
+    const playerTeam = getPlayerMatchTeamIndex({ name: playerName }, match);
+    const opponentTeam = getPlayerMatchTeamIndex({ name: opponentName }, match);
+    return playerTeam && opponentTeam && playerTeam !== opponentTeam && match.sieger === playerTeam;
+  }).length;
+}
+
+function compareFinalFourHeadToHead(a, b, matches) {
+  const aWins = getFinalFourHeadToHeadWins(a.name, b.name, matches);
+  const bWins = getFinalFourHeadToHeadWins(b.name, a.name, matches);
+
+  return aWins === bWins ? 0 : bWins - aWins;
+}
+
+function getFinalFourStats() {
+  const matches = getFinalFourMatches();
+  const names = getFinalFourPlayerNames(matches);
+
+  return {
+    matches,
+    stats: names.map((name, index) => {
+      const playerMatches = matches.filter(match =>
+        match.team1.spieler.includes(name) || match.team2.spieler.includes(name)
+      );
+      const playedMatches = playerMatches.filter(match => match.sieger !== null);
+      const siege = playedMatches.filter(match => {
+        const teamIndex = getPlayerMatchTeamIndex({ name }, match);
+        return teamIndex && match.sieger === teamIndex;
+      }).length;
+      const gameStats = playedMatches.reduce((total, match) => {
+        const game = getSingleSetGameStats(match, name);
+        return {
+          won: total.won + game.won,
+          lost: total.lost + game.lost,
+          diff: total.diff + game.diff
+        };
+      }, { won: 0, lost: 0, diff: 0 });
+
+      return {
+        name,
+        seed: index + 1,
+        partien: playedMatches.length,
+        siege,
+        gamesWon: gameStats.won,
+        gamesLost: gameStats.lost,
+        diff: gameStats.diff,
+        spieleGV: `${gameStats.won}:${gameStats.lost}`
+      };
+    }).sort((a, b) =>
+      b.siege - a.siege ||
+      b.diff - a.diff ||
+      compareFinalFourHeadToHead(a, b, matches) ||
+      a.seed - b.seed
+    )
+  };
+}
+
+function renderFinalFourRanking() {
+  const body = document.getElementById('ff-body');
+  const meta = document.getElementById('ff-meta');
+  if (!body || !meta) return;
+
+  const { matches, stats } = getFinalFourStats();
+  meta.textContent = `${stats.length} Spieler`;
+
+  body.innerHTML = stats.map((player, index) => {
+    const diffClass = player.diff > 0 ? 'pos' : player.diff < 0 ? 'neg' : 'neu';
+    const diffLabel = player.diff > 0 ? `+${player.diff}` : String(player.diff);
+
+    return `<tr class="r${index + 1}">
+      <td class="rn l">${index + 1}</td>
+      <td class="l"><span class="pname">${player.name}</span></td>
+      <td class="num-val">${player.partien}</td>
+      <td class="punkte-val">${player.siege}</td>
+      <td class="num-val">${player.spieleGV}</td>
+      <td class="num-val"><span class="${diffClass}">${diffLabel}</span></td>
+    </tr>`;
+  }).join('');
+}
+
 function getRankingPositionMap(sortMode = 'points') {
   return new Map(getRankedPlayers(PADEL_DATA.matches, sortMode)
     .map((player, index) => [player.name, index + 1]));
@@ -576,6 +706,7 @@ function getPlayerMatchProbability(player, match) {
 
 function getPlayerWinQuote(player) {
   const probabilities = getPlayerMatches(player)
+    .filter(countsForRanking)
     .map(match => getPlayerMatchProbability(player, match))
     .filter(probability => Number.isFinite(probability));
 
@@ -606,7 +737,7 @@ function getPlayerPlacementFactor(player, rankMap) {
   const partnerPlaces = [];
   const opponentPlaces = [];
 
-  getPlayerMatches(player).forEach(match => {
+  getPlayerMatches(player).filter(countsForRanking).forEach(match => {
     const teamIndex = getPlayerMatchTeamIndex(player, match);
     if (!teamIndex) return;
 
@@ -639,6 +770,7 @@ function formatPlacementFactor(factor) {
 
 function getPlayerForm(player) {
   return getPlayerMatches(player)
+    .filter(countsForRanking)
     .filter(match => match.sieger !== null)
     .sort((a, b) => getMatchOrderKey(b).localeCompare(getMatchOrderKey(a)))
     .slice(0, 3)
@@ -720,6 +852,7 @@ function renderRanking() {
     </tr>`;
   }).join('');
   renderFirmenRanking();
+  renderFinalFourRanking();
 }
 
 function getRankedPlayers(matches = PADEL_DATA.matches, sortMode = 'points') {
@@ -775,7 +908,10 @@ function getMatchTimeMinutes(match) {
 }
 
 function compareMatchesByDateTime(a, b) {
-  return toDateKey(a.datum).localeCompare(toDateKey(b.datum))
+  const dateA = toDateKey(a.datum) || '9999-12-31';
+  const dateB = toDateKey(b.datum) || '9999-12-31';
+
+  return dateA.localeCompare(dateB)
     || getMatchTimeMinutes(a) - getMatchTimeMinutes(b)
     || Number(a.id.replace('spiel', '')) - Number(b.id.replace('spiel', ''));
 }
@@ -788,7 +924,13 @@ function compareMatchesByNumber(a, b) {
   return Number(a.id.replace('spiel', '')) - Number(b.id.replace('spiel', ''));
 }
 
+function hasScheduledDateTime(match) {
+  return Boolean(match?.datum && match?.uhrzeit);
+}
+
 function formatMatchDate(match) {
+  if (!hasScheduledDateTime(match)) return '';
+
   const d = parseDateValue(match.datum);
   const date = d
     ? d.toLocaleDateString('de-DE', {day:'2-digit', month:'2-digit'})
@@ -799,6 +941,8 @@ function formatMatchDate(match) {
 }
 
 function formatRelativeMatchDate(match) {
+  if (!hasScheduledDateTime(match)) return '';
+
   const dateKey = toDateKey(match.datum);
   const todayKey = toDateKey(new Date());
   const date = parseDateValue(dateKey);
@@ -818,8 +962,9 @@ function formatRelativeMatchDate(match) {
 }
 
 function formatMatchMeta(match, options = {}) {
+  const matchLabel = getMatchDisplayLabel(match);
   const date = options.relative ? formatRelativeMatchDate(match) : formatMatchDate(match);
-  return `${match.id.replace('spiel','Spiel ')} | ${date}`;
+  return date ? `${matchLabel} | ${date}` : matchLabel;
 }
 
 function getPendingMatchLabel(match) {
@@ -867,10 +1012,25 @@ function getCurrentArticle() {
   return current || articles[0];
 }
 
+function formatArticleMeta(meta) {
+  return String(meta || '').replace(/\s*·\s*/g, ' | ');
+}
+
+function renderSplitMeta(label, detail, className) {
+  return `<div class="${className}">
+    <span>${escapeHtml(label)}</span>
+    ${detail ? `<span>${escapeHtml(detail)}</span>` : ''}
+  </div>`;
+}
+
+function renderArticleMeta(meta) {
+  const [label, ...details] = formatArticleMeta(meta).split(/\s*\|\s*/);
+  return renderSplitMeta(label, details.join(' | '), 'article-meta');
+}
+
 function renderArticleCard(article) {
-  const meta = article.meta || `Spieltag ${article.spieltag}`;
   return `<article class="article-card">
-    <div class="article-meta">${meta}</div>
+    ${renderArticleMeta(article.meta || `Spieltag ${article.spieltag}`)}
     <h3>${article.title}</h3>
     ${article.body ? `<div class="article-body">${article.body.map(renderArticleBlock).join('')}</div>` : ''}
   </article>`;
@@ -913,11 +1073,20 @@ function renderHome() {
   `;
 
   document.getElementById('home-ranking').innerHTML = getRankedPlayers().slice(0, 4)
-    .map((p, i) => `<div class="mini-rank-row r${i + 1} ${isSelectedPlayer(p.name) ? 'viewer-highlight' : ''}">
+    .map((p, i) => {
+      const spielDiffStr = p.stats.spiele > 0 ? formatStatDiff(p.stats.spielDiff) : '—';
+      const spielDiffClass = p.stats.spielDiff > 0 ? 'pos' : p.stats.spielDiff < 0 ? 'neg' : 'neu';
+
+      return `<div class="mini-rank-row r${i + 1} ${isSelectedPlayer(p.name) ? 'viewer-highlight' : ''}">
       <span class="mini-rank-pos">${i + 1}</span>
       <span class="mini-rank-name">${p.name}</span>
-      <span class="mini-rank-points">${p.stats.punkte}</span>
-    </div>`)
+      <span class="mini-rank-values">
+        <span class="mini-rank-games">${p.stats.spiele}</span>
+        <span class="mini-rank-points">${p.stats.punkte}</span>
+        <span class="mini-rank-diff ${p.stats.spiele > 0 ? spielDiffClass : 'neu'}">${spielDiffStr}</span>
+      </span>
+    </div>`;
+    })
     .join('');
 
   const todayKey = toDateKey(new Date());
@@ -925,19 +1094,27 @@ function renderHome() {
     .filter(m => m.sieger === null && m.uhrzeit && toDateKey(m.datum) >= todayKey)
     .sort(compareMatchesByDateTime)
     .slice(0, 3);
+  const allMatchesPlayed = PADEL_DATA.matches.every(match => match.sieger !== null);
+  const emptyNextMatchesText = allMatchesPlayed
+    ? 'Alle Spiele sind gespielt.'
+    : 'Keine weiteren Spiele terminiert.';
 
   document.getElementById('home-next-matches').innerHTML = nextMatches.length
     ? nextMatches.map(match => renderHomeMatchCard(match)).join('')
-    : '<div class="empty-state">Keine weiteren Spiele terminiert.</div>';
+    : `<div class="empty-state">${emptyNextMatchesText}</div>`;
 
-  const recentMatches = PADEL_DATA.matches
+  const playedMatches = PADEL_DATA.matches.filter(match => match.sieger !== null);
+  const recentMatches = playedMatches
     .filter(match => match.sieger !== null && match.ergebnis)
     .sort(compareMatchesByDateTimeDesc)
     .slice(0, 3);
+  const emptyRecentMatchesText = playedMatches.length === 0
+    ? 'Noch keine Spiele gespielt.'
+    : 'Noch keine Spiele mit Ergebnis.';
 
   document.getElementById('home-recent-matches').innerHTML = recentMatches.length
     ? recentMatches.map(match => renderHomeMatchCard(match)).join('')
-    : '<div class="empty-state">Noch keine Spiele mit Ergebnis.</div>';
+    : `<div class="empty-state">${emptyRecentMatchesText}</div>`;
 }
 
 function renderStatTeamPlayers(players) {
@@ -957,8 +1134,12 @@ function getWinnerProbability(match) {
   return match.sieger === 1 ? probability.team1 : probability.team2;
 }
 
+function getMatchDisplayLabel(match) {
+  return match?.displayLabel || String(match?.id || '').replace('spiel','Spiel ');
+}
+
 function formatMatchNumberLabel(match) {
-  return `Spiel ${getMatchNumber(match)}`;
+  return getMatchDisplayLabel(match);
 }
 
 function formatWinnerResult(match) {
@@ -993,6 +1174,7 @@ function getMatchGameStats(match) {
 
 function getPlayedMatchesWithProbability() {
   return PADEL_DATA.matches
+    .filter(countsForRanking)
     .filter(match => match.sieger !== null)
     .map(match => ({
       match,
@@ -1024,6 +1206,7 @@ function renderFavoriteCheck() {
 
 function renderDominantMatches() {
   const dominantMatches = PADEL_DATA.matches
+    .filter(countsForRanking)
     .filter(match => match.sieger !== null)
     .map(match => ({ match, gameStats: getMatchGameStats(match) }))
     .filter(item => Number.isFinite(item.gameStats.diff) && item.gameStats.diff > 0)
@@ -1179,72 +1362,103 @@ function renderInfos() {
 }
 
 // ── MATCHES ───────────────────────────────────────────────────────
+function renderMatchRow(m) {
+  if (m.sieger === null) {
+    const probability = getMatchWinProbability(m);
+    const probabilityHtml = probability
+      ? `<div class="mc-prob">${probability.team1}% : ${probability.team2}%</div>`
+      : '';
+    return `<div class="mc pending ${isViewerMatch(m) ? 'viewer-match' : ''}">
+      <div class="mc-meta"><span class="mc-nr">${formatMatchMeta(m, { relative: true })}</span></div>
+      <div class="mc-team mc-team-1">
+        <div class="mc-players">${renderTeamPlayers(m.team1.spieler)}</div>
+      </div>
+      <div class="mc-score">
+        ${probabilityHtml}
+        <div class="mc-pending-label">${getPendingMatchLabel(m)}</div>
+      </div>
+      <div class="mc-team mc-team-2">
+        <div class="mc-players">${renderTeamPlayers(m.team2.spieler)}</div>
+      </div>
+    </div>`;
+  }
+
+  const t1w = m.sieger === 1, t2w = m.sieger === 2;
+  const [s1, s2] = String(m.saetze || '').split(':');
+  const scoreMain = isSingleSetMatch(m) ? (m.ergebnis || '—') : `${s1}:${s2}`;
+  const scoreDetail = isSingleSetMatch(m) ? '' : `<div class="mc-score-detail">${m.ergebnis}</div>`;
+  const viewerInT1 = isParticipantView() && m.team1.spieler.includes(getSelectedViewer().name);
+  const viewerInT2 = isParticipantView() && m.team2.spieler.includes(getSelectedViewer().name);
+  const viewerWon  = (viewerInT1 && m.sieger === 1) || (viewerInT2 && m.sieger === 2);
+  const viewerLost = (viewerInT1 && m.sieger === 2) || (viewerInT2 && m.sieger === 1);
+  const viewerResultClass = viewerWon ? 'viewer-win' : viewerLost ? 'viewer-loss' : '';
+  const probability = countsForRanking(m) ? getHistoricalMatchWinProbability(m) : null;
+  const leftProbability = probability ? `<span class="mc-result-prob">${probability.team1}%</span>` : '';
+  const rightProbability = probability ? `<span class="mc-result-prob">${probability.team2}%</span>` : '';
+
+  return `<div class="mc played ${isViewerMatch(m) ? `viewer-match ${viewerResultClass}` : ''}">        <div class="mc-meta"><span class="mc-nr">${formatMatchMeta(m, { relative: true })}</span></div>
+    <div class="mc-team mc-team-1 ${t1w?'win':''}">
+      <div class="mc-players">${renderTeamPlayers(m.team1.spieler)}</div>
+    </div>
+    <div class="mc-score">
+      <div class="mc-result-row">
+        ${leftProbability}
+        <div class="mc-score-main">${scoreMain}</div>
+        ${rightProbability}
+      </div>
+      ${scoreDetail}
+    </div>
+    <div class="mc-team mc-team-2 ${t2w?'win':''}">
+      <div class="mc-players">${renderTeamPlayers(m.team2.spieler)}</div>
+    </div>
+  </div>`;
+}
+
+function renderMatchdayGroup(spieltag, matches) {
+  if (!matches.length) return '';
+
+  return `<div class="spieltag-group">
+    ${formatMatchdayLabel(spieltag)}
+    <div class="match-list">${matches.map(renderMatchRow).join('')}</div>
+  </div>`;
+}
+
+function renderFinalFourGroup(matches) {
+  if (!matches.length) return '';
+
+  const title = getMatchdayInfo(matches[0].spieltag)?.title || 'Final Four';
+  const played = matches.filter(match => match.sieger !== null).length;
+  return `<div class="spieltag-group final-four-group">
+    <div class="sh final-four-heading">
+      <div class="sh-heading">
+        <div class="sh-title">${title.toUpperCase()}</div>
+        <div class="sh-meta">${played}/${matches.length}</div>
+      </div>
+    </div>
+    <div class="match-list">${matches.map(renderMatchRow).join('')}</div>
+  </div>`;
+}
+
 function renderSpiele() {
   updateMatchScopeToggle();
-  const spieltage = [...new Set(PADEL_DATA.matches.map(m => m.spieltag))].sort((a,b)=>a-b);
-  const played = PADEL_DATA.matches.filter(m => m.sieger !== null).length;
-  document.getElementById('sp-meta').textContent = `${played}/${PADEL_DATA.matches.length}`;
-  const spielplanHtml = spieltage.map(st => {
-    const matches = PADEL_DATA.matches
+  const regularMatches = PADEL_DATA.matches.filter(countsForRanking);
+  const finalFourMatches = PADEL_DATA.matches
+    .filter(m => !countsForRanking(m))
+    .sort(compareMatchesByNumber);
+  const spieltage = [...new Set(regularMatches.map(m => m.spieltag))].sort((a,b)=>a-b);
+  const played = regularMatches.filter(m => m.sieger !== null).length;
+  document.getElementById('sp-meta').textContent = `${played}/${regularMatches.length}`;
+
+  const regularHtml = spieltage.map(st => {
+    const matches = regularMatches
       .filter(m => m.spieltag === st)
       .filter(m => matchScope !== 'open' || m.sieger === null)
       .filter(m => matchScope !== 'mine' || isViewerMatch(m))
       .sort(compareMatchesByNumber);
-    if (!matches.length) return '';
-
-    const rows = matches.map(m => {
-      if (m.sieger === null) {
-        const probability = getMatchWinProbability(m);
-        const probabilityHtml = probability
-          ? `<div class="mc-prob">${probability.team1}% : ${probability.team2}%</div>`
-          : '';
-        return `<div class="mc pending ${isViewerMatch(m) ? 'viewer-match' : ''}">
-          <div class="mc-meta"><span class="mc-nr">${formatMatchMeta(m, { relative: true })}</span></div>
-          <div class="mc-team mc-team-1">
-            <div class="mc-players">${renderTeamPlayers(m.team1.spieler)}</div>
-          </div>
-          <div class="mc-score">
-            ${probabilityHtml}
-            <div class="mc-pending-label">${getPendingMatchLabel(m)}</div>
-          </div>
-          <div class="mc-team mc-team-2">
-            <div class="mc-players">${renderTeamPlayers(m.team2.spieler)}</div>
-          </div>
-        </div>`;
-      }
-      const t1w = m.sieger === 1, t2w = m.sieger === 2;
-      const [s1, s2] = m.saetze.split(':');
-      const viewerInT1 = isParticipantView() && m.team1.spieler.includes(getSelectedViewer().name);
-      const viewerInT2 = isParticipantView() && m.team2.spieler.includes(getSelectedViewer().name);
-      const viewerWon  = (viewerInT1 && m.sieger === 1) || (viewerInT2 && m.sieger === 2);
-      const viewerLost = (viewerInT1 && m.sieger === 2) || (viewerInT2 && m.sieger === 1);
-      const viewerResultClass = viewerWon ? 'viewer-win' : viewerLost ? 'viewer-loss' : '';
-      const probability = getHistoricalMatchWinProbability(m);
-      const leftProbability = probability ? `<span class="mc-result-prob">${probability.team1}%</span>` : '';
-      const rightProbability = probability ? `<span class="mc-result-prob">${probability.team2}%</span>` : '';
-      return `<div class="mc played ${isViewerMatch(m) ? `viewer-match ${viewerResultClass}` : ''}">        <div class="mc-meta"><span class="mc-nr">${formatMatchMeta(m, { relative: true })}</span></div>
-        <div class="mc-team mc-team-1 ${t1w?'win':''}">
-          <div class="mc-players">${renderTeamPlayers(m.team1.spieler)}</div>
-        </div>
-        <div class="mc-score">
-          <div class="mc-result-row">
-            ${leftProbability}
-            <div class="mc-score-main">${s1}:${s2}</div>
-            ${rightProbability}
-          </div>
-          <div class="mc-score-detail">${m.ergebnis}</div>
-        </div>
-        <div class="mc-team mc-team-2 ${t2w?'win':''}">
-          <div class="mc-players">${renderTeamPlayers(m.team2.spieler)}</div>
-        </div>
-      </div>`;
-    }).join('');
-    const label = st === 7 ? 'Spieltag 7 – Ausgleichsspieltag' : `Spieltag ${st}`;
-    return `<div class="spieltag-group">
-      <div class="spieltag-label">${label}</div>
-      <div class="match-list">${rows}</div>
-    </div>`;
+    return renderMatchdayGroup(st, matches);
   }).join('');
+  const finalFourHtml = renderFinalFourGroup(finalFourMatches);
+  const spielplanHtml = [regularHtml, finalFourHtml].filter(Boolean).join('');
 
   document.getElementById('spielplan').innerHTML = spielplanHtml || '<div class="empty-state">Keine Spiele für diese Auswahl.</div>';
 }
@@ -1728,6 +1942,34 @@ function renderCalculator() {
     ? openMatches.map(renderCalculatorMatchCard).join('')
     : '<div class="empty-state">Keine offenen Spiele.</div>';
   renderCalculatorRanking();
+function getMatchdayInfo(spieltag) {
+  return (PADEL_DATA.matchdays || []).find(matchday => matchday.spieltag === spieltag) || null;
+}
+
+function formatLongDayMonth(date) {
+  const parsedDate = parseDateValue(date);
+  if (!parsedDate) return '';
+
+  return parsedDate.toLocaleDateString('de-DE', {
+    day: 'numeric',
+    month: 'long'
+  });
+}
+
+function formatMatchdayRange(matchday) {
+  if (!matchday?.startDate || !matchday?.endDate) return '';
+
+  return `${formatLongDayMonth(matchday.startDate)} – ${formatLongDayMonth(matchday.endDate)}`;
+}
+
+function formatMatchdayLabel(spieltag) {
+  const matchday = getMatchdayInfo(spieltag);
+  const label = matchday?.title || `Spieltag ${spieltag}`;
+  const details = [];
+  const range = formatMatchdayRange(matchday);
+
+  if (range) details.push(range);
+  return renderSplitMeta(label, details.join(' | '), 'spieltag-label');
 }
 
 // ── CHART ─────────────────────────────────────────────────────────
@@ -2288,14 +2530,14 @@ function getPlayerSeries(player, events) {
 }
 
 function getPlacementSeries() {
-  const matchDays = [...new Set(PADEL_DATA.matches.map(m => m.spieltag))].sort((a, b) => a - b);
+  const matchDays = [...new Set(PADEL_DATA.matches.filter(countsForRanking).map(m => m.spieltag))].sort((a, b) => a - b);
   const placementsByPlayer = new Map(PADEL_DATA.players.map(p => [p.name, []]));
   const playedByPlayer = new Map(PADEL_DATA.players.map(p => [p.name, []]));
   const statsByPlayer = new Map(PADEL_DATA.players.map(p => [p.name, []]));
 
   matchDays.forEach(spieltag => {
-    const matchesUntilDay = PADEL_DATA.matches.filter(m => m.sieger !== null && m.spieltag <= spieltag);
-    const matchesAtDay = PADEL_DATA.matches.filter(m => m.sieger !== null && m.spieltag === spieltag);
+    const matchesUntilDay = PADEL_DATA.matches.filter(m => countsForRanking(m) && m.sieger !== null && m.spieltag <= spieltag);
+    const matchesAtDay = PADEL_DATA.matches.filter(m => countsForRanking(m) && m.sieger !== null && m.spieltag === spieltag);
     const ranked = getRankedPlayers(matchesUntilDay);
     ranked.forEach((player, index) => {
       placementsByPlayer.get(player.name).push(index + 1);

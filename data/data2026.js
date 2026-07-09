@@ -14,6 +14,47 @@ window.PADEL_SEASON = {
     "Ein Spiel hat 2 Gewinnsätze, bei 1:1 entscheidet der Match-Tie-Break bis 10 Punkte.",
     "Die Top 4 nach jeweils 6 Spielen qualifizieren sich für das Final Four."
   ],
+  "matchdays": [
+    {
+      "spieltag": 1,
+      "startDate": "2026-05-11",
+      "endDate": "2026-05-22"
+    },
+    {
+      "spieltag": 2,
+      "startDate": "2026-05-25",
+      "endDate": "2026-06-05"
+    },
+    {
+      "spieltag": 3,
+      "startDate": "2026-06-08",
+      "endDate": "2026-06-19"
+    },
+    {
+      "spieltag": 4,
+      "startDate": "2026-06-22",
+      "endDate": "2026-07-03"
+    },
+    {
+      "spieltag": 5,
+      "startDate": "2026-07-06",
+      "endDate": "2026-07-17"
+    },
+    {
+      "spieltag": 6,
+      "startDate": "2026-07-20",
+      "endDate": "2026-07-31"
+    },
+    {
+      "spieltag": 7,
+      "startDate": "2026-08-03",
+      "endDate": "2026-08-14"
+    },
+    {
+      "spieltag": 8,
+      "title": "Final Four"
+    }
+  ],
   "players": [
     {
       "id": "agnes_k",
@@ -1092,6 +1133,78 @@ window.PADEL_SEASON = {
         "spieler": [
           "Greta P.",
           "Martin B."
+        ]
+      },
+      "ergebnis": null,
+      "saetze": null,
+      "sieger": null
+    },
+    {
+      "id": "spiel28",
+      "displayLabel": "Final 1",
+      "spieltag": 8,
+      "format": "single-set",
+      "countsForRanking": false,
+      "datum": null,
+      "uhrzeit": null,
+      "team1": {
+        "spieler": [
+          "Erster",
+          "Zweiter"
+        ]
+      },
+      "team2": {
+        "spieler": [
+          "Dritter",
+          "Vierter"
+        ]
+      },
+      "ergebnis": null,
+      "saetze": null,
+      "sieger": null
+    },
+    {
+      "id": "spiel29",
+      "displayLabel": "Final 2",
+      "spieltag": 8,
+      "format": "single-set",
+      "countsForRanking": false,
+      "datum": null,
+      "uhrzeit": null,
+      "team1": {
+        "spieler": [
+          "Erster",
+          "Vierter"
+        ]
+      },
+      "team2": {
+        "spieler": [
+          "Zweiter",
+          "Dritter"
+        ]
+      },
+      "ergebnis": null,
+      "saetze": null,
+      "sieger": null
+    },
+    {
+      "id": "spiel30",
+      "displayLabel": "Final 3",
+      "spieltag": 8,
+      "format": "single-set",
+      "countsForRanking": false,
+      "datum": null,
+      "uhrzeit": null,
+      "team1": {
+        "spieler": [
+          "Erster",
+          "Dritter"
+        ]
+      },
+      "team2": {
+        "spieler": [
+          "Zweiter",
+          "Vierter"
         ]
       },
       "ergebnis": null,

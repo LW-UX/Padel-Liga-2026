@@ -6,6 +6,7 @@ let selectedViewerId = 'sb';
 let matchScope = 'all';
 let rankingSortMode = 'points';
 let rankingViewMode = 'compact';
+let calculatorResults = new Map();
 
 function getViewerStorageKey() {
   return `${VIEWER_STORAGE_KEY_PREFIX}:${selectedSeason?.id || 'default'}`;
@@ -88,6 +89,7 @@ function resetSeasonState() {
   matchScope = 'all';
   rankingSortMode = 'points';
   rankingViewMode = 'compact';
+  calculatorResults = new Map();
   activeP = new Set(PADEL_DATA.players.map(player => player.id));
   chart?.destroy();
   placementChart?.destroy();
@@ -154,6 +156,7 @@ function selectViewer(id) {
   renderHome();
   renderRanking();
   renderSpiele();
+  renderCalculator();
   renderStatistik();
   closeViewerMenu();
 }
@@ -231,6 +234,18 @@ document.addEventListener('click', event => {
     return;
   }
 
+  const calculatorResetControl = event.target.closest('[data-calculator-reset]');
+  if (calculatorResetControl) {
+    resetCalculator();
+    return;
+  }
+
+  const calculatorStepControl = event.target.closest('[data-calculator-step]');
+  if (calculatorStepControl) {
+    stepCalculatorScore(calculatorStepControl);
+    return;
+  }
+
   const playerToggleControl = event.target.closest('[data-player-toggle-id]');
   if (playerToggleControl) {
     toggleP(
@@ -243,6 +258,13 @@ document.addEventListener('click', event => {
 
   const picker = document.getElementById('viewer-picker');
   if (picker && !picker.contains(event.target)) closeViewerMenu();
+});
+
+document.addEventListener('input', event => {
+  const calculatorScoreInput = event.target.closest('[data-calculator-score]');
+  if (!calculatorScoreInput) return;
+
+  updateCalculatorScore(calculatorScoreInput);
 });
 
 document.addEventListener('mouseover', event => {
@@ -1220,6 +1242,419 @@ function renderSpiele() {
   document.getElementById('spielplan').innerHTML = spielplanHtml || '<div class="empty-state">Keine Spiele für diese Auswahl.</div>';
 }
 
+// ── CALCULATOR ────────────────────────────────────────────────────
+function getOpenMatches() {
+  return PADEL_DATA.matches
+    .filter(match => match.sieger === null)
+    .sort(compareMatchesByNumber);
+}
+
+function getCalculatorEntry(matchId) {
+  if (!calculatorResults.has(matchId)) {
+    calculatorResults.set(matchId, {
+      set1: ['', ''],
+      set2: ['', ''],
+      tb: ['', '']
+    });
+  }
+
+  return calculatorResults.get(matchId);
+}
+
+function getCalculatorPair(entry, part) {
+  return Array.isArray(entry?.[part]) ? entry[part] : ['', ''];
+}
+
+function parseCalculatorScorePair(rawTeam1, rawTeam2) {
+  const rawValues = [rawTeam1, rawTeam2].map(value => String(value ?? '').trim());
+  if (!rawValues[0] && !rawValues[1]) return { empty: true };
+  if (!rawValues[0] || !rawValues[1]) return { invalid: true, message: 'Score unvollständig' };
+
+  const values = rawValues.map(Number);
+  if (values.some(value => !Number.isInteger(value) || value < 0)) {
+    return { invalid: true, message: 'Nur ganze Zahlen ab 0' };
+  }
+
+  if (values[0] === values[1]) return { invalid: true, message: 'Ein Satz braucht einen Gewinner' };
+
+  return { team1: values[0], team2: values[1], winner: values[0] > values[1] ? 1 : 2 };
+}
+
+function validateRegularSet(rawTeam1, rawTeam2) {
+  const score = parseCalculatorScorePair(rawTeam1, rawTeam2);
+  if (score.empty || score.invalid) return score;
+
+  const winnerScore = Math.max(score.team1, score.team2);
+  const loserScore = Math.min(score.team1, score.team2);
+  const isValid = (winnerScore === 6 && loserScore <= 4) ||
+    (winnerScore === 7 && (loserScore === 5 || loserScore === 6));
+
+  if (!isValid) {
+    return { invalid: true, message: 'Satz bitte als 6:x, 7:5 oder 7:6 eintragen' };
+  }
+
+  return score;
+}
+
+function validateMatchTiebreak(rawTeam1, rawTeam2) {
+  const score = parseCalculatorScorePair(rawTeam1, rawTeam2);
+  if (score.empty || score.invalid) return score;
+
+  const winnerScore = Math.max(score.team1, score.team2);
+  const loserScore = Math.min(score.team1, score.team2);
+
+  if (winnerScore < 10 || winnerScore - loserScore < 2) {
+    return { invalid: true, message: 'Match-Tiebreak bis mind. 10 mit 2 Pkt. Abstand' };
+  }
+
+  return score;
+}
+
+function formatCalculatorScore(score) {
+  return `${score.team1}:${score.team2}`;
+}
+
+function getCalculatorStatusClass(status) {
+  return {
+    complete: 'calculator-status complete',
+    invalid: 'calculator-status invalid',
+    partial: 'calculator-status partial',
+    empty: 'calculator-status'
+  }[status] || 'calculator-status';
+}
+
+function parseCalculatorResult(match) {
+  const entry = getCalculatorEntry(match.id);
+  const firstSet = validateRegularSet(...getCalculatorPair(entry, 'set1'));
+  const secondSet = validateRegularSet(...getCalculatorPair(entry, 'set2'));
+  const matchTiebreak = validateMatchTiebreak(...getCalculatorPair(entry, 'tb'));
+
+  if (firstSet.invalid) return { status: 'invalid', message: `Satz 1: ${firstSet.message}`, displaySaetze: '—', displayErgebnis: '', showTiebreak: false };
+  if (secondSet.invalid) return { status: 'invalid', message: `Satz 2: ${secondSet.message}`, displaySaetze: '—', displayErgebnis: '', showTiebreak: false };
+  if (firstSet.empty && secondSet.empty) return { status: 'empty', message: '', displaySaetze: '—', displayErgebnis: '', showTiebreak: false };
+  if (firstSet.empty && !secondSet.empty) return { status: 'invalid', message: 'Satz 1 fehlt', displaySaetze: '—', displayErgebnis: '', showTiebreak: false };
+
+  const partialSetWins = [0, 0];
+  partialSetWins[firstSet.winner - 1] += 1;
+  if (secondSet.empty) {
+    return {
+      status: 'partial',
+      message: 'Satz 2 fehlt',
+      displaySaetze: `${partialSetWins[0]}:${partialSetWins[1]}`,
+      displayErgebnis: formatCalculatorScore(firstSet),
+      showTiebreak: false
+    };
+  }
+
+  const setWins = [0, 0];
+  setWins[firstSet.winner - 1] += 1;
+  setWins[secondSet.winner - 1] += 1;
+  const regularResult = `${formatCalculatorScore(firstSet)}, ${formatCalculatorScore(secondSet)}`;
+
+  if (setWins[0] === 2 || setWins[1] === 2) {
+    const winner = setWins[0] === 2 ? 1 : 2;
+    const saetze = `${setWins[0]}:${setWins[1]}`;
+    return {
+      status: 'complete',
+      message: '',
+      displaySaetze: saetze,
+      displayErgebnis: regularResult,
+      showTiebreak: false,
+      match: {
+        ...match,
+        ergebnis: regularResult,
+        saetze,
+        sieger: winner
+      }
+    };
+  }
+
+  if (matchTiebreak.invalid) {
+    return {
+      status: 'invalid',
+      message: matchTiebreak.message,
+      displaySaetze: '1:1',
+      displayErgebnis: regularResult,
+      showTiebreak: true
+    };
+  }
+  if (matchTiebreak.empty) {
+    return {
+      status: 'partial',
+      message: 'Match-Tiebreak fehlt',
+      displaySaetze: '1:1',
+      displayErgebnis: regularResult,
+      showTiebreak: true
+    };
+  }
+
+  setWins[matchTiebreak.winner - 1] += 1;
+  const winner = matchTiebreak.winner;
+  const saetze = `${setWins[0]}:${setWins[1]}`;
+  const ergebnis = `${regularResult} – ${formatCalculatorScore(matchTiebreak)}`;
+
+  return {
+    status: 'complete',
+    message: '',
+    displaySaetze: saetze,
+    displayErgebnis: ergebnis,
+    showTiebreak: true,
+    match: {
+      ...match,
+      ergebnis,
+      saetze,
+      sieger: winner
+    }
+  };
+}
+
+function getCalculatorSimulatedMatches() {
+  const simulatedById = new Map(
+    getOpenMatches()
+      .map(match => [match.id, parseCalculatorResult(match)])
+      .filter(([, result]) => result.match)
+      .map(([matchId, result]) => [matchId, result.match])
+  );
+
+  return PADEL_DATA.matches.map(match => simulatedById.get(match.id) || match);
+}
+
+function updateCalculatorScore(input) {
+  const entry = getCalculatorEntry(input.dataset.calculatorMatchId);
+  const part = input.dataset.calculatorPart;
+  const teamIndex = Number(input.dataset.calculatorTeam);
+  const value = input.value.replace(/[^\d]/g, '').slice(0, 2);
+
+  input.value = value;
+  entry[part][teamIndex] = value;
+  initializeCalculatorPairDefaults(input.dataset.calculatorMatchId, part, teamIndex);
+  renderCalculatorMatchStatus(input.dataset.calculatorMatchId);
+  renderCalculatorRanking();
+}
+
+function initializeCalculatorPairDefaults(matchId, part, changedTeamIndex) {
+  const entry = getCalculatorEntry(matchId);
+  if (!entry[part][changedTeamIndex]) return;
+
+  const otherTeamIndex = changedTeamIndex === 0 ? 1 : 0;
+  if (entry[part][otherTeamIndex] !== '') return;
+
+  entry[part][otherTeamIndex] = '0';
+  const otherInput = document.querySelector(
+    `[data-calculator-score][data-calculator-match-id="${CSS.escape(matchId)}"][data-calculator-part="${CSS.escape(part)}"][data-calculator-team="${otherTeamIndex}"]`
+  );
+  if (otherInput) otherInput.value = '0';
+}
+
+function stepCalculatorScore(button) {
+  const matchId = button.dataset.calculatorMatchId;
+  const part = button.dataset.calculatorPart;
+  const teamIndex = Number(button.dataset.calculatorTeam);
+  const delta = Number(button.dataset.calculatorStep);
+  const entry = getCalculatorEntry(matchId);
+  const current = Number(entry[part][teamIndex]);
+  const nextValue = Math.max(0, (Number.isFinite(current) ? current : 0) + delta);
+  const value = String(nextValue).slice(0, 2);
+  const input = document.querySelector(
+    `[data-calculator-score][data-calculator-match-id="${CSS.escape(matchId)}"][data-calculator-part="${CSS.escape(part)}"][data-calculator-team="${teamIndex}"]`
+  );
+
+  entry[part][teamIndex] = value;
+  if (input) input.value = value;
+  initializeCalculatorPairDefaults(matchId, part, teamIndex);
+  renderCalculatorMatchStatus(matchId);
+  renderCalculatorRanking();
+}
+
+function resetCalculator() {
+  calculatorResults = new Map();
+  renderCalculator();
+}
+
+function renderCalculatorScoreInput(match, part, teamIndex, label, value) {
+  return `<div class="calculator-score-field" aria-label="${escapeHtml(formatMatchNumberLabel(match))} ${escapeHtml(label)}">
+    <button
+      type="button"
+      class="calculator-step"
+      data-calculator-step="-1"
+      data-calculator-match-id="${escapeHtml(match.id)}"
+      data-calculator-part="${part}"
+      data-calculator-team="${teamIndex}"
+      aria-label="${escapeHtml(label)} verringern"
+    >−</button>
+    <input
+      type="text"
+      inputmode="numeric"
+      pattern="[0-9]*"
+      maxlength="2"
+      value="${escapeHtml(value)}"
+      data-calculator-score
+      data-calculator-match-id="${escapeHtml(match.id)}"
+      data-calculator-part="${part}"
+      data-calculator-team="${teamIndex}"
+      aria-label="${escapeHtml(formatMatchNumberLabel(match))} ${escapeHtml(label)}"
+    >
+    <button
+      type="button"
+      class="calculator-step"
+      data-calculator-step="1"
+      data-calculator-match-id="${escapeHtml(match.id)}"
+      data-calculator-part="${part}"
+      data-calculator-team="${teamIndex}"
+      aria-label="${escapeHtml(label)} erhöhen"
+    >+</button>
+  </div>`;
+}
+
+function renderCalculatorMatchStatusHtml(match) {
+  const result = parseCalculatorResult(match);
+
+  return `<div class="${getCalculatorStatusClass(result.status)}" id="calculator-status-${match.id}">${escapeHtml(result.message)}</div>`;
+}
+
+function getCalculatorLiveMain(match, result) {
+  if (result.displaySaetze && result.displaySaetze !== '—') {
+    return { label: result.displaySaetze, probability: false };
+  }
+
+  const probability = getMatchWinProbability(match);
+  return probability
+    ? { label: `${probability.team1}% : ${probability.team2}%`, probability: true }
+    : { label: '—', probability: false };
+}
+
+function renderCalculatorLiveResultHtml(match) {
+  const result = parseCalculatorResult(match);
+  const liveMain = getCalculatorLiveMain(match, result);
+
+  return `<div class="calculator-live-result" id="calculator-live-result-${match.id}">
+    <div class="mc-score-main ${liveMain.probability ? 'calculator-probability' : ''}">${escapeHtml(liveMain.label)}</div>
+  </div>`;
+}
+
+function renderCalculatorMatchStatus(matchId) {
+  const match = PADEL_DATA.matches.find(item => item.id === matchId);
+  const statusElement = document.getElementById(`calculator-status-${matchId}`);
+  const liveResultElement = document.getElementById(`calculator-live-result-${matchId}`);
+  const tiebreakLine = document.getElementById(`calculator-tiebreak-${matchId}`);
+  if (!match) return;
+
+  const result = parseCalculatorResult(match);
+  const matchCard = statusElement?.closest('.calculator-match-card') ||
+    liveResultElement?.closest('.calculator-match-card') ||
+    tiebreakLine?.closest('.calculator-match-card');
+
+  if (matchCard) {
+    matchCard.classList.toggle('calculator-match-complete', Boolean(result.match));
+  }
+
+  if (statusElement) {
+    statusElement.className = getCalculatorStatusClass(result.status);
+    statusElement.textContent = result.message;
+  }
+
+  if (liveResultElement) {
+    const liveMainElement = liveResultElement.querySelector('.mc-score-main');
+    const liveMain = getCalculatorLiveMain(match, result);
+    liveMainElement.textContent = liveMain.label;
+    liveMainElement.classList.toggle('calculator-probability', liveMain.probability);
+  }
+
+  if (tiebreakLine) {
+    tiebreakLine.hidden = !result.showTiebreak;
+  }
+}
+
+function renderCalculatorMatchCard(match) {
+  const entry = getCalculatorEntry(match.id);
+  const set1 = getCalculatorPair(entry, 'set1');
+  const set2 = getCalculatorPair(entry, 'set2');
+  const tb = getCalculatorPair(entry, 'tb');
+  const result = parseCalculatorResult(match);
+
+  return `<article class="calculator-match-card ${result.match ? 'calculator-match-complete' : ''} ${isViewerMatch(match) ? 'viewer-match' : ''}">
+    <div class="calculator-match-head">
+      <div class="calculator-match-meta">${formatMatchNumberLabel(match)}</div>
+      ${renderCalculatorMatchStatusHtml(match)}
+    </div>
+    <div class="calculator-match-teams">
+      <div class="calculator-match-team">${renderTeamPlayers(match.team1.spieler)}</div>
+      ${renderCalculatorLiveResultHtml(match)}
+      <div class="calculator-match-team calculator-match-team-2">${renderTeamPlayers(match.team2.spieler)}</div>
+    </div>
+    <div class="calculator-score-line">
+      <div class="calculator-score-pair">
+        ${renderCalculatorScoreInput(match, 'set1', 0, 'Team 1 Satz 1', set1[0])}
+        <span>:</span>
+        ${renderCalculatorScoreInput(match, 'set1', 1, 'Team 2 Satz 1', set1[1])}
+      </div>
+      <span class="calculator-set-separator">|</span>
+      <div class="calculator-score-pair">
+        ${renderCalculatorScoreInput(match, 'set2', 0, 'Team 1 Satz 2', set2[0])}
+        <span>:</span>
+        ${renderCalculatorScoreInput(match, 'set2', 1, 'Team 2 Satz 2', set2[1])}
+      </div>
+    </div>
+    <div class="calculator-tiebreak-line" id="calculator-tiebreak-${match.id}" ${result.showTiebreak ? '' : 'hidden'}>
+      <span class="calculator-score-pair">
+        ${renderCalculatorScoreInput(match, 'tb', 0, 'Team 1 Match-Tiebreak', tb[0])}
+        <span>:</span>
+        ${renderCalculatorScoreInput(match, 'tb', 1, 'Team 2 Match-Tiebreak', tb[1])}
+      </span>
+    </div>
+  </article>`;
+}
+
+function renderCalculatorRanking() {
+  const body = document.getElementById('calculator-ranking-body');
+  const meta = document.getElementById('calculator-meta');
+  if (!body || !meta) return;
+
+  const openMatches = getOpenMatches();
+  const simulatedResults = openMatches
+    .map(match => parseCalculatorResult(match))
+    .filter(result => result.match);
+  const rankedPlayers = getRankedPlayers(getCalculatorSimulatedMatches());
+
+  meta.textContent = `${simulatedResults.length}/${openMatches.length} simuliert`;
+  renderCalculatorMiniRanking(rankedPlayers);
+  body.innerHTML = rankedPlayers.map((player, index) => {
+    const diffStr = player.stats.spiele > 0 ? formatStatDiff(player.stats.spielDiff) : '—';
+    const diffClass = player.stats.spielDiff > 0 ? 'pos' : player.stats.spielDiff < 0 ? 'neg' : 'neu';
+
+    return `<tr class="r${Math.min(index + 1, 4)} ${index < 4 ? 'top-four-highlight' : ''} ${isSelectedPlayer(player.name) ? 'viewer-highlight' : ''}">
+      <td class="rn l">${index + 1}</td>
+      <td class="l"><span class="pname">${player.name}</span></td>
+      <td class="num-val">${player.stats.spiele}</td>
+      <td class="punkte-val">${player.stats.punkte}</td>
+      <td class="num-val"><span class="${player.stats.spiele > 0 ? diffClass : 'neu'}">${diffStr}</span></td>
+    </tr>`;
+  }).join('');
+}
+
+function renderCalculatorMiniRanking(rankedPlayers) {
+  const miniRanking = document.getElementById('calculator-mini-ranking');
+  if (!miniRanking) return;
+
+  miniRanking.innerHTML = rankedPlayers.map((player, index) => `
+    <div class="calculator-mini-rank-row ${index < 4 ? 'top-four-highlight' : ''}">
+      <span class="calculator-mini-rank-pos">${index + 1}</span>
+      <span class="calculator-mini-rank-initials">${escapeHtml(player.initials || player.name)}</span>
+    </div>
+  `).join('');
+}
+
+function renderCalculator() {
+  const matchContainer = document.getElementById('calculator-matches');
+  if (!matchContainer) return;
+
+  const openMatches = getOpenMatches();
+  matchContainer.innerHTML = openMatches.length
+    ? openMatches.map(renderCalculatorMatchCard).join('')
+    : '<div class="empty-state">Keine offenen Spiele.</div>';
+  renderCalculatorRanking();
+}
+
 // ── CHART ─────────────────────────────────────────────────────────
 const COLORS = ['#d4f53a','#3af5b4','#3a8ff5','#f5a03a','#f53ab4','#a03af5','#f5f53a','#3af5f5','#f53a5a','#7af53a','#f57a3a','#3a5af5','#f53af5','#5af5f5','#f5c43a','#3af58a','#f5503a','#c43af5'];
 const GRAY = '#444444';
@@ -2016,6 +2451,7 @@ async function initApp() {
     renderHome();
     renderRanking();
     renderSpiele();
+    renderCalculator();
     renderStatistik();
     renderInfos();
   } catch (error) {

@@ -18,6 +18,7 @@
     <button class="active" data-section="start">Home</button>
     <button data-section="rangliste">Rangliste</button>
     <button data-section="spiele">Spiele</button>
+    <button data-section="rechner">Rechner</button>
     <button data-section="verlauf">Statistik</button>
     <button data-section="infos">Infos</button>
   </nav>
@@ -217,6 +218,52 @@ Positive Werte bedeuten: Die Gegner waren im Schnitt stärker platziert als die 
       </div>
     </div>
     <div id="spielplan"></div>
+  </section>
+
+  <!-- RECHNER -->
+  <section id="rechner" class="section">
+    <div class="sh sh-with-control">
+      <div class="sh-heading">
+        <div class="sh-title">TURNIERRECHNER</div>
+        <div class="sh-meta" id="calculator-meta"></div>
+      </div>
+      <button type="button" class="fb-toggle" data-calculator-reset>Zurücksetzen</button>
+    </div>
+    <div class="calculator-layout">
+      <div class="calculator-mobile-game-area">
+        <div class="calculator-match-column">
+          <div id="calculator-matches" class="calculator-match-list"></div>
+        </div>
+        <aside class="calculator-mobile-mini-ranking" aria-label="Kurzrangliste">
+          <div class="calculator-mini-title">Tabelle</div>
+          <div id="calculator-mini-ranking"></div>
+        </aside>
+      </div>
+      <div class="calculator-panel calculator-ranking-panel">
+        <div class="widget-label">Simulierte Tabelle</div>
+        <div class="ranking-wrap calculator-ranking-wrap">
+          <table class="rt calculator-ranking-table">
+            <colgroup>
+              <col class="col-rank">
+              <col class="col-name">
+              <col class="col-games">
+              <col class="col-points">
+              <col class="col-diff">
+            </colgroup>
+            <thead>
+              <tr>
+                <th class="l rn">#</th>
+                <th class="l">Spieler</th>
+                <th>Spiele</th>
+                <th>Punkte</th>
+                <th>Diff.</th>
+              </tr>
+            </thead>
+            <tbody id="calculator-ranking-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
   </section>
 
   <!-- INFOS -->

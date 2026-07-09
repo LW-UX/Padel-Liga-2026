@@ -420,7 +420,7 @@
     }
     .mini-rank-row {
       display: grid;
-      grid-template-columns: 26px 1fr auto;
+      grid-template-columns: 26px minmax(0, 1fr) auto;
       gap: 10px;
       align-items: center;
     }
@@ -437,6 +437,20 @@
       padding-left: 8px;
     }
     .mini-rank-name { font-weight: 500; }
+    .mini-rank-values {
+      display: grid;
+      grid-template-columns: repeat(3, 3ch);
+      gap: 10px;
+      justify-items: end;
+      align-items: center;
+    }
+    .mini-rank-games,
+    .mini-rank-diff {
+      font-family: 'DM Mono', monospace;
+      color: var(--dim);
+      font-size: 0.85rem;
+      font-weight: 700;
+    }
     .mini-rank-points { color: var(--accent); font-weight: 700; }
     .mini-rank-row.r1 .mini-rank-pos { color: var(--accent); font-weight: 700; }
     .mini-rank-row.r2 .mini-rank-pos { color: #bbb; font-weight: 700; }

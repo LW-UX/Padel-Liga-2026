@@ -49,6 +49,10 @@ window.PADEL_SEASON = {
       "spieltag": 7,
       "startDate": "2026-08-03",
       "endDate": "2026-08-14"
+    },
+    {
+      "spieltag": 8,
+      "title": "Final Four"
     }
   ],
   "players": [
@@ -1129,6 +1133,78 @@ window.PADEL_SEASON = {
         "spieler": [
           "Greta P.",
           "Martin B."
+        ]
+      },
+      "ergebnis": null,
+      "saetze": null,
+      "sieger": null
+    },
+    {
+      "id": "spiel28",
+      "displayLabel": "Final 1",
+      "spieltag": 8,
+      "format": "single-set",
+      "countsForRanking": false,
+      "datum": null,
+      "uhrzeit": null,
+      "team1": {
+        "spieler": [
+          "Erster",
+          "Zweiter"
+        ]
+      },
+      "team2": {
+        "spieler": [
+          "Dritter",
+          "Vierter"
+        ]
+      },
+      "ergebnis": null,
+      "saetze": null,
+      "sieger": null
+    },
+    {
+      "id": "spiel29",
+      "displayLabel": "Final 2",
+      "spieltag": 8,
+      "format": "single-set",
+      "countsForRanking": false,
+      "datum": null,
+      "uhrzeit": null,
+      "team1": {
+        "spieler": [
+          "Erster",
+          "Vierter"
+        ]
+      },
+      "team2": {
+        "spieler": [
+          "Zweiter",
+          "Dritter"
+        ]
+      },
+      "ergebnis": null,
+      "saetze": null,
+      "sieger": null
+    },
+    {
+      "id": "spiel30",
+      "displayLabel": "Final 3",
+      "spieltag": 8,
+      "format": "single-set",
+      "countsForRanking": false,
+      "datum": null,
+      "uhrzeit": null,
+      "team1": {
+        "spieler": [
+          "Erster",
+          "Dritter"
+        ]
+      },
+      "team2": {
+        "spieler": [
+          "Zweiter",
+          "Vierter"
         ]
       },
       "ergebnis": null,

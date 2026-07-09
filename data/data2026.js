@@ -114,6 +114,11 @@ window.PADEL_SEASON = {
           "date": "2026-06-25",
           "elo": 790,
           "spiel": "Spiel 14"
+        },
+        {
+          "date": "2026-07-09",
+          "elo": 746,
+          "spiel": "Spiel 11"
         }
       ]
     },
@@ -165,6 +170,11 @@ window.PADEL_SEASON = {
           "date": "2026-05-13",
           "elo": 773,
           "spiel": "Spiel 4"
+        },
+        {
+          "date": "2026-07-09",
+          "elo": 731,
+          "spiel": "Spiel 11"
         }
       ]
     },
@@ -221,6 +231,11 @@ window.PADEL_SEASON = {
           "date": "2026-06-23",
           "elo": 745,
           "spiel": "Spiel 13"
+        },
+        {
+          "date": "2026-07-09",
+          "elo": 805,
+          "spiel": "Spiel 11"
         }
       ]
     },
@@ -305,6 +320,11 @@ window.PADEL_SEASON = {
           "date": "2026-06-24",
           "elo": 1027,
           "spiel": "Spiel 24"
+        },
+        {
+          "date": "2026-07-09",
+          "elo": 1054,
+          "spiel": "Spiel 11"
         }
       ]
     },
@@ -703,8 +723,8 @@ window.PADEL_SEASON = {
     {
       "id": "spiel10",
       "spieltag": 3,
-      "datum": "2026-07-09",
-      "uhrzeit": "12.00",
+      "datum": "2026-06-08",
+      "uhrzeit": null,
       "team1": {
         "spieler": [
           "Agnes K.",
@@ -724,8 +744,8 @@ window.PADEL_SEASON = {
     {
       "id": "spiel11",
       "spieltag": 3,
-      "datum": "2026-06-08",
-      "uhrzeit": null,
+      "datum": "2026-07-09",
+      "uhrzeit": "07.30",
       "team1": {
         "spieler": [
           "Christoph L.",
@@ -738,9 +758,9 @@ window.PADEL_SEASON = {
           "Irene W."
         ]
       },
-      "ergebnis": null,
-      "saetze": null,
-      "sieger": null
+      "ergebnis": "4:6, 6:2 – 7:10",
+      "saetze": "1:2",
+      "sieger": 2
     },
     {
       "id": "spiel12",

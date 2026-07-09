@@ -14,6 +14,43 @@ window.PADEL_SEASON = {
     "Ein Spiel hat 2 Gewinnsätze, bei 1:1 entscheidet der Match-Tie-Break bis 10 Punkte.",
     "Die Top 4 nach jeweils 6 Spielen qualifizieren sich für das Final Four."
   ],
+  "matchdays": [
+    {
+      "spieltag": 1,
+      "startDate": "2026-05-11",
+      "endDate": "2026-05-22"
+    },
+    {
+      "spieltag": 2,
+      "startDate": "2026-05-25",
+      "endDate": "2026-06-05"
+    },
+    {
+      "spieltag": 3,
+      "startDate": "2026-06-08",
+      "endDate": "2026-06-19"
+    },
+    {
+      "spieltag": 4,
+      "startDate": "2026-06-22",
+      "endDate": "2026-07-03"
+    },
+    {
+      "spieltag": 5,
+      "startDate": "2026-07-06",
+      "endDate": "2026-07-17"
+    },
+    {
+      "spieltag": 6,
+      "startDate": "2026-07-20",
+      "endDate": "2026-07-31"
+    },
+    {
+      "spieltag": 7,
+      "startDate": "2026-08-03",
+      "endDate": "2026-08-14"
+    }
+  ],
   "players": [
     {
       "id": "agnes_k",

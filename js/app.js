@@ -759,7 +759,13 @@ function compareMatchesByNumber(a, b) {
   return Number(a.id.replace('spiel', '')) - Number(b.id.replace('spiel', ''));
 }
 
+function hasScheduledDateTime(match) {
+  return Boolean(match?.datum && match?.uhrzeit);
+}
+
 function formatMatchDate(match) {
+  if (!hasScheduledDateTime(match)) return '';
+
   const d = parseDateValue(match.datum);
   const date = d
     ? d.toLocaleDateString('de-DE', {day:'2-digit', month:'2-digit'})
@@ -770,6 +776,8 @@ function formatMatchDate(match) {
 }
 
 function formatRelativeMatchDate(match) {
+  if (!hasScheduledDateTime(match)) return '';
+
   const dateKey = toDateKey(match.datum);
   const todayKey = toDateKey(new Date());
   const date = parseDateValue(dateKey);
@@ -789,8 +797,9 @@ function formatRelativeMatchDate(match) {
 }
 
 function formatMatchMeta(match, options = {}) {
+  const matchLabel = match.id.replace('spiel','Spiel ');
   const date = options.relative ? formatRelativeMatchDate(match) : formatMatchDate(match);
-  return `${match.id.replace('spiel','Spiel ')} | ${date}`;
+  return date ? `${matchLabel} | ${date}` : matchLabel;
 }
 
 function getPendingMatchLabel(match) {
@@ -838,10 +847,25 @@ function getCurrentArticle() {
   return current || articles[0];
 }
 
+function formatArticleMeta(meta) {
+  return String(meta || '').replace(/\s*·\s*/g, ' | ');
+}
+
+function renderSplitMeta(label, detail, className) {
+  return `<div class="${className}">
+    <span>${escapeHtml(label)}</span>
+    ${detail ? `<span>${escapeHtml(detail)}</span>` : ''}
+  </div>`;
+}
+
+function renderArticleMeta(meta) {
+  const [label, ...details] = formatArticleMeta(meta).split(/\s*\|\s*/);
+  return renderSplitMeta(label, details.join(' | '), 'article-meta');
+}
+
 function renderArticleCard(article) {
-  const meta = article.meta || `Spieltag ${article.spieltag}`;
   return `<article class="article-card">
-    <div class="article-meta">${meta}</div>
+    ${renderArticleMeta(article.meta || `Spieltag ${article.spieltag}`)}
     <h3>${article.title}</h3>
     ${article.body ? `<div class="article-body">${article.body.map(renderArticleBlock).join('')}</div>` : ''}
   </article>`;
@@ -1210,14 +1234,43 @@ function renderSpiele() {
         </div>
       </div>`;
     }).join('');
-    const label = st === 7 ? 'Spieltag 7 – Ausgleichsspieltag' : `Spieltag ${st}`;
+    const label = formatMatchdayLabel(st);
     return `<div class="spieltag-group">
-      <div class="spieltag-label">${label}</div>
+      ${label}
       <div class="match-list">${rows}</div>
     </div>`;
   }).join('');
 
   document.getElementById('spielplan').innerHTML = spielplanHtml || '<div class="empty-state">Keine Spiele für diese Auswahl.</div>';
+}
+
+function getMatchdayInfo(spieltag) {
+  return (PADEL_DATA.matchdays || []).find(matchday => matchday.spieltag === spieltag) || null;
+}
+
+function formatLongDayMonth(date) {
+  const parsedDate = parseDateValue(date);
+  if (!parsedDate) return '';
+
+  return parsedDate.toLocaleDateString('de-DE', {
+    day: 'numeric',
+    month: 'long'
+  });
+}
+
+function formatMatchdayRange(matchday) {
+  if (!matchday?.startDate || !matchday?.endDate) return '';
+
+  return `${formatLongDayMonth(matchday.startDate)} – ${formatLongDayMonth(matchday.endDate)}`;
+}
+
+function formatMatchdayLabel(spieltag) {
+  const matchday = getMatchdayInfo(spieltag);
+  const details = [];
+  const range = formatMatchdayRange(matchday);
+
+  if (range) details.push(range);
+  return renderSplitMeta(`Spieltag ${spieltag}`, details.join(' | '), 'spieltag-label');
 }
 
 // ── CHART ─────────────────────────────────────────────────────────

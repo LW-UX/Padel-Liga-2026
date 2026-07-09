@@ -365,12 +365,18 @@
     .article-card p,
     .info-card p { color: var(--dim); line-height: 1.5; margin-bottom: 0.8rem; }
     .article-meta {
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
       font-family: 'DM Mono', monospace;
       font-size: 0.85rem;
       color: var(--dim);
       letter-spacing: 0.04em;
       margin-bottom: 1rem;
       text-transform: uppercase;
+    }
+    .article-meta span:last-child {
+      text-align: right;
     }
     .article-body { margin-top: 1rem; }
     .article-body h4 {
@@ -908,8 +914,17 @@
     /* ── MATCHES ── */
     .spieltag-group { margin-bottom: 2.5rem; }
     .spieltag-label {
+      display: flex;
+      width: 100%;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 18px;
       font-size: 0.85rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase;
       color: var(--dim); margin-bottom: 10px; padding-bottom: 8px; border-bottom: 1px solid var(--border);
+    }
+    .spieltag-label span:last-child {
+      margin-left: auto;
+      text-align: right;
     }
     .match-list { display: flex; flex-direction: column; gap: 8px; }
     .mc {

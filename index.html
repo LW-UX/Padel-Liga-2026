@@ -9,11 +9,22 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <meta name="apple-mobile-web-app-title" content="Padel-Liga">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎾</text></svg>">
+  <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
   <link rel="manifest" href="manifest.webmanifest">
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <script src="data/seasons.js"></script>
   <script src="data/info.js"></script>
   <link rel="stylesheet" href="style.css">
+  <script>
+    (function () {
+      var standalone = window.matchMedia('(display-mode: standalone)').matches
+        || window.matchMedia('(display-mode: fullscreen)').matches
+        || window.matchMedia('(display-mode: minimal-ui)').matches
+        || window.navigator.standalone === true;
+      if (standalone) document.documentElement.classList.add('is-standalone');
+    })();
+  </script>
 </head>
 <body>
 
@@ -47,10 +58,16 @@
   <!-- START -->
   <section id="start" class="section active">
     <div class="home-grid">
-      <article class="widget widget-articles">
-        <div id="home-articles"></div>
-        <button class="text-link" data-nav-target="infos">Alle alten Artikel</button>
-      </article>
+      <div class="home-main">
+        <article class="widget home-app-hint">
+          <div class="widget-label">Jetzt auch als App!</div>
+          <p class="home-app-hint-text">Diese Webseite auf dem Handy öffnen, im Browser-Menü auf Teilen drücken und zum Home-Bildschirm hinzufügen. Name vergeben und speichern – und schon ist die App auf dem Handy für uneingeschränkten Zugriff.</p>
+        </article>
+        <article class="widget widget-articles">
+          <div id="home-articles"></div>
+          <button class="text-link" data-nav-target="infos">Alle alten Artikel</button>
+        </article>
+      </div>
 
       <div class="home-side">
         <article class="widget">

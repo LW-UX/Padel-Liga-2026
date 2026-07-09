@@ -467,7 +467,8 @@
       padding: 1.05rem;
       background: transparent;
     }
-    #home-next-matches {
+    #home-next-matches,
+    #home-recent-matches {
       display: grid;
       gap: 10px;
     }
@@ -482,6 +483,10 @@
       min-width: 0;
     }
     .mini-match-team .mc-player-sep { display: none; }
+    .mini-match-winner {
+      color: var(--accent);
+      font-weight: 700;
+    }
     .mini-match-team-2 {
       text-align: right;
       align-items: flex-end;

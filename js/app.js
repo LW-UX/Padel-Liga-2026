@@ -751,6 +751,10 @@ function compareMatchesByDateTime(a, b) {
     || Number(a.id.replace('spiel', '')) - Number(b.id.replace('spiel', ''));
 }
 
+function compareMatchesByDateTimeDesc(a, b) {
+  return compareMatchesByDateTime(b, a);
+}
+
 function compareMatchesByNumber(a, b) {
   return Number(a.id.replace('spiel', '')) - Number(b.id.replace('spiel', ''));
 }
@@ -791,6 +795,29 @@ function formatMatchMeta(match, options = {}) {
 
 function getPendingMatchLabel(match) {
   return match.uhrzeit ? 'Terminiert' : 'Ausstehend';
+}
+
+function renderHomeMatchCard(match, options = {}) {
+  const isPlayed = match.sieger !== null;
+  const probability = isPlayed ? getHistoricalMatchWinProbability(match) : getMatchWinProbability(match);
+  const centerMain = isPlayed
+    ? String(match.saetze || '—')
+    : probability ? `${probability.team1}% : ${probability.team2}%` : '—';
+  const centerLabel = isPlayed ? match.ergebnis : getPendingMatchLabel(match);
+  const team1Class = isPlayed && match.sieger === 1 ? ' mini-match-winner' : '';
+  const team2Class = isPlayed && match.sieger === 2 ? ' mini-match-winner' : '';
+
+  return `<div class="mini-match-row ${isViewerMatch(match) ? 'viewer-match' : ''}">
+    <div class="mini-match-meta">${formatMatchMeta(match, { relative: options.relative !== false })}</div>
+    <div class="mini-match-grid">
+      <div class="mini-match-team mini-match-team-1${team1Class}">${renderTeamPlayers(match.team1.spieler)}</div>
+      <div class="mini-match-status">
+        <div class="mini-match-prob">${centerMain}</div>
+        <div class="mini-match-label">${centerLabel}</div>
+      </div>
+      <div class="mini-match-team mini-match-team-2${team2Class}">${renderTeamPlayers(match.team2.spieler)}</div>
+    </div>
+  </div>`;
 }
 
 function getCurrentArticle() {
@@ -866,22 +893,17 @@ function renderHome() {
     .slice(0, 3);
 
   document.getElementById('home-next-matches').innerHTML = nextMatches.length
-    ? nextMatches.map(m => {
-      const probability = getMatchWinProbability(m);
-      const probabilityHtml = probability ? `${probability.team1}% : ${probability.team2}%` : '—';
-      return `<div class="mini-match-row ${isViewerMatch(m) ? 'viewer-match' : ''}">
-        <div class="mini-match-meta">${formatMatchMeta(m, { relative: true })}</div>
-        <div class="mini-match-grid">
-          <div class="mini-match-team mini-match-team-1">${renderTeamPlayers(m.team1.spieler)}</div>
-          <div class="mini-match-status">
-            <div class="mini-match-prob">${probabilityHtml}</div>
-            <div class="mini-match-label">${getPendingMatchLabel(m)}</div>
-          </div>
-          <div class="mini-match-team mini-match-team-2">${renderTeamPlayers(m.team2.spieler)}</div>
-        </div>
-      </div>`;
-    }).join('')
+    ? nextMatches.map(match => renderHomeMatchCard(match)).join('')
     : '<div class="empty-state">Keine weiteren Spiele terminiert.</div>';
+
+  const recentMatches = PADEL_DATA.matches
+    .filter(match => match.sieger !== null && match.ergebnis)
+    .sort(compareMatchesByDateTimeDesc)
+    .slice(0, 3);
+
+  document.getElementById('home-recent-matches').innerHTML = recentMatches.length
+    ? recentMatches.map(match => renderHomeMatchCard(match)).join('')
+    : '<div class="empty-state">Noch keine Spiele mit Ergebnis.</div>';
 }
 
 function renderStatTeamPlayers(players) {

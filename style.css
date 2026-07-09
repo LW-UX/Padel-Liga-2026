@@ -502,7 +502,7 @@
       font-size: 0.85rem;
       font-weight: 700;
     }
-    .mini-rank-points { color: var(--accent); font-weight: 700; }
+    .mini-rank-points { color: var(--accent2); font-weight: 700; }
     .mini-rank-row.r1 .mini-rank-pos { color: var(--accent); font-weight: 700; }
     .mini-rank-row.r2 .mini-rank-pos { color: #bbb; font-weight: 700; }
     .mini-rank-row.r3 .mini-rank-pos { color: #c97b2e; font-weight: 700; }
@@ -899,7 +899,7 @@
     .firma-Headsquare { background: rgba(0.0.0.0); color: rgba(231,7,19,0.7); }
 
     .elo-val    { font-family: 'DM Mono', monospace; font-size: 1rem; font-weight: 400; color: var(--text); }
-    .punkte-val { font-family: 'DM Mono', monospace; font-size: 1rem; font-weight: 700; color: var(--accent); }
+    .punkte-val { font-family: 'DM Mono', monospace; font-size: 1rem; font-weight: 700; color: var(--accent2); }
     .num-val    { font-family: 'DM Mono', monospace; font-size: 1rem; color: var(--text); }
     .pos { color: var(--positiv); }
     .neg { color: var(--negativ); }

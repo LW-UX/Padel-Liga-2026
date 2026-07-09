@@ -1065,19 +1065,27 @@ function renderHome() {
     .filter(m => m.sieger === null && m.uhrzeit && toDateKey(m.datum) >= todayKey)
     .sort(compareMatchesByDateTime)
     .slice(0, 3);
+  const allMatchesPlayed = PADEL_DATA.matches.every(match => match.sieger !== null);
+  const emptyNextMatchesText = allMatchesPlayed
+    ? 'Alle Spiele sind gespielt.'
+    : 'Keine weiteren Spiele terminiert.';
 
   document.getElementById('home-next-matches').innerHTML = nextMatches.length
     ? nextMatches.map(match => renderHomeMatchCard(match)).join('')
-    : '<div class="empty-state">Keine weiteren Spiele terminiert.</div>';
+    : `<div class="empty-state">${emptyNextMatchesText}</div>`;
 
-  const recentMatches = PADEL_DATA.matches
+  const playedMatches = PADEL_DATA.matches.filter(match => match.sieger !== null);
+  const recentMatches = playedMatches
     .filter(match => match.sieger !== null && match.ergebnis)
     .sort(compareMatchesByDateTimeDesc)
     .slice(0, 3);
+  const emptyRecentMatchesText = playedMatches.length === 0
+    ? 'Noch keine Spiele gespielt.'
+    : 'Noch keine Spiele mit Ergebnis.';
 
   document.getElementById('home-recent-matches').innerHTML = recentMatches.length
     ? recentMatches.map(match => renderHomeMatchCard(match)).join('')
-    : '<div class="empty-state">Noch keine Spiele mit Ergebnis.</div>';
+    : `<div class="empty-state">${emptyRecentMatchesText}</div>`;
 }
 
 function renderStatTeamPlayers(players) {

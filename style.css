@@ -86,6 +86,7 @@
       scroll-behavior: auto !important;
     }
     body { background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; min-height: 100vh; touch-action: manipulation; }
+    * { touch-action: manipulation; }
 
     /* ── HEADER ── */
     .site-header {

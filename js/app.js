@@ -990,6 +990,13 @@ function hasScheduledDateTime(match) {
   return Boolean(match?.datum && match?.uhrzeit);
 }
 
+function formatMatchWeekday(date) {
+  const parsedDate = parseDateValue(date);
+  if (!parsedDate) return '';
+
+  return ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'][parsedDate.getDay()];
+}
+
 function formatMatchDate(match) {
   if (!hasScheduledDateTime(match)) return '';
 
@@ -998,8 +1005,10 @@ function formatMatchDate(match) {
     ? d.toLocaleDateString('de-DE', {day:'2-digit', month:'2-digit'})
     : match.datum;
   const time = formatMatchTime(match.uhrzeit);
+  const weekday = formatMatchWeekday(match.datum);
+  const dateLabel = weekday ? `${weekday}, ${date}` : date;
 
-  return time ? `${date} ${time}` : date;
+  return time ? `${dateLabel} ${time}` : dateLabel;
 }
 
 function formatRelativeMatchDate(match) {
@@ -1478,7 +1487,7 @@ function renderStatistik() {
   renderDominantMatches();
   renderBiggestUpsets();
   renderAverageSetScoreFact();
-  renderRankingDeviationFact('stats-points-elo-deviation', 'points', 'elo', 'positive');
+  renderRankingDeviationFact('stats-elo-points-deviation', 'points', 'elo', 'positive');
   renderRankingDeviationFact('stats-points-placement-deviation', 'points', 'placement', 'positive');
 }
 
@@ -2556,7 +2565,7 @@ function getStatDiffClass(diff) {
 }
 
 function getRankingDeviationLabels(targetId) {
-  return targetId === 'stats-points-elo-deviation'
+  return targetId === 'stats-elo-points-deviation'
     ? { top: 'Überperformt', bottom: 'Underperformt' }
     : { top: 'Lospech', bottom: 'Losglück' };
 }

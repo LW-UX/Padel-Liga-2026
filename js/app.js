@@ -256,6 +256,15 @@ document.addEventListener('click', event => {
     return;
   }
 
+  const calculatorPresetControl = event.target.closest('[data-calculator-preset-team]');
+  if (calculatorPresetControl) {
+    applyCalculatorStraightSetsPreset(
+      calculatorPresetControl.dataset.calculatorMatchId,
+      Number(calculatorPresetControl.dataset.calculatorPresetTeam)
+    );
+    return;
+  }
+
   const playerToggleControl = event.target.closest('[data-player-toggle-id]');
   if (playerToggleControl) {
     toggleP(
@@ -312,6 +321,18 @@ document.addEventListener('focusout', event => {
 });
 
 document.addEventListener('keydown', event => {
+  if (event.key === 'Enter' || event.key === ' ') {
+    const calculatorPresetControl = event.target.closest('[data-calculator-preset-team]');
+    if (calculatorPresetControl) {
+      event.preventDefault();
+      applyCalculatorStraightSetsPreset(
+        calculatorPresetControl.dataset.calculatorMatchId,
+        Number(calculatorPresetControl.dataset.calculatorPresetTeam)
+      );
+      return;
+    }
+  }
+
   if (event.key === 'Escape') {
     closeViewerMenu();
     hideFormTooltip();
@@ -1732,6 +1753,34 @@ function stepCalculatorScore(button) {
   renderCalculatorRanking();
 }
 
+function syncCalculatorScoreInputs(matchId) {
+  const entry = getCalculatorEntry(matchId);
+
+  document.querySelectorAll(
+    `[data-calculator-score][data-calculator-match-id="${CSS.escape(matchId)}"]`
+  ).forEach(input => {
+    const part = input.dataset.calculatorPart;
+    const teamIndex = Number(input.dataset.calculatorTeam);
+    input.value = entry?.[part]?.[teamIndex] ?? '';
+  });
+}
+
+function applyCalculatorStraightSetsPreset(matchId, winnerTeamIndex) {
+  if (!matchId || !Number.isInteger(winnerTeamIndex)) return;
+
+  const entry = getCalculatorEntry(matchId);
+  const winnerScores = winnerTeamIndex === 0 ? ['6', '2'] : ['2', '6'];
+
+  entry.set1 = [...winnerScores];
+  entry.set2 = [...winnerScores];
+  entry.tb = ['', ''];
+
+  setActiveCalculatorMatch(matchId, false);
+  syncCalculatorScoreInputs(matchId);
+  renderCalculatorMatchStatus(matchId);
+  renderCalculatorRanking();
+}
+
 function resetCalculator() {
   calculatorResults = new Map();
   activeCalculatorMatchId = null;
@@ -1742,7 +1791,17 @@ function setActiveCalculatorMatch(matchId, rerender = true) {
   if (!matchId || activeCalculatorMatchId === matchId) return;
 
   activeCalculatorMatchId = matchId;
+  syncCalculatorActiveMatchCard();
   if (rerender) renderCalculatorRanking();
+}
+
+function syncCalculatorActiveMatchCard() {
+  document.querySelectorAll('[data-calculator-match-card]').forEach(card => {
+    card.classList.toggle(
+      'calculator-match-active',
+      card.dataset.calculatorMatchCard === activeCalculatorMatchId
+    );
+  });
 }
 
 function getActiveCalculatorPlayerIds() {
@@ -1859,15 +1918,15 @@ function renderCalculatorMatchCard(match) {
   const tb = getCalculatorPair(entry, 'tb');
   const result = parseCalculatorResult(match);
 
-  return `<article class="calculator-match-card ${result.match ? 'calculator-match-complete' : ''} ${isViewerMatch(match) ? 'viewer-match' : ''}">
+  return `<article class="calculator-match-card ${result.match ? 'calculator-match-complete' : ''} ${isViewerMatch(match) ? 'viewer-match' : ''} ${activeCalculatorMatchId === match.id ? 'calculator-match-active' : ''}" data-calculator-match-card="${escapeHtml(match.id)}">
     <div class="calculator-match-head">
       <div class="calculator-match-meta">${formatMatchNumberLabel(match)}</div>
       ${renderCalculatorMatchStatusHtml(match)}
     </div>
     <div class="calculator-match-teams">
-      <div class="calculator-match-team">${renderTeamPlayers(match.team1.spieler)}</div>
+      <div class="calculator-match-team" role="button" tabindex="0" data-calculator-preset-team="0" data-calculator-match-id="${escapeHtml(match.id)}">${renderTeamPlayers(match.team1.spieler)}</div>
       ${renderCalculatorLiveResultHtml(match)}
-      <div class="calculator-match-team calculator-match-team-2">${renderTeamPlayers(match.team2.spieler)}</div>
+      <div class="calculator-match-team calculator-match-team-2" role="button" tabindex="0" data-calculator-preset-team="1" data-calculator-match-id="${escapeHtml(match.id)}">${renderTeamPlayers(match.team2.spieler)}</div>
     </div>
     <div class="calculator-score-line">
       <div class="calculator-score-pair">
@@ -1978,6 +2037,7 @@ function renderCalculator() {
   matchContainer.innerHTML = openMatches.length
     ? openMatches.map(renderCalculatorMatchCard).join('')
     : '<div class="empty-state">Keine offenen Spiele.</div>';
+  syncCalculatorActiveMatchCard();
   renderCalculatorRanking();
 }
 

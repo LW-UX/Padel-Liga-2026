@@ -1083,9 +1083,13 @@
     }
     .calculator-match-card.calculator-match-complete {
       background: var(--surface);
+      border-color: var(--border);
     }
     .calculator-match-card.viewer-match {
       border-color: var(--accent2);
+    }
+    .calculator-match-card.calculator-match-active:not(.calculator-match-complete) {
+      border-color: var(--accent);
     }
     .calculator-match-head {
       display: grid;
@@ -1111,6 +1115,15 @@
       font-weight: 500;
       line-height: 1.22;
       min-width: 0;
+    }
+    .calculator-match-team[data-calculator-preset-team] {
+      cursor: pointer;
+      touch-action: manipulation;
+    }
+    .calculator-match-team[data-calculator-preset-team]:focus-visible {
+      outline: none;
+      box-shadow: 0 0 0 2px var(--accent);
+      border-radius: 8px;
     }
     .calculator-match-team-2 {
       text-align: right;
@@ -1263,10 +1276,10 @@
       will-change: transform;
     }
     table.calculator-ranking-table tbody tr.calculator-active-match-player td {
-      background: color-mix(in srgb, var(--text) 14%, transparent);
+      background: color-mix(in srgb, var(--accent) 14%, transparent);
     }
     table.calculator-ranking-table tbody tr.calculator-active-match-player .pname {
-      color: var(--accent2);
+      color: var(--text);
     }
     .calculator-ranking-table .col-rank { width: 44px; }
     .calculator-ranking-table .col-name { width: auto; }
@@ -1576,7 +1589,7 @@
         box-shadow: inset 2px 0 0 var(--dim);
       }
       .calculator-mini-rank-row.calculator-active-match-player {
-        background: color-mix(in srgb, var(--accent2) 22%, transparent);
+        background: color-mix(in srgb, var(--accent) 18%, transparent);
       }
       .calculator-mini-rank-pos {
         color: var(--text);

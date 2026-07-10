@@ -1290,7 +1290,7 @@
       line-height: 1;
       min-height: 1.85rem;
     }
-    .calculator-live-result .mc-result-row { gap: 8px; }
+    .calculator-live-result .mc-result-row { gap: 4px; }
     .calculator-live-result .mc-result-prob { min-width: 30px; }
     .calculator-score-line {
       display: flex;
@@ -1775,7 +1775,7 @@
       .calculator-mini-rank-row:nth-child(2) .calculator-mini-rank-pos { color: #bbb; }
       .calculator-mini-rank-row:nth-child(3) .calculator-mini-rank-pos { color: #c97b2e; }
       .calculator-match-teams {
-        gap: 8px;
+        gap: 4px;
       }
       .calculator-match-team {
         display: flex;

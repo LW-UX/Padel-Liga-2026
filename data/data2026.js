@@ -8,11 +8,11 @@ window.PADEL_SEASON = {
     "Envidual"
   ],
   "shortInfo": [
-    "Jeder Teilnehmer hat 6 Spiele.",
-    "Partner und Gegner werden jedes Spiel neu gelost.",
-    "Es gibt kein fixes Spieldatum, sondern Zeitfenster. Die Spieler stimmen sich selbst ab.",
-    "Ein Spiel hat 2 Gewinnsätze, bei 1:1 entscheidet der Match-Tie-Break bis 10 Punkte.",
-    "Die Top 4 nach jeweils 6 Spielen qualifizieren sich für das Final Four."
+    "Jeder Teilnehmer hat 6 Partien.",
+    "Partner und Gegner werden jede Partie neu gelost.",
+    "Es gibt kein fixes Datum, sondern Zeitfenster. Die Spieler stimmen sich selbst ab.",
+    "Eine Partie hat 2 Gewinnsätze, bei 1:1 entscheidet der Match-Tie-Break bis 10 Punkte.",
+    "Die Top 4 nach jeweils 6 Partien qualifizieren sich für das Final Four."
   ],
   "matchdays": [
     {
@@ -65,12 +65,12 @@ window.PADEL_SEASON = {
         {
           "date": "2026-05-11",
           "elo": 750,
-          "spiel": "Start"
+          "partie": "Start"
         },
         {
           "date": "2026-06-11",
           "elo": 708,
-          "spiel": "Spiel 1"
+          "partie": "Partie 1"
         }
       ]
     },
@@ -83,17 +83,17 @@ window.PADEL_SEASON = {
         {
           "date": "2026-05-11",
           "elo": 1100,
-          "spiel": "Start"
+          "partie": "Start"
         },
         {
           "date": "2026-06-03",
           "elo": 1025,
-          "spiel": "Spiel 12"
+          "partie": "Partie 12"
         },
         {
           "date": "2026-06-10",
           "elo": 1090,
-          "spiel": "Spiel 5"
+          "partie": "Partie 5"
         }
       ]
     },
@@ -106,27 +106,27 @@ window.PADEL_SEASON = {
         {
           "date": "2026-05-11",
           "elo": 900,
-          "spiel": "Start"
+          "partie": "Start"
         },
         {
           "date": "2026-06-17",
           "elo": 950,
-          "spiel": "Spiel 8"
+          "partie": "Partie 8"
         },
         {
           "date": "2026-06-17",
           "elo": 884,
-          "spiel": "Spiel 3"
+          "partie": "Partie 3"
         },
         {
           "date": "2026-06-23",
           "elo": 956,
-          "spiel": "Spiel 13"
+          "partie": "Partie 13"
         },
         {
           "date": "2026-07-07",
           "elo": 1006,
-          "spiel": "Spiel 9"
+          "partie": "Partie 9"
         }
       ]
     },
@@ -139,27 +139,27 @@ window.PADEL_SEASON = {
         {
           "date": "2026-05-11",
           "elo": 850,
-          "spiel": "Start"
+          "partie": "Start"
         },
         {
           "date": "2026-06-11",
           "elo": 909,
-          "spiel": "Spiel 1"
+          "partie": "Partie 1"
         },
         {
           "date": "2026-06-12",
           "elo": 858,
-          "spiel": "Spiel 7"
+          "partie": "Partie 7"
         },
         {
           "date": "2026-06-25",
           "elo": 790,
-          "spiel": "Spiel 14"
+          "partie": "Partie 14"
         },
         {
           "date": "2026-07-09",
           "elo": 746,
-          "spiel": "Spiel 11"
+          "partie": "Partie 11"
         }
       ]
     },
@@ -172,27 +172,27 @@ window.PADEL_SEASON = {
         {
           "date": "2026-05-11",
           "elo": 800,
-          "spiel": "Start"
+          "partie": "Start"
         },
         {
           "date": "2026-05-19",
           "elo": 877,
-          "spiel": "Spiel 6"
+          "partie": "Partie 6"
         },
         {
           "date": "2026-05-20",
           "elo": 785,
-          "spiel": "Spiel 2"
+          "partie": "Partie 2"
         },
         {
           "date": "2026-06-25",
           "elo": 866,
-          "spiel": "Spiel 14"
+          "partie": "Partie 14"
         },
         {
           "date": "2026-07-07",
           "elo": 925,
-          "spiel": "Spiel 9"
+          "partie": "Partie 9"
         }
       ]
     },
@@ -205,17 +205,17 @@ window.PADEL_SEASON = {
         {
           "date": "2026-05-11",
           "elo": 800,
-          "spiel": "Start"
+          "partie": "Start"
         },
         {
           "date": "2026-05-13",
           "elo": 773,
-          "spiel": "Spiel 4"
+          "partie": "Partie 4"
         },
         {
           "date": "2026-07-09",
           "elo": 731,
-          "spiel": "Spiel 11"
+          "partie": "Partie 11"
         }
       ]
     },
@@ -228,22 +228,22 @@ window.PADEL_SEASON = {
         {
           "date": "2026-05-11",
           "elo": 900,
-          "spiel": "Start"
+          "partie": "Start"
         },
         {
           "date": "2026-05-19",
           "elo": 840,
-          "spiel": "Spiel 6"
+          "partie": "Partie 6"
         },
         {
           "date": "2026-06-03",
           "elo": 797,
-          "spiel": "Spiel 12"
+          "partie": "Partie 12"
         },
         {
           "date": "2026-06-11",
           "elo": 748,
-          "spiel": "Spiel 1"
+          "partie": "Partie 1"
         }
       ]
     },
@@ -256,27 +256,27 @@ window.PADEL_SEASON = {
         {
           "date": "2026-05-11",
           "elo": 750,
-          "spiel": "Start"
+          "partie": "Start"
         },
         {
           "date": "2026-06-17",
           "elo": 702,
-          "spiel": "Spiel 8"
+          "partie": "Partie 8"
         },
         {
           "date": "2026-06-17",
           "elo": 783,
-          "spiel": "Spiel 3"
+          "partie": "Partie 3"
         },
         {
           "date": "2026-06-23",
           "elo": 745,
-          "spiel": "Spiel 13"
+          "partie": "Partie 13"
         },
         {
           "date": "2026-07-09",
           "elo": 805,
-          "spiel": "Spiel 11"
+          "partie": "Partie 11"
         }
       ]
     },
@@ -289,22 +289,22 @@ window.PADEL_SEASON = {
         {
           "date": "2026-05-11",
           "elo": 800,
-          "spiel": "Start"
+          "partie": "Start"
         },
         {
           "date": "2026-05-20",
           "elo": 885,
-          "spiel": "Spiel 2"
+          "partie": "Partie 2"
         },
         {
           "date": "2026-06-03",
           "elo": 951,
-          "spiel": "Spiel 12"
+          "partie": "Partie 12"
         },
         {
           "date": "2026-06-17",
           "elo": 993,
-          "spiel": "Spiel 8"
+          "partie": "Partie 8"
         }
       ]
     },
@@ -317,22 +317,22 @@ window.PADEL_SEASON = {
         {
           "date": "2026-05-11",
           "elo": 800,
-          "spiel": "Start"
+          "partie": "Start"
         },
         {
           "date": "2026-05-20",
           "elo": 722,
-          "spiel": "Spiel 2"
+          "partie": "Partie 2"
         },
         {
           "date": "2026-06-17",
           "elo": 678,
-          "spiel": "Spiel 8"
+          "partie": "Partie 8"
         },
         {
           "date": "2026-07-07",
           "elo": 649,
-          "spiel": "Spiel 9"
+          "partie": "Partie 9"
         }
       ]
     },
@@ -345,27 +345,27 @@ window.PADEL_SEASON = {
         {
           "date": "2026-05-11",
           "elo": 800,
-          "spiel": "Start"
+          "partie": "Start"
         },
         {
           "date": "2026-05-20",
           "elo": 885,
-          "spiel": "Spiel 2"
+          "partie": "Partie 2"
         },
         {
           "date": "2026-06-10",
           "elo": 969,
-          "spiel": "Spiel 5"
+          "partie": "Partie 5"
         },
         {
           "date": "2026-06-24",
           "elo": 1027,
-          "spiel": "Spiel 24"
+          "partie": "Partie 24"
         },
         {
           "date": "2026-07-09",
           "elo": 1054,
-          "spiel": "Spiel 11"
+          "partie": "Partie 11"
         }
       ]
     },
@@ -378,22 +378,22 @@ window.PADEL_SEASON = {
         {
           "date": "2026-05-11",
           "elo": 1100,
-          "spiel": "Start"
+          "partie": "Start"
         },
         {
           "date": "2026-05-13",
           "elo": 1130,
-          "spiel": "Spiel 4"
+          "partie": "Partie 4"
         },
         {
           "date": "2026-05-19",
           "elo": 1161,
-          "spiel": "Spiel 6"
+          "partie": "Partie 6"
         },
         {
           "date": "2026-06-23",
           "elo": 1073,
-          "spiel": "Spiel 13"
+          "partie": "Partie 13"
         }
       ]
     },
@@ -406,22 +406,22 @@ window.PADEL_SEASON = {
         {
           "date": "2026-05-11",
           "elo": 1150,
-          "spiel": "Start"
+          "partie": "Start"
         },
         {
           "date": "2026-06-10",
           "elo": 1049,
-          "spiel": "Spiel 5"
+          "partie": "Partie 5"
         },
         {
           "date": "2026-06-24",
           "elo": 1098,
-          "spiel": "Spiel 24"
+          "partie": "Partie 24"
         },
         {
           "date": "2026-06-25",
           "elo": 1130,
-          "spiel": "Spiel 14"
+          "partie": "Partie 14"
         }
       ]
     },
@@ -434,27 +434,27 @@ window.PADEL_SEASON = {
         {
           "date": "2026-05-11",
           "elo": 1000,
-          "spiel": "Start"
+          "partie": "Start"
         },
         {
           "date": "2026-06-03",
           "elo": 1053,
-          "spiel": "Spiel 12"
+          "partie": "Partie 12"
         },
         {
           "date": "2026-06-12",
           "elo": 1126,
-          "spiel": "Spiel 7"
+          "partie": "Partie 7"
         },
         {
           "date": "2026-06-17",
           "elo": 1154,
-          "spiel": "Spiel 3"
+          "partie": "Partie 3"
         },
         {
           "date": "2026-06-24",
           "elo": 1077,
-          "spiel": "Spiel 24"
+          "partie": "Partie 24"
         }
       ]
     },
@@ -467,17 +467,17 @@ window.PADEL_SEASON = {
         {
           "date": "2026-05-11",
           "elo": 1050,
-          "spiel": "Start"
+          "partie": "Start"
         },
         {
           "date": "2026-06-11",
           "elo": 1081,
-          "spiel": "Spiel 1"
+          "partie": "Partie 1"
         },
         {
           "date": "2026-06-12",
           "elo": 1149,
-          "spiel": "Spiel 7"
+          "partie": "Partie 7"
         }
       ]
     },
@@ -490,22 +490,22 @@ window.PADEL_SEASON = {
         {
           "date": "2026-05-11",
           "elo": 800,
-          "spiel": "Start"
+          "partie": "Start"
         },
         {
           "date": "2026-06-10",
           "elo": 752,
-          "spiel": "Spiel 5"
+          "partie": "Partie 5"
         },
         {
           "date": "2026-06-17",
           "elo": 708,
-          "spiel": "Spiel 3"
+          "partie": "Partie 3"
         },
         {
           "date": "2026-06-25",
           "elo": 663,
-          "spiel": "Spiel 14"
+          "partie": "Partie 14"
         }
       ]
     },
@@ -518,22 +518,22 @@ window.PADEL_SEASON = {
         {
           "date": "2026-05-11",
           "elo": 850,
-          "spiel": "Start"
+          "partie": "Start"
         },
         {
           "date": "2026-05-13",
           "elo": 817,
-          "spiel": "Spiel 4"
+          "partie": "Partie 4"
         },
         {
           "date": "2026-05-19",
           "elo": 768,
-          "spiel": "Spiel 6"
+          "partie": "Partie 6"
         },
         {
           "date": "2026-06-24",
           "elo": 739,
-          "spiel": "Spiel 24"
+          "partie": "Partie 24"
         }
       ]
     },
@@ -546,34 +546,34 @@ window.PADEL_SEASON = {
         {
           "date": "2026-05-11",
           "elo": 1100,
-          "spiel": "Start"
+          "partie": "Start"
         },
         {
           "date": "2026-05-13",
           "elo": 1130,
-          "spiel": "Spiel 4"
+          "partie": "Partie 4"
         },
         {
           "date": "2026-06-12",
           "elo": 1041,
-          "spiel": "Spiel 7"
+          "partie": "Partie 7"
         },
         {
           "date": "2026-06-23",
           "elo": 1095,
-          "spiel": "Spiel 13"
+          "partie": "Partie 13"
         },
         {
           "date": "2026-07-07",
           "elo": 1015,
-          "spiel": "Spiel 9"
+          "partie": "Partie 9"
         }
       ]
     }
   ],
   "matches": [
     {
-      "id": "spiel1",
+      "id": "partie1",
       "spieltag": 1,
       "datum": "2026-06-11",
       "uhrzeit": "12.30",
@@ -594,7 +594,7 @@ window.PADEL_SEASON = {
       "sieger": 2
     },
     {
-      "id": "spiel2",
+      "id": "partie2",
       "spieltag": 1,
       "datum": "2026-05-20",
       "uhrzeit": "12.30",
@@ -615,7 +615,7 @@ window.PADEL_SEASON = {
       "sieger": 2
     },
     {
-      "id": "spiel3",
+      "id": "partie3",
       "spieltag": 1,
       "datum": "2026-06-17",
       "uhrzeit": "13.00",
@@ -636,7 +636,7 @@ window.PADEL_SEASON = {
       "sieger": 2
     },
     {
-      "id": "spiel4",
+      "id": "partie4",
       "spieltag": 1,
       "datum": "2026-05-13",
       "uhrzeit": "17.30",
@@ -657,7 +657,7 @@ window.PADEL_SEASON = {
       "sieger": 1
     },
     {
-      "id": "spiel5",
+      "id": "partie5",
       "spieltag": 2,
       "datum": "2026-06-10",
       "uhrzeit": "12.00",
@@ -678,7 +678,7 @@ window.PADEL_SEASON = {
       "sieger": 2
     },
     {
-      "id": "spiel6",
+      "id": "partie6",
       "spieltag": 2,
       "datum": "2026-05-19",
       "uhrzeit": "13.00",
@@ -699,7 +699,7 @@ window.PADEL_SEASON = {
       "sieger": 1
     },
     {
-      "id": "spiel7",
+      "id": "partie7",
       "spieltag": 2,
       "datum": "2026-06-12",
       "uhrzeit": "07.30",
@@ -720,7 +720,7 @@ window.PADEL_SEASON = {
       "sieger": 2
     },
     {
-      "id": "spiel8",
+      "id": "partie8",
       "spieltag": 2,
       "datum": "2026-06-17",
       "uhrzeit": "12.00",
@@ -741,7 +741,7 @@ window.PADEL_SEASON = {
       "sieger": 1
     },
     {
-      "id": "spiel9",
+      "id": "partie9",
       "spieltag": 3,
       "datum": "2026-07-07",
       "uhrzeit": "07.30",
@@ -762,7 +762,7 @@ window.PADEL_SEASON = {
       "sieger": 1
     },
     {
-      "id": "spiel10",
+      "id": "partie10",
       "spieltag": 3,
       "datum": "2026-06-08",
       "uhrzeit": null,
@@ -783,7 +783,7 @@ window.PADEL_SEASON = {
       "sieger": null
     },
     {
-      "id": "spiel11",
+      "id": "partie11",
       "spieltag": 3,
       "datum": "2026-07-09",
       "uhrzeit": "07.30",
@@ -804,7 +804,7 @@ window.PADEL_SEASON = {
       "sieger": 2
     },
     {
-      "id": "spiel12",
+      "id": "partie12",
       "spieltag": 3,
       "datum": "2026-06-03",
       "uhrzeit": "12.30",
@@ -825,7 +825,7 @@ window.PADEL_SEASON = {
       "sieger": 2
     },
     {
-      "id": "spiel13",
+      "id": "partie13",
       "spieltag": 4,
       "datum": "2026-06-23",
       "uhrzeit": "07.30",
@@ -846,7 +846,7 @@ window.PADEL_SEASON = {
       "sieger": 1
     },
     {
-      "id": "spiel14",
+      "id": "partie14",
       "spieltag": 4,
       "datum": "2026-06-25",
       "uhrzeit": "12.00",
@@ -867,7 +867,7 @@ window.PADEL_SEASON = {
       "sieger": 1
     },
     {
-      "id": "spiel15",
+      "id": "partie15",
       "spieltag": 4,
       "datum": "2026-06-22",
       "uhrzeit": null,
@@ -888,7 +888,7 @@ window.PADEL_SEASON = {
       "sieger": null
     },
     {
-      "id": "spiel16",
+      "id": "partie16",
       "spieltag": 4,
       "datum": "2026-06-22",
       "uhrzeit": null,
@@ -909,7 +909,7 @@ window.PADEL_SEASON = {
       "sieger": null
     },
     {
-      "id": "spiel17",
+      "id": "partie17",
       "spieltag": 5,
       "datum": "2026-07-15",
       "uhrzeit": "07.30",
@@ -930,7 +930,7 @@ window.PADEL_SEASON = {
       "sieger": null
     },
     {
-      "id": "spiel18",
+      "id": "partie18",
       "spieltag": 5,
       "datum": "2026-07-06",
       "uhrzeit": null,
@@ -951,7 +951,7 @@ window.PADEL_SEASON = {
       "sieger": null
     },
     {
-      "id": "spiel19",
+      "id": "partie19",
       "spieltag": 5,
       "datum": "2026-07-06",
       "uhrzeit": null,
@@ -972,7 +972,7 @@ window.PADEL_SEASON = {
       "sieger": null
     },
     {
-      "id": "spiel20",
+      "id": "partie20",
       "spieltag": 5,
       "datum": "2026-07-06",
       "uhrzeit": null,
@@ -993,7 +993,7 @@ window.PADEL_SEASON = {
       "sieger": null
     },
     {
-      "id": "spiel21",
+      "id": "partie21",
       "spieltag": 6,
       "datum": "2026-07-14",
       "uhrzeit": "12.30",
@@ -1014,7 +1014,7 @@ window.PADEL_SEASON = {
       "sieger": null
     },
     {
-      "id": "spiel22",
+      "id": "partie22",
       "spieltag": 6,
       "datum": "2026-07-20",
       "uhrzeit": null,
@@ -1035,7 +1035,7 @@ window.PADEL_SEASON = {
       "sieger": null
     },
     {
-      "id": "spiel23",
+      "id": "partie23",
       "spieltag": 6,
       "datum": "2026-07-20",
       "uhrzeit": null,
@@ -1056,7 +1056,7 @@ window.PADEL_SEASON = {
       "sieger": null
     },
     {
-      "id": "spiel24",
+      "id": "partie24",
       "spieltag": 6,
       "datum": "2026-06-24",
       "uhrzeit": "12.00",
@@ -1077,7 +1077,7 @@ window.PADEL_SEASON = {
       "sieger": 2
     },
     {
-      "id": "spiel25",
+      "id": "partie25",
       "spieltag": 7,
       "datum": "2026-08-03",
       "uhrzeit": null,
@@ -1098,7 +1098,7 @@ window.PADEL_SEASON = {
       "sieger": null
     },
     {
-      "id": "spiel26",
+      "id": "partie26",
       "spieltag": 7,
       "datum": "2026-08-03",
       "uhrzeit": null,
@@ -1119,7 +1119,7 @@ window.PADEL_SEASON = {
       "sieger": null
     },
     {
-      "id": "spiel27",
+      "id": "partie27",
       "spieltag": 7,
       "datum": "2026-08-03",
       "uhrzeit": null,
@@ -1140,7 +1140,7 @@ window.PADEL_SEASON = {
       "sieger": null
     },
     {
-      "id": "spiel28",
+      "id": "partie28",
       "displayLabel": "Final 1",
       "spieltag": 8,
       "format": "single-set",
@@ -1164,7 +1164,7 @@ window.PADEL_SEASON = {
       "sieger": null
     },
     {
-      "id": "spiel29",
+      "id": "partie29",
       "displayLabel": "Final 2",
       "spieltag": 8,
       "format": "single-set",
@@ -1188,7 +1188,7 @@ window.PADEL_SEASON = {
       "sieger": null
     },
     {
-      "id": "spiel30",
+      "id": "partie30",
       "displayLabel": "Final 3",
       "spieltag": 8,
       "format": "single-set",
@@ -1226,7 +1226,7 @@ window.PADEL_SEASON = {
         },
         {
           "type": "h",
-          "text": "Spiel 1 - Das Eröffnungsspiel"
+          "text": "Partie 1 - Das Eröffnungsspiel"
         },
         {
           "type": "match",
@@ -1247,7 +1247,7 @@ window.PADEL_SEASON = {
         },
         {
           "type": "h",
-          "text": "Spiel 2 - Das Unternehmensduell"
+          "text": "Partie 2 - Das Unternehmensduell"
         },
         {
           "type": "match",
@@ -1255,7 +1255,7 @@ window.PADEL_SEASON = {
         },
         {
           "type": "p",
-          "text": "Spiel 2 hat eine zusätzliche Dimension: Hanako gegen Envidual liefert uns das erste firmenübergreifende Kräftemessen der Liga. Und Leonie R macht keinerlei Hehl daraus, wie sie den Ausgang dieser Begegnung einschätzt:"
+          "text": "Partie 2 hat eine zusätzliche Dimension: Hanako gegen Envidual liefert uns das erste firmenübergreifende Kräftemessen der Liga. Und Leonie R macht keinerlei Hehl daraus, wie sie den Ausgang dieser Begegnung einschätzt:"
         },
         {
           "type": "quote",
@@ -1268,7 +1268,7 @@ window.PADEL_SEASON = {
         },
         {
           "type": "h",
-          "text": "Spiel 3 - Das erste Mayr-Duell"
+          "text": "Partie 3 - Das erste Mayr-Duell"
         },
         {
           "type": "match",
@@ -1289,7 +1289,7 @@ window.PADEL_SEASON = {
         },
         {
           "type": "h",
-          "text": "Spiel 4 - Die stille Favoritenpartie"
+          "text": "Partie 4 - Die stille Favoritenpartie"
         },
         {
           "type": "match",
@@ -1326,7 +1326,7 @@ window.PADEL_SEASON = {
         },
         {
           "type": "h",
-          "text": "Spiel 5 - Die Tennisasse unter sich"
+          "text": "Partie 5 - Die Tennisasse unter sich"
         },
         {
           "type": "match",
@@ -1334,11 +1334,11 @@ window.PADEL_SEASON = {
         },
         {
           "type": "p",
-          "text": "Lange haben alle auf diesen Moment gewartet: Mit Spiel 5 betreten Lukas P und Andreas L endlich offiziell die Bühne der Padel-Liga. Und das Schicksal hat es gut gemeint - oder böse, je nach Perspektive. Denn die beiden aktivsten Tennisspieler der gesamten Liga stehen sich gleich in ihrer Premierenpartie gegenüber. Beide gelten intern als heiße Anwärter auf den Titel. Aber ob Tenniserfahrung auf dem Padelcourt hilft oder ein falsches Sicherheitsgefühl erzeugt, werden die Sätze zeigen."
+          "text": "Lange haben alle auf diesen Moment gewartet: Mit Partie 5 betreten Lukas P und Andreas L endlich offiziell die Bühne der Padel-Liga. Und das Schicksal hat es gut gemeint - oder böse, je nach Perspektive. Denn die beiden aktivsten Tennisspieler der gesamten Liga stehen sich gleich in ihrer Premierenpartie gegenüber. Beide gelten intern als heiße Anwärter auf den Titel. Aber ob Tenniserfahrung auf dem Padelcourt hilft oder ein falsches Sicherheitsgefühl erzeugt, werden die Sätze zeigen."
         },
         {
           "type": "p",
-          "text": "Luca W, der in Spiel 2 des ersten Spieltags noch auf der Siegerseite stand, ist von der Brisanz dieser Begegnung sichtlich angetan:"
+          "text": "Luca W, der in Partie 2 des ersten Spieltags noch auf der Siegerseite stand, ist von der Brisanz dieser Begegnung sichtlich angetan:"
         },
         {
           "type": "quote",
@@ -1351,7 +1351,7 @@ window.PADEL_SEASON = {
         },
         {
           "type": "h",
-          "text": "Spiel 6 - Bereits gespielt: Ludwig W & Cristian B siegen 2:0"
+          "text": "Partie 6 - Bereits gespielt: Ludwig W & Cristian B siegen 2:0"
         },
         {
           "type": "match",
@@ -1376,7 +1376,7 @@ window.PADEL_SEASON = {
         },
         {
           "type": "h",
-          "text": "Spiel 7 - Einstige Partner, neue Rivalen"
+          "text": "Partie 7 - Einstige Partner, neue Rivalen"
         },
         {
           "type": "match",
@@ -1388,11 +1388,11 @@ window.PADEL_SEASON = {
         },
         {
           "type": "p",
-          "text": "Noch brisanter wird es durch zwei weitere Verbindungen: Raphael H und Marco M kennen sich gut vom Tenniscourt, wo sie regelmäßig gemeinsam spielen. Jetzt sind sie Gegner. Zudem spielen mit Marco und Marcel zwei Mayrs im selben Team. Ein Duell, das über die Padel-Liga hinaus eine neue Dimension bekommt. Vier Spieler, die sich alle kennen und alle gewinnen wollen. Spiel 7 dürfte eines der persönlichsten des gesamten Turniers werden."
+          "text": "Noch brisanter wird es durch zwei weitere Verbindungen: Raphael H und Marco M kennen sich gut vom Tenniscourt, wo sie regelmäßig gemeinsam spielen. Jetzt sind sie Gegner. Zudem spielen mit Marco und Marcel zwei Mayrs im selben Team. Ein Duell, das über die Padel-Liga hinaus eine neue Dimension bekommt. Vier Spieler, die sich alle kennen und alle gewinnen wollen. Partie 7 dürfte eines der persönlichsten des gesamten Turniers werden."
         },
         {
           "type": "h",
-          "text": "Spiel 8 - Das Rematch: Jonas trifft wieder auf Leonie"
+          "text": "Partie 8 - Das Rematch: Jonas trifft wieder auf Leonie"
         },
         {
           "type": "match",
@@ -1400,7 +1400,7 @@ window.PADEL_SEASON = {
         },
         {
           "type": "p",
-          "text": "Kaum ist Spieltag 1 durch, serviert Spieltag 2 das nächste Kapitel der spannendsten Einzelrivalität des Ligastarts: Jonas L gegen Leonie R. In Spiel 2 hatte Jonas mit seinem damaligen Partner Luca W das Duell gegen Leonie klar für sich entschieden. Jetzt neue Partner, neues Glück - oder nicht?"
+          "text": "Kaum ist Spieltag 1 durch, serviert Spieltag 2 das nächste Kapitel der spannendsten Einzelrivalität des Ligastarts: Jonas L gegen Leonie R. In Partie 2 hatte Jonas mit seinem damaligen Partner Luca W das Duell gegen Leonie klar für sich entschieden. Jetzt neue Partner, neues Glück - oder nicht?"
         },
         {
           "type": "p",
@@ -1421,7 +1421,7 @@ window.PADEL_SEASON = {
         },
         {
           "type": "p",
-          "text": "Obwohl Spiel 1 und Spiel 3 aus Spieltag 1 krankheits- und urlaubsbedingt noch ausstehen, nimmt die Liga dennoch an Fahrt auf. Die Tabelle beginnt sich zu formen, die ersten Charaktere zeigen sich und mit jedem Spiel wird klarer, wer hier wirklich für den Titel spielt."
+          "text": "Obwohl Partie 1 und Partie 3 aus Spieltag 1 krankheits- und urlaubsbedingt noch ausstehen, nimmt die Liga dennoch an Fahrt auf. Die Tabelle beginnt sich zu formen, die ersten Charaktere zeigen sich und mit jedem Spiel wird klarer, wer hier wirklich für den Titel spielt."
         }
       ]
     },
@@ -1442,7 +1442,7 @@ window.PADEL_SEASON = {
         },
         {
           "type": "h",
-          "text": "Spiel 9 - Presseboykott trifft Kampfansage"
+          "text": "Partie 9 - Presseboykott trifft Kampfansage"
         },
         {
           "type": "match",
@@ -1468,11 +1468,11 @@ window.PADEL_SEASON = {
         },
         {
           "type": "p",
-          "text": "Auf der anderen Seite des Netzes: Cristian B, der trotz geprellter Rippen bereits Spiel 6 gewonnen hat, und Chris M, der noch auf sein erstes Ligaspiel wartet. Für beide Teams kann dieses Spiel die Richtung vorgeben, ob es weiter nach oben oder unten geht."
+          "text": "Auf der anderen Seite des Netzes: Cristian B, der trotz geprellter Rippen bereits Partie 6 gewonnen hat, und Chris M, der noch auf sein erstes Ligaspiel wartet. Für beide Teams kann dieses Spiel die Richtung vorgeben, ob es weiter nach oben oder unten geht."
         },
         {
           "type": "h",
-          "text": "Spiel 10 - Das unbeschriebene Blatt gegen den Tabellenführer"
+          "text": "Partie 10 - Das unbeschriebene Blatt gegen den Tabellenführer"
         },
         {
           "type": "match",
@@ -1493,11 +1493,11 @@ window.PADEL_SEASON = {
         },
         {
           "type": "p",
-          "text": "Kann der Tabellenführer und sein noch punktloser Partner die Favoritenrolle bestätigen oder startet das unbeschriebene Blatt mit einem Sieg in die Saison? Spiel 10 könnte das Spiel des Spieltags werden."
+          "text": "Kann der Tabellenführer und sein noch punktloser Partner die Favoritenrolle bestätigen oder startet das unbeschriebene Blatt mit einem Sieg in die Saison? Partie 10 könnte das Spiel des Spieltags werden."
         },
         {
           "type": "h",
-          "text": "Spiel 11 - Anfängerin gegen Kampfansage"
+          "text": "Partie 11 - Anfängerin gegen Kampfansage"
         },
         {
           "type": "match",
@@ -1505,7 +1505,7 @@ window.PADEL_SEASON = {
         },
         {
           "type": "p",
-          "text": "Spiel 11 bringt eine besondere Ausgangslage mit sich. Irene W ist verletzt und fällt zunächst aus. Erst in der zweiten Woche des Spieltags kann sie starten, und dann warten gleich drei nachzuholende Partien auf sie. Die Frage, die sich alle stellen: Resultiert daraus eine Überbelastung direkt aus der Verletzung heraus oder spielt sie sich in einen Rausch?"
+          "text": "Partie 11 bringt eine besondere Ausgangslage mit sich. Irene W ist verletzt und fällt zunächst aus. Erst in der zweiten Woche des Spieltags kann sie starten, und dann warten gleich drei nachzuholende Partien auf sie. Die Frage, die sich alle stellen: Resultiert daraus eine Überbelastung direkt aus der Verletzung heraus oder spielt sie sich in einen Rausch?"
         },
         {
           "type": "p",
@@ -1535,7 +1535,7 @@ window.PADEL_SEASON = {
         },
         {
           "type": "h",
-          "text": "Spiel 12 - Bereits gespielt: Tie-Break-Drama zum Spieltagsauftakt"
+          "text": "Partie 12 - Bereits gespielt: Tie-Break-Drama zum Spieltagsauftakt"
         },
         {
           "type": "match",
@@ -1585,7 +1585,7 @@ window.PADEL_SEASON = {
       "body": [
         {
           "type": "p",
-          "text": "In den letzten Wochen ist viel passiert. Spiele wurden nachgeholt, Überraschungen geliefert, Favoritenrollen umgeschrieben. Irene W. hat mit Marcel M. sensationell ihren ersten Saisonsieg eingefahren. Der als Geheimfavorit gehandelte Lukas P. musste bei seinem Ligadebüt in Spiel 5 gleich eine 0:2-Niederlage hinnehmen und steht weiterhin bei null Punkten. Marco M. und Marcel M. haben Christoph L. und Raphael H. in Spiel 7 mit einem vernichtenden 6:1, 6:1 vom Platz gefegt. Und Jonas L. hat in Spiel 8 seinen Siegeszug fortgesetzt und sich mit drei Siegen aus drei Spielen an die Tabellenspitze geschoben - punktgleich mit Marcel M., der ihm mit ebenfalls acht Zählern im Nacken sitzt."
+          "text": "In den letzten Wochen ist viel passiert. Spiele wurden nachgeholt, Überraschungen geliefert, Favoritenrollen umgeschrieben. Irene W. hat mit Marcel M. sensationell ihren ersten Saisonsieg eingefahren. Der als Geheimfavorit gehandelte Lukas P. musste bei seinem Ligadebüt in Partie 5 gleich eine 0:2-Niederlage hinnehmen und steht weiterhin bei null Punkten. Marco M. und Marcel M. haben Christoph L. und Raphael H. in Partie 7 mit einem vernichtenden 6:1, 6:1 vom Platz gefegt. Und Jonas L. hat in Partie 8 seinen Siegeszug fortgesetzt und sich mit drei Siegen aus drei Spielen an die Tabellenspitze geschoben - punktgleich mit Marcel M., der ihm mit ebenfalls acht Zählern im Nacken sitzt."
         },
         {
           "type": "p",
@@ -1601,7 +1601,7 @@ window.PADEL_SEASON = {
         },
         {
           "type": "h",
-          "text": "Spiel 13 - Die Sensation will Serie"
+          "text": "Partie 13 - Die Sensation will Serie"
         },
         {
           "type": "match",
@@ -1611,7 +1611,7 @@ window.PADEL_SEASON = {
         },
         {
           "type": "p",
-          "text": "Was für eine Entwicklung: Irene W., die als blutiger Anfänger ins Turnier ging und erst zum zweiten Mal in ihrem Leben einen Padelschläger in der Hand hielt, hat mit Marcel M. in Spiel 3 ihren ersten Saisonsieg geholt. Jetzt bekommt sie den aktuellen Fünften Ludwig W. an die Seite. Auf der anderen Seite des Netzes trifft Irene erneut auf Chris M., den sie gerade erst geschlagen hat. Klappt der nächste Streich?"
+          "text": "Was für eine Entwicklung: Irene W., die als blutiger Anfänger ins Turnier ging und erst zum zweiten Mal in ihrem Leben einen Padelschläger in der Hand hielt, hat mit Marcel M. in Partie 3 ihren ersten Saisonsieg geholt. Jetzt bekommt sie den aktuellen Fünften Ludwig W. an die Seite. Auf der anderen Seite des Netzes trifft Irene erneut auf Chris M., den sie gerade erst geschlagen hat. Klappt der nächste Streich?"
         },
         {
           "type": "p",
@@ -1628,7 +1628,7 @@ window.PADEL_SEASON = {
         },
         {
           "type": "h",
-          "text": "Spiel 14 - Team 1 Favorit - Team 2 weiß es"
+          "text": "Partie 14 - Team 1 Favorit - Team 2 weiß es"
         },
         {
           "type": "match",
@@ -1651,11 +1651,11 @@ window.PADEL_SEASON = {
         },
         {
           "type": "p",
-          "text": "Selten hat ein Spieler die eigenen Chancen so realistisch eingeschätzt. Ob Martin B. und Christoph L. die Statistik Lügen strafen können, oder ob die Zahlen recht behalten, wird Spiel 14 zeigen."
+          "text": "Selten hat ein Spieler die eigenen Chancen so realistisch eingeschätzt. Ob Martin B. und Christoph L. die Statistik Lügen strafen können, oder ob die Zahlen recht behalten, wird Partie 14 zeigen."
         },
         {
           "type": "h",
-          "text": "Spiel 15 - 86 zu 14: Die Statistik kennt kein Erbarmen"
+          "text": "Partie 15 - 86 zu 14: Die Statistik kennt kein Erbarmen"
         },
         {
           "type": "match",
@@ -1678,11 +1678,11 @@ window.PADEL_SEASON = {
         },
         {
           "type": "p",
-          "text": "Auf der anderen Seite des Netzes wartet mit Marco M. und Andreas L. ein Team, das auf dem Papier keine Wünsche offen lässt. Marco M. hat sich mit seinem 6:1, 6:1 in Spiel 7 auf Platz 4 katapultiert, sechs Punkte aus zwei Spielen. Andreas L. bringt Tenniserfahrung und Kampfgeist mit. 86 Prozent sind eine Ansage, aber dramatisch muss nicht gleich hoffnungslos heißen."
+          "text": "Auf der anderen Seite des Netzes wartet mit Marco M. und Andreas L. ein Team, das auf dem Papier keine Wünsche offen lässt. Marco M. hat sich mit seinem 6:1, 6:1 in Partie 7 auf Platz 4 katapultiert, sechs Punkte aus zwei Spielen. Andreas L. bringt Tenniserfahrung und Kampfgeist mit. 86 Prozent sind eine Ansage, aber dramatisch muss nicht gleich hoffnungslos heißen."
         },
         {
           "type": "h",
-          "text": "Spiel 16 - Der Spirit-König will's wieder wissen"
+          "text": "Partie 16 - Der Spirit-König will's wieder wissen"
         },
         {
           "type": "match",
@@ -1692,7 +1692,7 @@ window.PADEL_SEASON = {
         },
         {
           "type": "p",
-          "text": "Marcel M. ist der Mann der Stunde. Drei Spiele, drei Siege, acht Punkte, Tabellenplatz 2, nur die Spieldifferenz trennt ihn von der Tabellenführung. Und sein Erfolgsrezept? Dasselbe wie am ersten Tag. Auf die Frage nach Spiel 16 verweist er auf den Triumph mit Irene in Spiel 3:"
+          "text": "Marcel M. ist der Mann der Stunde. Drei Spiele, drei Siege, acht Punkte, Tabellenplatz 2, nur die Spieldifferenz trennt ihn von der Tabellenführung. Und sein Erfolgsrezept? Dasselbe wie am ersten Tag. Auf die Frage nach Partie 16 verweist er auf den Triumph mit Irene in Partie 3:"
         },
         {
           "type": "quote",
@@ -1701,7 +1701,7 @@ window.PADEL_SEASON = {
         },
         {
           "type": "p",
-          "text": "Technik oder Spirit? Marcel hat seine Antwort längst gegeben. Doch diesmal steht ihm kein geringerer als Jonas L. gegenüber: Tabellenführer, drei Siege aus drei Spielen, das beste Punkteverhältnis der Liga mit 30:5. An seiner Seite Agnes K., die nach ihrer Niederlage in Spiel 1 auf Wiedergutmachung sinnt, ebenso wie Florian Z. auf der anderen Seite."
+          "text": "Technik oder Spirit? Marcel hat seine Antwort längst gegeben. Doch diesmal steht ihm kein geringerer als Jonas L. gegenüber: Tabellenführer, drei Siege aus drei Spielen, das beste Punkteverhältnis der Liga mit 30:5. An seiner Seite Agnes K., die nach ihrer Niederlage in Partie 1 auf Wiedergutmachung sinnt, ebenso wie Florian Z. auf der anderen Seite."
         },
         {
           "type": "p",
@@ -1734,7 +1734,7 @@ window.PADEL_SEASON = {
         },
         {
           "type": "p",
-          "text": "Aber Marcel war nicht der einzige, den es erwischte. In Spiel 13 besiegten Chris M. und Raphael H. das Team aus Ludwig W. und Irene W. mit 7:6 und 6:2. Ludwigs erste Niederlage der Saison bedeutet für den Ex-Tabellenführer das Abrutschen auf Platz 6."
+          "text": "Aber Marcel war nicht der einzige, den es erwischte. In Partie 13 besiegten Chris M. und Raphael H. das Team aus Ludwig W. und Irene W. mit 7:6 und 6:2. Ludwigs erste Niederlage der Saison bedeutet für den Ex-Tabellenführer das Abrutschen auf Platz 6."
         },
         {
           "type": "p",
@@ -1750,7 +1750,7 @@ window.PADEL_SEASON = {
         },
         {
           "type": "h",
-          "text": "Spiel 17 - Luca gegen Ludwig"
+          "text": "Partie 17 - Luca gegen Ludwig"
         },
         {
           "type": "match",
@@ -1782,7 +1782,7 @@ window.PADEL_SEASON = {
         },
         {
           "type": "h",
-          "text": "Spiel 18 - Greta hofft, Jonas jagt"
+          "text": "Partie 18 - Greta hofft, Jonas jagt"
         },
         {
           "type": "match",
@@ -1792,7 +1792,7 @@ window.PADEL_SEASON = {
         },
         {
           "type": "p",
-          "text": "Drei Spiele, null Siege, Differenz von -17. Gretas Saison liest sich bislang wie ein Drama in drei Akten. Am nächsten kam sie in Spiel 12, als sie sich mit Andreas L. erst im Match-Tie-Break bei 6:10 die Segel streichen musste. Ein Sieg, der zum Greifen nah war, und der umso mehr schmerzte."
+          "text": "Drei Spiele, null Siege, Differenz von -17. Gretas Saison liest sich bislang wie ein Drama in drei Akten. Am nächsten kam sie in Partie 12, als sie sich mit Andreas L. erst im Match-Tie-Break bei 6:10 die Segel streichen musste. Ein Sieg, der zum Greifen nah war, und der umso mehr schmerzte."
         },
         {
           "type": "quote",
@@ -1805,7 +1805,7 @@ window.PADEL_SEASON = {
         },
         {
           "type": "h",
-          "text": "Spiel 19 - Drei Tennisspieler und ein Mann mit einer Mission"
+          "text": "Partie 19 - Drei Tennisspieler und ein Mann mit einer Mission"
         },
         {
           "type": "match",
@@ -1832,7 +1832,7 @@ window.PADEL_SEASON = {
         },
         {
           "type": "h",
-          "text": "Spiel 20 - Christoph sieht schwarz, Cristian sieht nur Siege"
+          "text": "Partie 20 - Christoph sieht schwarz, Cristian sieht nur Siege"
         },
         {
           "type": "match",
@@ -1860,7 +1860,7 @@ window.PADEL_SEASON = {
         },
         {
           "type": "p",
-          "text": "Er meint das 6:1, 6:0 mit Lukas P. in Spiel 14, tatsächlich das deutlichste Ergebnis der bisherigen Liga. Für Christoph und Irene wird es ein langer Nachmittag, oder eben ein kurzer."
+          "text": "Er meint das 6:1, 6:0 mit Lukas P. in Partie 14, tatsächlich das deutlichste Ergebnis der bisherigen Liga. Für Christoph und Irene wird es ein langer Nachmittag, oder eben ein kurzer."
         },
         {
           "type": "h",

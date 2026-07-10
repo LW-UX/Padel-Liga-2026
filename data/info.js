@@ -100,9 +100,9 @@ window.PADEL_INFO = {
     {
       "title": "Platzbuchung",
       "paragraphs": [
-        "Wenn sich die 4 Teilnehmer eines Spiels gefunden haben, entscheiden sie, ob und wann sie einen Padelplatz buchen möchten. Verfügbare Termine findest du bei Playtomic über die Webseite oder in der App.",
+        "Wenn sich die 4 Teilnehmer einer Partie gefunden haben, entscheiden sie, ob und wann sie einen Padelplatz buchen möchten. Verfügbare Termine findest du bei Playtomic über die Webseite oder in der App.",
         "Abendzeiten sind sehr beliebt und mindestens eine Woche im Voraus ausgebucht. Daher rechtzeitig einen Platz buchen oder morgens beziehungsweise mittags spielen.",
-        "Den Wunschtermin mit Datum, Uhrzeit und Spielnummer bitte an das Hanako Leben Squad oder direkt an Ludwig übermitteln. Der Platz wird für euch gebucht.",
+        "Den Wunschtermin mit Datum, Uhrzeit und Partienummer bitte an das Hanako Leben Squad oder direkt an Ludwig übermitteln. Der Platz wird für euch gebucht.",
         "Die Kosten der Platzbuchung werden von der Firma übernommen.",
         "Vergesst nicht, die Schläger in Clearooms zu buchen. Um Bälle muss sich selbst gekümmert werden.",
         "Gebt Bescheid, wenn ihr eure Playtomic-Profile samt Ergebnis eintragen wollt. Hierfür Headsquare United auf Playtomic folgen."
@@ -111,15 +111,15 @@ window.PADEL_INFO = {
     {
       "title": "Ergebnismeldung",
       "paragraphs": [
-        "Nachdem das Spiel absolviert ist und die Gewinner feststehen, muss das Ergebnis gemeldet werden, damit es eingetragen werden kann.",
+        "Nachdem die Partie absolviert ist und die Gewinner feststehen, muss das Ergebnis gemeldet werden, damit es eingetragen werden kann.",
         "Ergebnisse bitte im Teams-Kanal Sport | Headsquare & Hanako & Envidual, per Mail an Hanako Leben Squad oder direkt an Ludwig melden."
       ],
       "items": [
-        "Spielnummer",
+        "Partienummer",
         "Datum",
         "Ergebnis"
       ],
-      "note": "Beispiel: Spiel 12 | 24. Mai | 4:6, 6:2 - 10:5"
+      "note": "Beispiel: Partie 12 | 24. Mai | 4:6, 6:2 - 10:5"
     },
     {
       "title": "Punktevergabe",

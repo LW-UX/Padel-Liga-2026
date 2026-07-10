@@ -50,7 +50,7 @@
 <nav class="site-nav" aria-label="Hauptnavigation">
   <button class="active" data-section="start">Home</button>
   <button data-section="rangliste">Rangliste</button>
-  <button data-section="spiele">Spiele</button>
+  <button data-section="partien">Partien</button>
   <button data-section="rechner">Rechner</button>
   <button data-section="verlauf">Statistik</button>
   <button data-section="infos">Infos</button>
@@ -86,15 +86,15 @@
         </article>
 
         <article class="widget">
-          <div class="widget-label">Nächste Spiele</div>
+          <div class="widget-label">Nächste Partien</div>
           <div id="home-next-matches"></div>
-          <button class="text-link" data-nav-target="spiele">Zum Spielplan</button>
+          <button class="text-link" data-nav-target="partien">Zum Spielplan</button>
         </article>
 
         <article class="widget">
-          <div class="widget-label">Letzte Spiele</div>
+          <div class="widget-label">Letzte Partien</div>
           <div id="home-recent-matches"></div>
-          <button class="text-link" data-nav-target="spiele">Zum Spielplan</button>
+          <button class="text-link" data-nav-target="partien">Zum Spielplan</button>
         </article>
 
         <article class="widget widget-short">
@@ -234,7 +234,7 @@
         <div id="favorite-check"></div>
       </article>
       <article class="widget">
-        <div class="widget-label">Spielzeit-Performance</div>
+        <div class="widget-label">Ø-Spielzeit</div>
         <div id="stats-time-performance"></div>
       </article>
       <article class="widget">
@@ -248,7 +248,7 @@
         <div id="biggest-upsets"></div>
       </article>
       <article class="widget">
-        <div class="widget-label">Dominanteste Spiele</div>
+        <div class="widget-label">Dominanteste Partien</div>
         <div id="dominant-matches"></div>
       </article>
       <article class="widget">
@@ -286,10 +286,10 @@
   </section>
 
   <!-- SPIELE -->
-  <section id="spiele" class="section">
+  <section id="partien" class="section">
     <div class="sh sh-with-control">
       <div class="sh-heading">
-        <div class="sh-title">SPIELE</div>
+        <div class="sh-title">PARTIEN</div>
         <div class="sh-meta" id="sp-meta"></div>
       </div>
       <div class="match-scope-toggle" id="match-scope-toggle" aria-label="Spielplan filtern">
@@ -308,7 +308,7 @@
         <div class="sh-title sh-title-with-help">TURNIERRECHNER
           <span class="th-help-wrap">
             <span class="help-icon" tabindex="0" aria-label="Turnierrechner erklären">?</span>
-            <span class="help-tooltip">Ergebnisse gibst du satzweise als 6:x oder x:6 ein.<br>Ein Klick auf einen Teamnamen setzt direkt 6:2, 6:2 beziehungsweise 2:6, 2:6.</span>
+            <span class="help-tooltip">Ergebnisse gibst du satzweise als 6:x oder x:6 ein.<br>Ein Klick auf einen Teamnamen setzt direkt 6:2, 6:2 beziehungsweise 2:6, 2:6.<br>Der Auto-Tipp setzt die Ergebnisse basierend auf der Wahrscheinlichkeit.</span>
           </span>
         </div>
       </div>
@@ -317,6 +317,12 @@
     <div class="calculator-layout">
       <div class="calculator-mobile-game-area">
         <div class="calculator-match-column">
+          <div class="calculator-autotip-bar" id="calculator-autotip-bar">
+            <button type="button" class="calculator-autotip-switch" data-calculator-autotip role="switch" aria-checked="false" aria-label="Auto-Tipp: alle Partien nach Siegwahrscheinlichkeit tippen">
+              <span class="calculator-autotip-track"><span class="calculator-autotip-knob"></span></span>
+              <span class="calculator-autotip-text">Auto-Tipp</span>
+            </button>
+          </div>
           <div id="calculator-matches" class="calculator-match-list"></div>
         </div>
         <aside class="calculator-mobile-mini-ranking" aria-label="Kurzrangliste">
@@ -339,7 +345,7 @@
               <tr>
                 <th class="l rn">#</th>
                 <th class="l">Spieler</th>
-                <th>Spiele</th>
+                <th>Partien</th>
                 <th>Punkte</th>
                 <th>Diff.</th>
               </tr>

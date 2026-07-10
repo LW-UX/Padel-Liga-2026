@@ -8,11 +8,11 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <meta name="apple-mobile-web-app-title" content="Padel-Liga">
-  <link rel="icon" href="data/favicon.ico" sizes="any">
+  <link rel="icon" href="favicon.ico" sizes="any">
   <link rel="icon" type="image/png" sizes="16x16" href="data/icon-16.png">
   <link rel="icon" type="image/png" sizes="32x32" href="data/icon-32.png">
   <link rel="icon" type="image/png" sizes="192x192" href="data/icon-192.png">
-  <link rel="apple-touch-icon" href="data/apple-touch-icon.png">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
   <link rel="mask-icon" href="data/safari-pinned-tab.svg" color="#d4f53a">
   <link rel="manifest" href="manifest.webmanifest">
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
@@ -153,8 +153,7 @@
             <th class="extended-col">Sieg-%</th>
             <th class="extended-col">
               <span class="th-help-wrap">Platzierungsfaktor
-                <span class="help-icon" tabindex="0" aria-label="Platzierungsfaktor erklären" title="Ø Platz Mitspieler / Ø Platz Gegenspieler / Differenz.
-Positive Werte bedeuten: Die Gegner waren im Schnitt stärker platziert als die Mitspieler.">?</span>
+                <span class="help-icon" tabindex="0" aria-label="Platzierungsfaktor erklären">?</span>
                 <span class="help-tooltip">Ø Platz Mitspieler / Ø Platz Gegenspieler / Differenz.<br>Positive Werte bedeuten: Die Gegner waren im Schnitt stärker platziert als die Mitspieler.</span>
               </span>
             </th>
@@ -264,12 +263,10 @@ Positive Werte bedeuten: Die Gegner waren im Schnitt stärker platziert als die 
         <div id="stats-average-set-score"></div>
       </article>
       <article class="widget">
-        <div class="widget-label">Punkte -> Elo</div>
         <div id="stats-points-elo-deviation"></div>
       </article>
       <article class="widget">
-        <div class="widget-label">Elo -> Platzierungsfaktor</div>
-        <div id="stats-elo-placement-deviation"></div>
+        <div id="stats-points-placement-deviation"></div>
       </article>
     </div>
   </section>
@@ -294,7 +291,12 @@ Positive Werte bedeuten: Die Gegner waren im Schnitt stärker platziert als die 
   <section id="rechner" class="section">
     <div class="sh sh-with-control">
       <div class="sh-heading">
-        <div class="sh-title">TURNIERRECHNER</div>
+        <div class="sh-title sh-title-with-help">TURNIERRECHNER
+          <span class="th-help-wrap">
+            <span class="help-icon" tabindex="0" aria-label="Turnierrechner erklären">?</span>
+            <span class="help-tooltip">Ergebnisse gibst du satzweise als 6:x oder x:6 ein.<br>Ein Klick auf einen Teamnamen setzt direkt 6:2, 6:2 beziehungsweise 2:6, 2:6.</span>
+          </span>
+        </div>
       </div>
       <button type="button" class="fb-toggle calculator-reset-button" data-calculator-reset>Zurücksetzen</button>
     </div>

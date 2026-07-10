@@ -233,6 +233,11 @@
     }
     .sh-heading { display: flex; align-items: baseline; gap: 12px; }
     .sh-title { font-family: 'Bebas Neue', sans-serif; font-size: 2rem; letter-spacing: 0.05em; }
+    .sh-title-with-help {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+    }
     .sh-meta { font-size: 0.85rem; color: var(--dim); }
     .section-subheading { margin-top: 2.5rem; }
     .match-scope-toggle {
@@ -1727,6 +1732,7 @@
         grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
         gap: 2px;
         overflow: visible;
+        padding-top: 8px;
       }
       .calculator-tiebreak-line {
         gap: 2px;

@@ -578,7 +578,7 @@ function renderFirmenRanking() {
   document.getElementById('fr-meta').textContent = '3 Firmen';
   document.getElementById('fr-body').innerHTML = stats.map((f, i) => {
     const diffStr   = f.spiele > 0 ? (f.spielDiff >= 0 ? `+${f.spielDiff}` : `${f.spielDiff}`) : '—';
-    const diffClass = f.spielDiff > 0 ? 'pos' : f.spielDiff < 0 ? 'neg' : 'neu';
+    const diffClass = getStatDiffClass(f.spielDiff);
     return `<tr class="r${i+1} ${isSelectedViewerFirma(f.firma) ? 'viewer-highlight' : ''}">
       <td class="rn l">${i+1}</td>
       <td class="l"><span class="pname">${f.firma}</span><span class="firma-badge firma-${f.firma}">${f.firma}</span></td>
@@ -699,7 +699,7 @@ function renderFinalFourRanking() {
   meta.textContent = `${stats.length} Spieler`;
 
   body.innerHTML = stats.map((player, index) => {
-    const diffClass = player.diff > 0 ? 'pos' : player.diff < 0 ? 'neg' : 'neu';
+    const diffClass = getStatDiffClass(player.diff);
     const diffLabel = player.diff > 0 ? `+${player.diff}` : String(player.diff);
 
     return `<tr class="r${index + 1}">
@@ -724,11 +724,17 @@ function formatSignedInteger(value) {
   return value > 0 ? `+${value}` : `${value}`;
 }
 
+function getDeltaClass(value) {
+  return value > 0 ? 'pos' : value < 0 ? 'neg' : 'neu';
+}
+
 function renderPointsRankReference(currentRank, pointsRank) {
   if (rankingSortMode === 'points' || !Number.isFinite(pointsRank)) return '';
 
-  const delta = pointsRank - currentRank;
-  const deltaClass = delta > 0 ? 'pos' : delta < 0 ? 'neg' : 'neu';
+  const delta = rankingSortMode === 'elo'
+    ? currentRank - pointsRank
+    : pointsRank - currentRank;
+  const deltaClass = getDeltaClass(delta);
   const deltaLabel = formatSignedInteger(delta);
 
   return `<span class="points-rank-ref" title="Punkte-Rang ${pointsRank}, Veränderung ${deltaLabel}">
@@ -819,7 +825,7 @@ function getPlayerPlacementFactor(player, rankMap) {
 function formatPlacementFactor(factor) {
   if (!factor || !Number.isFinite(factor.diff)) return '—';
 
-  const diffClass = factor.diff > 0 ? 'pos' : factor.diff < 0 ? 'neg' : 'neu';
+  const diffClass = getDeltaClass(factor.diff);
   return `<span class="pf-muted">${formatDecimal(factor.partnerAverage)}</span><span class="pf-muted"> / </span><span class="pf-muted">${formatDecimal(factor.opponentAverage)}</span><span class="pf-muted"> / </span><span class="${diffClass}">${formatSignedDecimal(factor.diff)}</span>`;
 }
 
@@ -891,7 +897,7 @@ function renderRanking() {
     const pointsRank = rankMap.get(p.name);
     const extras = getPlayerRankingExtras(p, rankMap);
     const spielDiffStr = p.stats.spiele > 0 ? (p.stats.spielDiff >= 0 ? `+${p.stats.spielDiff}` : `${p.stats.spielDiff}`) : '—';
-    const spielDiffClass = p.stats.spielDiff > 0 ? 'pos' : p.stats.spielDiff < 0 ? 'neg' : 'neu';
+    const spielDiffClass = getStatDiffClass(p.stats.spielDiff);
     const isTopFourQualifier = pointsRank <= 4;
     return `<tr class="r${Math.min(currentRank,4)} ${isTopFourQualifier ? 'top-four-highlight' : ''} ${isSelectedPlayer(p.name) ? 'viewer-highlight' : ''}">
       <td class="rn l sticky-rank"><span class="rank-cell-inner"><span class="rank-main">${currentRank}</span>${renderPointsRankReference(currentRank, pointsRank)}</span></td>
@@ -1131,7 +1137,7 @@ function renderHome() {
   document.getElementById('home-ranking').innerHTML = getRankedPlayers().slice(0, 4)
     .map((p, i) => {
       const spielDiffStr = p.stats.spiele > 0 ? formatStatDiff(p.stats.spielDiff) : '—';
-      const spielDiffClass = p.stats.spielDiff > 0 ? 'pos' : p.stats.spielDiff < 0 ? 'neg' : 'neu';
+      const spielDiffClass = getStatDiffClass(p.stats.spielDiff);
 
       return `<div class="mini-rank-row r${i + 1} ${isSelectedPlayer(p.name) ? 'viewer-highlight' : ''}">
       <span class="mini-rank-pos">${i + 1}</span>
@@ -1326,7 +1332,7 @@ function renderAverageSetScoreFact() {
 
       return `<div class="stat-split-row">
         <span class="stat-split-label">Satz ${index + 1}</span>
-        <span class="stat-split-value">${formatDecimal(setAverage.normalizedWinner)} : ${formatDecimal(setAverage.normalizedLoser)}</span>
+        <span class="stat-split-value">6 : ${formatDecimal(setAverage.normalizedLoser)}</span>
       </div>`;
     })
     .filter(Boolean)
@@ -1334,11 +1340,11 @@ function renderAverageSetScoreFact() {
 
   target.innerHTML = setRows
     ? `<div class="stat-split-score">${setRows}</div>
-       <div class="stat-copy">Auf 6 normiert, jeweils aus Sicht des Matchgewinners. Basis: ${averages.playedMatches} gespielte Matches.</div>`
-    : '<div class="empty-state">Noch keine gespielten Matches.</div>';
+       <div class="stat-copy">Die Sieger gewinnen bei ${averages.playedMatches} gespielten Partien im Schnitt mit 3 Spielen Abstand.</div>`
+    : '<div class="empty-state">Noch keine gespielten Partien.</div>';
 }
 
-function getRankingDeviationGroups(fromMode, toMode) {
+function getRankingDeviationGroups(fromMode, toMode, topDirection = 'negative') {
   const fromMap = getRankingPositionMap(fromMode);
   const toMap = getRankingPositionMap(toMode);
   const items = PADEL_DATA.players
@@ -1351,25 +1357,27 @@ function getRankingDeviationGroups(fromMode, toMode) {
         player,
         fromRank,
         toRank,
-        delta: fromRank - toRank
+        delta: toMode === 'elo' ? toRank - fromRank : fromRank - toRank
       };
     })
     .filter(Boolean);
 
+  const topIsPositive = topDirection === 'positive';
+
   return {
     up: items
-      .filter(item => item.delta > 0)
+      .filter(item => topIsPositive ? item.delta > 0 : item.delta < 0)
       .sort((a, b) =>
-        b.delta - a.delta ||
+        (topIsPositive ? b.delta - a.delta : a.delta - b.delta) ||
         a.toRank - b.toRank ||
         a.fromRank - b.fromRank ||
         a.player.name.localeCompare(b.player.name, 'de')
       )
       .slice(0, 2),
     down: items
-      .filter(item => item.delta < 0)
+      .filter(item => topIsPositive ? item.delta < 0 : item.delta > 0)
       .sort((a, b) =>
-        a.delta - b.delta ||
+        (topIsPositive ? a.delta - b.delta : b.delta - a.delta) ||
         a.toRank - b.toRank ||
         a.fromRank - b.fromRank ||
         a.player.name.localeCompare(b.player.name, 'de')
@@ -1378,7 +1386,7 @@ function getRankingDeviationGroups(fromMode, toMode) {
   };
 }
 
-function renderRankingDeviationFact(targetId, fromMode, toMode) {
+function renderRankingDeviationFact(targetId, fromMode, toMode, topDirection = 'negative') {
   const target = document.getElementById(targetId);
   if (!target) return;
 
@@ -1387,23 +1395,26 @@ function renderRankingDeviationFact(targetId, fromMode, toMode) {
     elo: 'Elo',
     placement: 'Platzierungsfaktor'
   };
-  const { up, down } = getRankingDeviationGroups(fromMode, toMode);
+  const labels = getRankingDeviationLabels(targetId);
+  const { up, down } = getRankingDeviationGroups(fromMode, toMode, topDirection);
   const renderShiftItem = item => `<div class="stat-shift-item">
     <div class="stat-shift-head">
       <span class="stat-shift-name">${item.player.name}</span>
-      <span class="stat-shift-value ${item.delta > 0 ? 'pos' : 'neg'}">${formatSignedInteger(item.delta)}</span>
+      <span class="stat-shift-value ${getDeltaClass(item.delta)}">${formatSignedInteger(item.delta)}</span>
     </div>
-    <div class="stat-meta-line">${modeLabels[fromMode]} #${item.fromRank} -> ${modeLabels[toMode]} #${item.toRank}</div>
+    <div class="stat-meta-line">${toMode === 'elo'
+      ? `${modeLabels[toMode]} #${item.toRank} -> ${modeLabels[fromMode]} #${item.fromRank}`
+      : `${modeLabels[fromMode]} #${item.fromRank} -> ${modeLabels[toMode]} #${item.toRank}`}</div>
   </div>`;
 
   target.innerHTML = `
     <div class="stat-shift-groups">
       <div class="stat-shift-group">
-        <div class="stat-shift-label">Nach oben</div>
+        <div class="stat-shift-label">${escapeHtml(labels.top)}</div>
         <div class="stat-shift-list">${up.length ? up.map(renderShiftItem).join('') : '<div class="empty-state">Keine Aufsteiger.</div>'}</div>
       </div>
       <div class="stat-shift-group">
-        <div class="stat-shift-label">Nach unten</div>
+        <div class="stat-shift-label">${escapeHtml(labels.bottom)}</div>
         <div class="stat-shift-list">${down.length ? down.map(renderShiftItem).join('') : '<div class="empty-state">Keine Absteiger.</div>'}</div>
       </div>
     </div>
@@ -1467,8 +1478,8 @@ function renderStatistik() {
   renderDominantMatches();
   renderBiggestUpsets();
   renderAverageSetScoreFact();
-  renderRankingDeviationFact('stats-points-elo-deviation', 'points', 'elo');
-  renderRankingDeviationFact('stats-elo-placement-deviation', 'elo', 'placement');
+  renderRankingDeviationFact('stats-points-elo-deviation', 'points', 'elo', 'positive');
+  renderRankingDeviationFact('stats-points-placement-deviation', 'points', 'placement', 'positive');
 }
 
 function expandHomeArticle() {
@@ -2131,7 +2142,7 @@ function renderCalculatorRanking() {
   renderCalculatorMiniRanking(rankedPlayers, previousMiniPositions, activePlayerIds);
   body.innerHTML = rankedPlayers.map((player, index) => {
     const diffStr = player.stats.spiele > 0 ? formatStatDiff(player.stats.spielDiff) : '—';
-    const diffClass = player.stats.spielDiff > 0 ? 'pos' : player.stats.spielDiff < 0 ? 'neg' : 'neu';
+    const diffClass = getStatDiffClass(player.stats.spielDiff);
     const activeMatchClass = activePlayerIds.has(player.id) ? 'calculator-active-match-player' : '';
 
     return `<tr class="calculator-ranking-row r${Math.min(index + 1, 4)} ${index < 4 ? 'top-four-highlight' : ''} ${activeMatchClass} ${isSelectedPlayer(player.name) ? 'viewer-highlight' : ''}" data-calculator-player="${escapeHtml(player.id)}">
@@ -2531,13 +2542,23 @@ function getPlayerMatchEloTooltipData(playerName, match) {
   return {
     elo,
     delta: formatEloDelta(delta),
-    deltaClass: delta > 0 ? 'pos' : delta < 0 ? 'neg' : 'neu'
+    deltaClass: getDeltaClass(delta)
   };
 }
 
 function formatStatDiff(diff) {
   if (!Number.isFinite(diff)) return '—';
   return diff >= 0 ? `+${diff}` : `${diff}`;
+}
+
+function getStatDiffClass(diff) {
+  return getDeltaClass(diff);
+}
+
+function getRankingDeviationLabels(targetId) {
+  return targetId === 'stats-points-elo-deviation'
+    ? { top: 'Überperformt', bottom: 'Underperformt' }
+    : { top: 'Lospech', bottom: 'Losglück' };
 }
 
 function formatResultForPlayer(result, isTeam1) {
@@ -2750,7 +2771,7 @@ function externalPlacementTooltip(context) {
   tooltipEl.innerHTML = items.map(item => {
     const stats = item.dataset.statsByPoint?.[item.dataIndex];
     const diff = stats ? formatStatDiff(stats.spielDiff) : '—';
-    const diffClass = stats?.spielDiff > 0 ? 'pos' : stats?.spielDiff < 0 ? 'neg' : 'neu';
+    const diffClass = getStatDiffClass(stats?.spielDiff);
     const points = stats && Number.isFinite(Number(stats.punkte)) ? String(stats.punkte) : '0';
     const wins = stats && Number.isFinite(Number(stats.siege)) ? String(stats.siege) : '0';
 

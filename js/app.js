@@ -287,6 +287,9 @@ document.addEventListener('input', event => {
 });
 
 document.addEventListener('pointerdown', event => {
+  const calculatorScoreControl = event.target.closest('[data-calculator-score], [data-calculator-step]');
+  setActiveCalculatorScorePair(calculatorScoreControl?.closest('.calculator-score-pair') || null);
+
   const calculatorScoreInput = event.target.closest('[data-calculator-score]');
   if (!calculatorScoreInput) return;
 
@@ -305,6 +308,9 @@ document.addEventListener('mouseout', event => {
 });
 
 document.addEventListener('focusin', event => {
+  const calculatorScoreControl = event.target.closest('[data-calculator-score], [data-calculator-step]');
+  setActiveCalculatorScorePair(calculatorScoreControl?.closest('.calculator-score-pair') || null);
+
   const calculatorScoreInput = event.target.closest('[data-calculator-score]');
   if (calculatorScoreInput) {
     clearCalculatorScoreInput(calculatorScoreInput);
@@ -1222,6 +1228,61 @@ function getMatchGameStats(match) {
   };
 }
 
+function parseRegularSetScore(rawSet) {
+  const normalized = String(rawSet || '')
+    .replace(/\([^)]*\)/g, '')
+    .trim();
+  const match = normalized.match(/^(\d+)\s*:\s*(\d+)$/);
+
+  if (!match) return null;
+  return [Number(match[1]), Number(match[2])];
+}
+
+function getNormalizedWinnerSetAverages() {
+  const setTotals = [
+    { winnerGames: 0, loserGames: 0, count: 0 },
+    { winnerGames: 0, loserGames: 0, count: 0 }
+  ];
+  const playedMatches = PADEL_DATA.matches
+    .filter(countsForRanking)
+    .filter(match => match.sieger !== null && match.ergebnis);
+
+  playedMatches.forEach(match => {
+    const regularResult = String(match.ergebnis).split('–')[0];
+    const sets = regularResult
+      .split(',')
+      .map(parseRegularSetScore)
+      .filter(Boolean)
+      .slice(0, 2);
+
+    sets.forEach(([team1Games, team2Games], index) => {
+      const winnerGames = match.sieger === 1 ? team1Games : team2Games;
+      const loserGames = match.sieger === 1 ? team2Games : team1Games;
+
+      setTotals[index].winnerGames += winnerGames;
+      setTotals[index].loserGames += loserGames;
+      setTotals[index].count += 1;
+    });
+  });
+
+  return {
+    playedMatches: playedMatches.length,
+    sets: setTotals.map(total => {
+      if (!total.count || !total.winnerGames) return null;
+
+      const winnerAverage = total.winnerGames / total.count;
+      const loserAverage = total.loserGames / total.count;
+      return {
+        count: total.count,
+        winnerAverage,
+        loserAverage,
+        normalizedWinner: 6,
+        normalizedLoser: (loserAverage / winnerAverage) * 6
+      };
+    })
+  };
+}
+
 function getPlayedMatchesWithProbability() {
   return PADEL_DATA.matches
     .filter(countsForRanking)
@@ -1251,6 +1312,101 @@ function renderFavoriteCheck() {
   document.getElementById('favorite-check').innerHTML = `
     <div class="stat-main">${favoriteRate}%</div>
     <div class="stat-copy">Favoriten gewannen ${favoriteWins} von ${matches.length} Spielen.</div>
+  `;
+}
+
+function renderAverageSetScoreFact() {
+  const target = document.getElementById('stats-average-set-score');
+  if (!target) return;
+
+  const averages = getNormalizedWinnerSetAverages();
+  const setRows = averages.sets
+    .map((setAverage, index) => {
+      if (!setAverage) return '';
+
+      return `<div class="stat-split-row">
+        <span class="stat-split-label">Satz ${index + 1}</span>
+        <span class="stat-split-value">${formatDecimal(setAverage.normalizedWinner)} : ${formatDecimal(setAverage.normalizedLoser)}</span>
+      </div>`;
+    })
+    .filter(Boolean)
+    .join('');
+
+  target.innerHTML = setRows
+    ? `<div class="stat-split-score">${setRows}</div>
+       <div class="stat-copy">Auf 6 normiert, jeweils aus Sicht des Matchgewinners. Basis: ${averages.playedMatches} gespielte Matches.</div>`
+    : '<div class="empty-state">Noch keine gespielten Matches.</div>';
+}
+
+function getRankingDeviationGroups(fromMode, toMode) {
+  const fromMap = getRankingPositionMap(fromMode);
+  const toMap = getRankingPositionMap(toMode);
+  const items = PADEL_DATA.players
+    .map(player => {
+      const fromRank = fromMap.get(player.name);
+      const toRank = toMap.get(player.name);
+
+      if (!Number.isFinite(fromRank) || !Number.isFinite(toRank)) return null;
+      return {
+        player,
+        fromRank,
+        toRank,
+        delta: fromRank - toRank
+      };
+    })
+    .filter(Boolean);
+
+  return {
+    up: items
+      .filter(item => item.delta > 0)
+      .sort((a, b) =>
+        b.delta - a.delta ||
+        a.toRank - b.toRank ||
+        a.fromRank - b.fromRank ||
+        a.player.name.localeCompare(b.player.name, 'de')
+      )
+      .slice(0, 2),
+    down: items
+      .filter(item => item.delta < 0)
+      .sort((a, b) =>
+        a.delta - b.delta ||
+        a.toRank - b.toRank ||
+        a.fromRank - b.fromRank ||
+        a.player.name.localeCompare(b.player.name, 'de')
+      )
+      .slice(0, 2)
+  };
+}
+
+function renderRankingDeviationFact(targetId, fromMode, toMode) {
+  const target = document.getElementById(targetId);
+  if (!target) return;
+
+  const modeLabels = {
+    points: 'Punkte',
+    elo: 'Elo',
+    placement: 'Platzierungsfaktor'
+  };
+  const { up, down } = getRankingDeviationGroups(fromMode, toMode);
+  const renderShiftItem = item => `<div class="stat-shift-item">
+    <div class="stat-shift-head">
+      <span class="stat-shift-name">${item.player.name}</span>
+      <span class="stat-shift-value ${item.delta > 0 ? 'pos' : 'neg'}">${formatSignedInteger(item.delta)}</span>
+    </div>
+    <div class="stat-meta-line">${modeLabels[fromMode]} #${item.fromRank} -> ${modeLabels[toMode]} #${item.toRank}</div>
+  </div>`;
+
+  target.innerHTML = `
+    <div class="stat-shift-groups">
+      <div class="stat-shift-group">
+        <div class="stat-shift-label">Nach oben</div>
+        <div class="stat-shift-list">${up.length ? up.map(renderShiftItem).join('') : '<div class="empty-state">Keine Aufsteiger.</div>'}</div>
+      </div>
+      <div class="stat-shift-group">
+        <div class="stat-shift-label">Nach unten</div>
+        <div class="stat-shift-list">${down.length ? down.map(renderShiftItem).join('') : '<div class="empty-state">Keine Absteiger.</div>'}</div>
+      </div>
+    </div>
   `;
 }
 
@@ -1310,6 +1466,9 @@ function renderStatistik() {
   renderFavoriteCheck();
   renderDominantMatches();
   renderBiggestUpsets();
+  renderAverageSetScoreFact();
+  renderRankingDeviationFact('stats-points-elo-deviation', 'points', 'elo');
+  renderRankingDeviationFact('stats-elo-placement-deviation', 'elo', 'placement');
 }
 
 function expandHomeArticle() {
@@ -1793,6 +1952,14 @@ function setActiveCalculatorMatch(matchId, rerender = true) {
   activeCalculatorMatchId = matchId;
   syncCalculatorActiveMatchCard();
   if (rerender) renderCalculatorRanking();
+}
+
+function setActiveCalculatorScorePair(scorePair) {
+  document.querySelectorAll('.calculator-score-pair-active').forEach(element => {
+    element.classList.remove('calculator-score-pair-active');
+  });
+
+  if (scorePair) scorePair.classList.add('calculator-score-pair-active');
 }
 
 function syncCalculatorActiveMatchCard() {

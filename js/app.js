@@ -1258,6 +1258,7 @@ function getNormalizedWinnerSetAverages() {
     { winnerGames: 0, loserGames: 0, count: 0 },
     { winnerGames: 0, loserGames: 0, count: 0 }
   ];
+  const matchDiffs = [];
   const playedMatches = PADEL_DATA.matches
     .filter(countsForRanking)
     .filter(match => match.sieger !== null && match.ergebnis);
@@ -1278,23 +1279,29 @@ function getNormalizedWinnerSetAverages() {
       setTotals[index].loserGames += loserGames;
       setTotals[index].count += 1;
     });
+
+    const matchStats = getMatchGameStats(match);
+    if (Number.isFinite(matchStats.diff)) matchDiffs.push(matchStats.diff);
+  });
+
+  const sets = setTotals.map(total => {
+    if (!total.count || !total.winnerGames) return null;
+
+    const winnerAverage = total.winnerGames / total.count;
+    const loserAverage = total.loserGames / total.count;
+    return {
+      count: total.count,
+      winnerAverage,
+      loserAverage,
+      normalizedWinner: 6,
+      normalizedLoser: (loserAverage / winnerAverage) * 6
+    };
   });
 
   return {
     playedMatches: playedMatches.length,
-    sets: setTotals.map(total => {
-      if (!total.count || !total.winnerGames) return null;
-
-      const winnerAverage = total.winnerGames / total.count;
-      const loserAverage = total.loserGames / total.count;
-      return {
-        count: total.count,
-        winnerAverage,
-        loserAverage,
-        normalizedWinner: 6,
-        normalizedLoser: (loserAverage / winnerAverage) * 6
-      };
-    })
+    averageMatchDiff: average(matchDiffs),
+    sets
   };
 }
 
@@ -1335,7 +1342,8 @@ function renderAverageSetScoreFact() {
   if (!target) return;
 
   const averages = getNormalizedWinnerSetAverages();
-  const setRows = averages.sets
+  const setRows = [
+    ...averages.sets
     .map((setAverage, index) => {
       if (!setAverage) return '';
 
@@ -1343,13 +1351,20 @@ function renderAverageSetScoreFact() {
         <span class="stat-split-label">Satz ${index + 1}</span>
         <span class="stat-split-value">6 : ${formatDecimal(setAverage.normalizedLoser)}</span>
       </div>`;
-    })
+    }),
+    Number.isFinite(averages.averageMatchDiff)
+      ? `<div class="stat-split-row">
+          <span class="stat-split-label">Gesamt</span>
+          <span class="stat-split-value">${formatSignedDecimal(averages.averageMatchDiff)}</span>
+        </div>`
+      : ''
+  ]
     .filter(Boolean)
     .join('');
 
   target.innerHTML = setRows
     ? `<div class="stat-split-score">${setRows}</div>
-       <div class="stat-copy">Die Sieger gewinnen bei ${averages.playedMatches} gespielten Partien im Schnitt mit 3 Spielen Abstand.</div>`
+       <div class="stat-copy">Die Sieger gewinnen bei ${averages.playedMatches} gespielten Partien im Schnitt mit ${formatDecimal(averages.averageMatchDiff)} Spielen Abstand.</div>`
     : '<div class="empty-state">Noch keine gespielten Partien.</div>';
 }
 
@@ -1408,7 +1423,7 @@ function renderRankingDeviationFact(targetId, fromMode, toMode, topDirection = '
   const { up, down } = getRankingDeviationGroups(fromMode, toMode, topDirection);
   const renderShiftItem = item => `<div class="stat-shift-item">
     <div class="stat-shift-head">
-      <span class="stat-shift-name">${item.player.name}</span>
+      <span class="stat-shift-name ${isSelectedPlayer(item.player.name) ? 'viewer-player' : ''}">${item.player.name}</span>
       <span class="stat-shift-value ${getDeltaClass(item.delta)}">${formatSignedInteger(item.delta)}</span>
     </div>
     <div class="stat-meta-line">${toMode === 'elo'
@@ -1428,6 +1443,211 @@ function renderRankingDeviationFact(targetId, fromMode, toMode, topDirection = '
       </div>
     </div>
   `;
+}
+
+function getMatchLeaguePoints(match, teamIndex) {
+  const [team1Sets, team2Sets] = String(match.saetze || '').split(':').map(Number);
+  if (!Number.isFinite(team1Sets) || !Number.isFinite(team2Sets)) return 0;
+
+  const ownSets = teamIndex === 1 ? team1Sets : team2Sets;
+  const opponentSets = teamIndex === 1 ? team2Sets : team1Sets;
+
+  if (ownSets === 2 && opponentSets === 0) return 3;
+  if (ownSets === 2 && opponentSets === 1) return 2;
+  if (ownSets === 1 && opponentSets === 2) return 1;
+  return 0;
+}
+
+function getAverageLeaguePointModel() {
+  const playedMatches = PADEL_DATA.matches
+    .filter(countsForRanking)
+    .filter(match => match.sieger !== null && match.saetze);
+  const winnerPoints = [];
+  const loserPoints = [];
+
+  playedMatches.forEach(match => {
+    winnerPoints.push(getMatchLeaguePoints(match, match.sieger));
+    loserPoints.push(getMatchLeaguePoints(match, match.sieger === 1 ? 2 : 1));
+  });
+
+  return {
+    winner: average(winnerPoints) ?? 2.5,
+    loser: average(loserPoints) ?? 0.5
+  };
+}
+
+function getFinalFourForecast() {
+  const pointModel = getAverageLeaguePointModel();
+  const playersByName = new Map(PADEL_DATA.players.map(player => {
+    const stats = getPlayerStats(player);
+    return [player.name, {
+      player,
+      currentPoints: stats.punkte,
+      projectedPoints: stats.punkte,
+      expectedRemaining: 0,
+      stats
+    }];
+  }));
+
+  const forecastMatches = PADEL_DATA.matches
+    .filter(countsForRanking)
+    .filter(match => match.sieger === null);
+
+  forecastMatches.forEach(match => {
+    const probability = getMatchWinProbability(match) || { team1: 50, team2: 50 };
+    const team1Favored = probability.team1 >= probability.team2;
+    const team1ExpectedPoints = team1Favored ? pointModel.winner : pointModel.loser;
+    const team2ExpectedPoints = team1Favored ? pointModel.loser : pointModel.winner;
+
+    match.team1.spieler.forEach(playerName => {
+      const forecast = playersByName.get(playerName);
+      if (!forecast) return;
+      forecast.projectedPoints += team1ExpectedPoints;
+      forecast.expectedRemaining += team1ExpectedPoints;
+    });
+
+    match.team2.spieler.forEach(playerName => {
+      const forecast = playersByName.get(playerName);
+      if (!forecast) return;
+      forecast.projectedPoints += team2ExpectedPoints;
+      forecast.expectedRemaining += team2ExpectedPoints;
+    });
+  });
+
+  return [...playersByName.values()].sort((a, b) =>
+    b.projectedPoints - a.projectedPoints ||
+    b.currentPoints - a.currentPoints ||
+    b.stats.siege - a.stats.siege ||
+    b.stats.spielDiff - a.stats.spielDiff ||
+    (getLatestPlayerEloValue(b.player) ?? 0) - (getLatestPlayerEloValue(a.player) ?? 0)
+  );
+}
+
+function renderFinalFourForecast() {
+  const target = document.getElementById('stats-final-four-forecast');
+  if (!target) return;
+
+  const forecast = getFinalFourForecast().slice(0, 4);
+  const openMatches = PADEL_DATA.matches
+    .filter(countsForRanking)
+    .filter(match => match.sieger === null).length;
+
+  target.innerHTML = forecast.length
+    ? `${forecast.map((item, index) => `
+      <div class="mini-rank-row r${index + 1}">
+        <span class="mini-rank-pos">${index + 1}</span>
+        <div>
+          <div class="mini-rank-name ${isSelectedPlayer(item.player.name) ? 'viewer-player' : ''}">${escapeHtml(item.player.name)}</div>
+          <div class="stat-meta-line">${formatDecimal(item.projectedPoints)} erwartete Punkte · ${item.currentPoints} aktuell</div>
+        </div>
+      </div>
+    `).join('')}`
+    : '<div class="empty-state">Noch keine Prognosedaten.</div>';
+}
+
+function formatAverageMatchTime(minutes) {
+  if (!Number.isFinite(minutes)) return '—';
+
+  const roundedMinutes = Math.round(minutes);
+  const hours = Math.floor(roundedMinutes / 60);
+  const mins = roundedMinutes % 60;
+  return `${String(hours).padStart(2, '0')}:${String(mins).padStart(2, '0')}`;
+}
+
+function getPlayerAverageMatchTime(player) {
+  const times = getPlayerMatches(player)
+    .filter(countsForRanking)
+    .filter(match => match.sieger !== null && match.uhrzeit)
+    .map(getMatchTimeMinutes)
+    .filter(minutes => Number.isFinite(minutes) && minutes < 24 * 60);
+
+  return {
+    player,
+    count: times.length,
+    averageMinutes: average(times)
+  };
+}
+
+function renderTimePerformance() {
+  const target = document.getElementById('stats-time-performance');
+  if (!target) return;
+
+  const playerTimes = PADEL_DATA.players
+    .map(getPlayerAverageMatchTime)
+    .filter(item => Number.isFinite(item.averageMinutes))
+    .sort((a, b) =>
+      a.averageMinutes - b.averageMinutes ||
+      b.count - a.count ||
+      a.player.name.localeCompare(b.player.name, 'de')
+    );
+
+  if (!playerTimes.length) {
+    target.innerHTML = '<div class="empty-state">Noch keine Spiele mit Uhrzeit.</div>';
+    return;
+  }
+
+  const earliest = playerTimes[0];
+  const latest = playerTimes[playerTimes.length - 1];
+
+  target.innerHTML = `
+    <div class="stat-shift-groups">
+      <div class="stat-shift-group">
+        <div class="stat-shift-label">Frühester</div>
+        <div class="stat-time-row">
+          <div class="stat-time-text">
+            <div class="mini-rank-name ${isSelectedPlayer(earliest.player.name) ? 'viewer-player' : ''}">${escapeHtml(earliest.player.name)}</div>
+            <div class="stat-meta-line">Ø aus ${earliest.count} Spielen</div>
+          </div>
+          <span class="stat-split-value">${formatAverageMatchTime(earliest.averageMinutes)}</span>
+        </div>
+      </div>
+      <div class="stat-shift-group">
+        <div class="stat-shift-label">Spätester</div>
+        <div class="stat-time-row">
+          <div class="stat-time-text">
+            <div class="mini-rank-name ${isSelectedPlayer(latest.player.name) ? 'viewer-player' : ''}">${escapeHtml(latest.player.name)}</div>
+            <div class="stat-meta-line">Ø aus ${latest.count} Spielen</div>
+          </div>
+          <span class="stat-split-value">${formatAverageMatchTime(latest.averageMinutes)}</span>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function renderSetDominance() {
+  const target = document.getElementById('stats-set-dominance');
+  if (!target) return;
+
+  const dominantPlayers = PADEL_DATA.players
+    .map(player => {
+      const stats = getPlayerStats(player);
+      return {
+        player,
+        stats,
+        averageDiff: stats.spiele > 0 ? stats.spielDiff / stats.spiele : null
+      };
+    })
+    .filter(item => Number.isFinite(item.averageDiff))
+    .sort((a, b) =>
+      b.averageDiff - a.averageDiff ||
+      b.stats.spielDiff - a.stats.spielDiff ||
+      b.stats.spiele - a.stats.spiele ||
+      a.player.name.localeCompare(b.player.name, 'de')
+    )
+    .slice(0, 3);
+
+  target.innerHTML = dominantPlayers.length
+    ? dominantPlayers.map((item, index) => `
+      <div class="mini-rank-row r${index + 1}">
+        <span class="mini-rank-pos">${index + 1}</span>
+        <div>
+          <div class="mini-rank-name ${isSelectedPlayer(item.player.name) ? 'viewer-player' : ''}">${escapeHtml(item.player.name)}</div>
+          <div class="stat-meta-line">${formatSignedDecimal(item.averageDiff)} Spiele pro Match · ${formatStatDiff(item.stats.spielDiff)} gesamt</div>
+        </div>
+      </div>
+    `).join('')
+    : '<div class="empty-state">Noch keine gespielten Matches.</div>';
 }
 
 function renderDominantMatches() {
@@ -1489,6 +1709,9 @@ function renderStatistik() {
   renderAverageSetScoreFact();
   renderRankingDeviationFact('stats-elo-points-deviation', 'points', 'elo', 'positive');
   renderRankingDeviationFact('stats-points-placement-deviation', 'points', 'placement', 'positive');
+  renderFinalFourForecast();
+  renderTimePerformance();
+  renderSetDominance();
 }
 
 function expandHomeArticle() {
@@ -2280,8 +2503,8 @@ const COLORS = [
   '#F76E6E'
 ];
 const GRAY = '#444444';
-const CHART_DIM_ALPHA = 'CC';
-const CHART_GRAY_MIX = 0.38;
+const CHART_DIM_ALPHA = 'D6';
+const CHART_GRAY_MIX = 0.28;
 
 let chart = null;
 let placementChart = null;

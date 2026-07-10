@@ -326,6 +326,9 @@
       margin-top: 1.5rem;
       margin-bottom: 0;
     }
+    .stats-chart-box {
+      margin-top: 1.5rem;
+    }
     .widget,
     .info-card {
       background: var(--surface);
@@ -434,9 +437,24 @@
       font-weight: 500;
       min-width: 0;
     }
+    .stat-shift-name.viewer-player {
+      color: var(--accent2);
+      font-weight: 700;
+    }
     .stat-shift-value {
       flex: 0 0 auto;
       font-weight: 600;
+    }
+    .stat-time-row {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+    .stat-time-text {
+      min-width: 0;
+      display: grid;
+      gap: 0.08rem;
     }
     .text-link {
       display: inline-flex;
@@ -598,6 +616,10 @@
       box-shadow: inset 3px 0 0 var(--accent2);
     }
     .mini-rank-row.viewer-highlight .mini-rank-name {
+      color: var(--accent2);
+      font-weight: 700;
+    }
+    .mini-rank-name.viewer-player {
       color: var(--accent2);
       font-weight: 700;
     }

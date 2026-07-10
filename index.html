@@ -234,6 +234,16 @@
         <div id="favorite-check"></div>
       </article>
       <article class="widget">
+        <div class="widget-label">Spielzeit-Performance</div>
+        <div id="stats-time-performance"></div>
+      </article>
+      <article class="widget">
+        <div class="widget-label">Ø-Satzergebnis</div>
+        <div id="stats-average-set-score"></div>
+      </article>
+    </div>
+    <div class="stats-grid stats-facts-grid">
+      <article class="widget">
         <div class="widget-label">Überraschungen</div>
         <div id="biggest-upsets"></div>
       </article>
@@ -241,8 +251,28 @@
         <div class="widget-label">Dominanteste Spiele</div>
         <div id="dominant-matches"></div>
       </article>
+      <article class="widget">
+        <div class="widget-label">Satzdominanz</div>
+        <div id="stats-set-dominance"></div>
+      </article>
     </div>
-    <div class="chart-box">
+    <div class="chart-box stats-chart-box">
+      <div class="chart-box-title">Platzierungen nach Spieltag</div>
+      <div class="placement-chart-wrap"><canvas id="placementChart"></canvas></div>
+    </div>
+    <div class="stats-grid stats-facts-grid">
+      <article class="widget">
+        <div class="widget-label">Final-Four-Prognose</div>
+        <div id="stats-final-four-forecast"></div>
+      </article>
+      <article class="widget">
+        <div id="stats-elo-points-deviation"></div>
+      </article>
+      <article class="widget">
+        <div id="stats-points-placement-deviation"></div>
+      </article>
+    </div>
+    <div class="chart-box stats-chart-box">
       <div class="chart-box-title">Elo-Score</div>
       <div class="filter-controls">
         <div class="filter-toggle-btns">
@@ -252,22 +282,6 @@
         <div class="filter-row" id="filter-row"></div>
       </div>
       <div class="chart-wrap"><canvas id="eloChart"></canvas></div>
-    </div>
-    <div class="chart-box">
-      <div class="chart-box-title">Platzierungen nach Spieltag</div>
-      <div class="placement-chart-wrap"><canvas id="placementChart"></canvas></div>
-    </div>
-    <div class="stats-grid stats-facts-grid">
-      <article class="widget">
-        <div class="widget-label">Ø-Satzergebnis</div>
-        <div id="stats-average-set-score"></div>
-      </article>
-      <article class="widget">
-        <div id="stats-elo-points-deviation"></div>
-      </article>
-      <article class="widget">
-        <div id="stats-points-placement-deviation"></div>
-      </article>
     </div>
   </section>
 

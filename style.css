@@ -1621,6 +1621,11 @@
         left: auto;
         width: min(240px, calc(100vw - 32px));
       }
+      .sh-title-with-help .help-tooltip {
+        right: auto;
+        left: 50%;
+        transform: translateX(-50%);
+      }
       .ranking-table .rn { width: var(--mobile-rank-col-width); padding-left: 18px !important;}
       .ranking-table[data-ranking-sort="points"] .sticky-rank,
       .ranking-table[data-ranking-sort="points"] .rn {

@@ -1687,7 +1687,7 @@
       .mc-score { grid-area: score; min-width: 78px; }
       .mc-team-2 { grid-area: team2; min-width: 0; }
       .mc-players { display: flex; flex-direction: column; gap: 2px; font-size: 1.1rem; line-height: 1.16; }
-      .mc-player-sep { display: none; }
+      .mc-players .mc-player-sep { display: none; }
       .mc-score-main { font-size: 2rem; }
       .mc-score-detail { font-size: 0.85rem; }
       .mc-prob,

@@ -1447,7 +1447,7 @@
     table.rt.calculator-ranking-table .col-name { width: auto; }
     table.rt.calculator-ranking-table .col-games,
     table.rt.calculator-ranking-table .col-points,
-    table.rt.calculator-ranking-table .col-diff { width: 54px; }
+    table.rt.calculator-ranking-table .col-diff { width: 74px; }
 
     @media (max-width: 768px) {
       .hero {
@@ -1861,10 +1861,10 @@
         padding-left: 4px;
         padding-right: 4px;
       }
-      table.rt.calculator-ranking-table .col-rank { width: 28px; }
+      table.rt.calculator-ranking-table .col-rank { width: 42px; }
       table.rt.calculator-ranking-table .col-games,
       table.rt.calculator-ranking-table .col-points,
-      table.rt.calculator-ranking-table .col-diff { width: 46px; }
+      table.rt.calculator-ranking-table .col-diff { width: 58px; }
       .calculator-ranking-table .pname {
         display: inline-block;
         max-width: 100%;

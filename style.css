@@ -346,11 +346,18 @@
       text-transform: uppercase;
       margin-bottom: 0.75rem;
     }
-    .widget h2,
-    .info-card h2 {
+    .widget h2 {
       font-family: 'Bebas Neue', sans-serif;
       font-size: 2rem;
       letter-spacing: 0.04em;
+      margin-bottom: 0.85rem;
+    }
+    .info-card h2 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2rem;
+      font-weight: 400;
+      letter-spacing: 0.05em;
+      line-height: 1;
       margin-bottom: 0.85rem;
     }
     .clean-list { display: grid; gap: 0.65rem; list-style: none; color: var(--dim); line-height: 1.42; }
@@ -506,9 +513,7 @@
       padding: 0;
     }
     .widget-articles .article-card h3 {
-      font-family: 'Bebas Neue', sans-serif;
       font-size: 2.4rem;
-      letter-spacing: 0.04em;
       margin-bottom: 0.6rem;
     }
     .article-card h3 { font-size: 1.7rem; margin-bottom: 0.75rem; }
@@ -1441,8 +1446,9 @@
     .calculator-ranking-table .col-rank { width: 44px; }
     .calculator-ranking-table .col-name { width: auto; }
     .calculator-ranking-table .col-games,
+    .calculator-ranking-table .col-wins,
     .calculator-ranking-table .col-points,
-    .calculator-ranking-table .col-diff { width: 82px; }
+    .calculator-ranking-table .col-diff { width: 72px; }
 
     @media (max-width: 768px) {
       .hero {
@@ -1858,8 +1864,9 @@
       }
       .calculator-ranking-table .col-rank { width: 36px; }
       .calculator-ranking-table .col-games,
+      .calculator-ranking-table .col-wins,
       .calculator-ranking-table .col-points,
-      .calculator-ranking-table .col-diff { width: 58px; }
+      .calculator-ranking-table .col-diff { width: 50px; }
       .calculator-ranking-table .pname {
         font-size: 0.95rem;
       }

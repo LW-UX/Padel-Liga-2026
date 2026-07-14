@@ -2508,6 +2508,7 @@ function renderCalculatorRanking() {
       <td class="rn l">${index + 1}</td>
       <td class="l"><span class="pname">${player.name}</span></td>
       <td class="num-val">${player.stats.partien}</td>
+      <td class="num-val">${player.stats.siege}</td>
       <td class="punkte-val">${player.stats.punkte}</td>
       <td class="num-val"><span class="${player.stats.partien > 0 ? diffClass : 'neu'}">${diffStr}</span></td>
     </tr>`;

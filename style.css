@@ -1446,7 +1446,6 @@
     table.rt.calculator-ranking-table .col-rank { width: 40px; }
     table.rt.calculator-ranking-table .col-name { width: auto; }
     table.rt.calculator-ranking-table .col-games,
-    table.rt.calculator-ranking-table .col-wins,
     table.rt.calculator-ranking-table .col-points,
     table.rt.calculator-ranking-table .col-diff { width: 54px; }
 
@@ -1864,7 +1863,6 @@
       }
       table.rt.calculator-ranking-table .col-rank { width: 28px; }
       table.rt.calculator-ranking-table .col-games,
-      table.rt.calculator-ranking-table .col-wins,
       table.rt.calculator-ranking-table .col-points,
       table.rt.calculator-ranking-table .col-diff { width: 46px; }
       .calculator-ranking-table .pname {

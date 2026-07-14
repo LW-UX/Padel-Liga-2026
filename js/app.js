@@ -467,7 +467,7 @@ function getPlayerStats(player, matches = PADEL_DATA.matches) {
       }
     });
   });
-  return { partien: played.length, siege, punkte, spielDiff, saetzeDiff, spieleGV: played.length > 0 ? `${myGames}:${oppGames}` : '—' };
+  return { partien: played.length, siege, punkte, spielDiff, gewonneneSpiele: myGames, saetzeDiff, spieleGV: played.length > 0 ? `${myGames}:${oppGames}` : '—' };
 }
 
 function getLatestPlayerElo(player) {
@@ -895,8 +895,8 @@ function renderRanking() {
   const firmaShort = { Envidual: 'Env', Headsquare: 'Hsq', Hanako: 'Han' };
   document.getElementById('rl-meta').textContent = withStats.length + ' Spieler';
   const sortNotes = {
-    points: 'Top 4: Final-Four-Qualifikation  |  Sortierung: Punkte · Siege · Spiel-Differenz · gewonnene Spiele',
-    elo: 'Sortierung: Elo · Punkte · Siege · Spiel-Differenz',
+    points: 'Top 4: Final-Four-Qualifikation  |  Sortierung: Punkte · Spiel-Differenz · gewonnene Spiele',
+    elo: 'Sortierung: Elo · Punkte · Spiel-Differenz · gewonnene Spiele',
     placement: 'Sortierung: bereinigter Rang aus Punkte-Platz minus Platzierungsfaktor'
   };
   document.getElementById('rl-sort-note').textContent = sortNotes[rankingSortMode] || sortNotes.points;
@@ -931,23 +931,22 @@ function getRankedPlayers(matches = PADEL_DATA.matches, sortMode = 'points') {
     withStats.sort((a, b) =>
       (getLatestPlayerEloValue(b) ?? -Infinity) - (getLatestPlayerEloValue(a) ?? -Infinity) ||
       b.stats.punkte - a.stats.punkte ||
-      b.stats.siege - a.stats.siege ||
-      b.stats.spielDiff - a.stats.spielDiff
+      b.stats.spielDiff - a.stats.spielDiff ||
+      b.stats.gewonneneSpiele - a.stats.gewonneneSpiele
     );
   } else if (sortMode === 'placement') {
     const rankMap = getRankingPositionMap('points');
     withStats.sort((a, b) =>
       getPlacementAdjustedRank(a, rankMap) - getPlacementAdjustedRank(b, rankMap) ||
       b.stats.punkte - a.stats.punkte ||
-      b.stats.siege - a.stats.siege ||
-      b.stats.spielDiff - a.stats.spielDiff
+      b.stats.spielDiff - a.stats.spielDiff ||
+      b.stats.gewonneneSpiele - a.stats.gewonneneSpiele
     );
   } else {
     withStats.sort((a,b) =>
       b.stats.punkte     - a.stats.punkte     ||
-      b.stats.siege      - a.stats.siege      ||
       b.stats.spielDiff  - a.stats.spielDiff  ||
-      b.stats.saetzeDiff - a.stats.saetzeDiff
+      b.stats.gewonneneSpiele - a.stats.gewonneneSpiele
     );
   }
   return withStats;
@@ -1525,8 +1524,8 @@ function getFinalFourForecast() {
   return [...playersByName.values()].sort((a, b) =>
     b.projectedPoints - a.projectedPoints ||
     b.currentPoints - a.currentPoints ||
-    b.stats.siege - a.stats.siege ||
     b.stats.spielDiff - a.stats.spielDiff ||
+    b.stats.gewonneneSpiele - a.stats.gewonneneSpiele ||
     (getLatestPlayerEloValue(b.player) ?? 0) - (getLatestPlayerEloValue(a.player) ?? 0)
   );
 }
@@ -2508,7 +2507,6 @@ function renderCalculatorRanking() {
       <td class="rn l">${index + 1}</td>
       <td class="l"><span class="pname">${player.name}</span></td>
       <td class="num-val">${player.stats.partien}</td>
-      <td class="num-val">${player.stats.siege}</td>
       <td class="punkte-val">${player.stats.punkte}</td>
       <td class="num-val"><span class="${player.stats.partien > 0 ? diffClass : 'neu'}">${diffStr}</span></td>
     </tr>`;

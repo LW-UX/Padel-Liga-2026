@@ -124,6 +124,8 @@ window.PADEL_INFO = {
     {
       "title": "Punktevergabe",
       "paragraphs": [
+        "Die Punkte werden wie im Eishockey vergeben. Bei einem Zwei-Satz-Sieg gibt es 3 Punkte für die Gewinner und 0 Punkte für die Verlierer.",
+        "Steht es nach beiden Sätzen 1:1, erhalten beide Teams einen Punkt. Im Match-Tie-Break wird um den Extrapunkt gespielt.",
         "Für die Tabelle werden nachstehende Kriterien in der aufgeführten Reihenfolge zur Ermittlung der Platzierung herangezogen:"
       ],
       "table": [
@@ -155,9 +157,8 @@ window.PADEL_INFO = {
       ],
       "items": [
         "Anzahl Punkte",
-        "Anzahl Siege",
-        "Differenz",
-        "Anzahl gewonnener Sätze"
+        "Spiel-Differenz",
+        "Anzahl gewonnener Spiele"
       ]
     }
   ]

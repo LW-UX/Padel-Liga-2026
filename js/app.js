@@ -1957,10 +1957,16 @@ function getAutoTipEntryForMatch(match) {
 
   // Scoreline aus Sicht des Gewinners: [Gewinner, Verlierer]
   let winSet1, winSet2, winTb;
-  if (favorite >= 70) {
+  if (favorite >= 80) {
+    winSet1 = [6, 0]; winSet2 = [6, 0]; winTb = null;          // maximal dominant
+  } else if (favorite >= 70) {
+    winSet1 = [6, 1]; winSet2 = [6, 1]; winTb = null;          // sehr einseitig
+  } else if (favorite >= 63) {
     winSet1 = [6, 2]; winSet2 = [6, 2]; winTb = null;          // sehr deutlich
   } else if (favorite >= 58) {
-    winSet1 = [6, 4]; winSet2 = [6, 4]; winTb = null;          // klar, in zwei Sätzen
+    winSet1 = [6, 3]; winSet2 = [6, 3]; winTb = null;          // solide Favoritenrolle
+  } else if (favorite >= 54) {
+    winSet1 = [6, 4]; winSet2 = [6, 4]; winTb = null;          // knapp in zwei Sätzen
   } else {
     winSet1 = [6, 4]; winSet2 = [4, 6]; winTb = [10, 8];       // knapp im Match-Tiebreak
   }

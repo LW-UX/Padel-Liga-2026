@@ -115,7 +115,7 @@ function isMobileViewport() {
 
 function getViewerOptions() {
   return [
-    { id: 'sb', name: 'Spieler auswählen', short: 'Auswählen' },
+    { id: 'sb', name: 'Spieler auswählen', short: '-/-', mobileLabel: 'Auswählen' },
     ...PADEL_DATA.players.map(player => ({
       id: player.id,
       name: player.name,
@@ -176,7 +176,7 @@ function selectViewer(id) {
 function updateViewerPicker() {
   const selected = getSelectedViewer();
   document.getElementById('viewer-label-full').textContent = selected.name;
-  document.getElementById('viewer-label-short').textContent = selected.short;
+  document.getElementById('viewer-label-short').textContent = selected.mobileLabel || selected.short;
   document.getElementById('viewer-menu').innerHTML = getViewerOptions().map(option => `
     <button
       type="button"

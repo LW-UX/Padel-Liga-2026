@@ -1067,6 +1067,7 @@
     }
     .form-custom-tooltip {
       position: fixed;
+      z-index: 1000;
       max-width: min(260px, calc(100vw - 24px));
     }
     .elo-tooltip-title {

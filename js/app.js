@@ -115,7 +115,7 @@ function isMobileViewport() {
 
 function getViewerOptions() {
   return [
-    { id: 'sb', name: 'Auswählen', short: '-/-' },
+    { id: 'sb', name: 'Spieler auswählen', short: 'Auswählen' },
     ...PADEL_DATA.players.map(player => ({
       id: player.id,
       name: player.name,

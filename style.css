@@ -311,12 +311,6 @@
     }
     .home-side { display: grid; gap: 18px; }
     .home-main { display: grid; gap: 18px; align-content: start; }
-    .home-app-hint {
-      border: 1px solid var(--accent2) !important;
-    }
-    .home-app-hint .widget-label { color: var(--accent2); margin-bottom: 0.4rem; }
-    .home-app-hint-text { color: var(--dim); line-height: 1.5; font-size: 0.92rem; margin: 0; }
-    .is-standalone .home-app-hint { display: none; }
     .stats-grid {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));

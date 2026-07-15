@@ -226,6 +226,11 @@ window.PADEL_SEASON = {
           "date": "2026-07-14",
           "elo": 703,
           "partie": "Partie 21"
+        },
+        {
+          "date": "2026-07-15",
+          "elo": 784,
+          "partie": "Partie 17"
         }
       ]
     },
@@ -381,6 +386,11 @@ window.PADEL_SEASON = {
           "date": "2026-07-09",
           "elo": 1054,
           "partie": "Partie 11"
+        },
+        {
+          "date": "2026-07-15",
+          "elo": 973,
+          "partie": "Partie 17"
         }
       ]
     },
@@ -414,6 +424,11 @@ window.PADEL_SEASON = {
           "date": "2026-07-14",
           "elo": 1098,
           "partie": "Partie 21"
+        },
+        {
+          "date": "2026-07-15",
+          "elo": 1134,
+          "partie": "Partie 17"
         }
       ]
     },
@@ -526,6 +541,11 @@ window.PADEL_SEASON = {
           "date": "2026-06-25",
           "elo": 663,
           "partie": "Partie 14"
+        },
+        {
+          "date": "2026-07-15",
+          "elo": 627,
+          "partie": "Partie 17"
         }
       ]
     },
@@ -945,9 +965,9 @@ window.PADEL_SEASON = {
           "Ludwig W."
         ]
       },
-      "ergebnis": null,
-      "saetze": null,
-      "sieger": null
+      "ergebnis": "7:6 (7:4), 2:6 – 2:10",
+      "saetze": "1:2",
+      "sieger": 2
     },
     {
       "id": "partie18",

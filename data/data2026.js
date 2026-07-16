@@ -76,6 +76,11 @@ window.PADEL_SEASON = {
           "date": "2026-07-16",
           "elo": 667,
           "partie": "Partie 16"
+        },
+        {
+          "date": "2026-07-16",
+          "elo": 629,
+          "partie": "Partie 25"
         }
       ]
     },
@@ -104,6 +109,11 @@ window.PADEL_SEASON = {
           "date": "2026-07-14",
           "elo": 1113,
           "partie": "Partie 21"
+        },
+        {
+          "date": "2026-07-16",
+          "elo": 1017,
+          "partie": "Partie 25"
         }
       ]
     },
@@ -137,6 +147,11 @@ window.PADEL_SEASON = {
           "date": "2026-07-07",
           "elo": 1006,
           "partie": "Partie 9"
+        },
+        {
+          "date": "2026-07-16",
+          "elo": 1058,
+          "partie": "Partie 25"
         }
       ]
     },
@@ -594,6 +609,11 @@ window.PADEL_SEASON = {
           "date": "2026-06-24",
           "elo": 739,
           "partie": "Partie 24"
+        },
+        {
+          "date": "2026-07-16",
+          "elo": 821,
+          "partie": "Partie 25"
         }
       ]
     },
@@ -1153,9 +1173,9 @@ window.PADEL_SEASON = {
           "Andreas L."
         ]
       },
-      "ergebnis": null,
-      "saetze": null,
-      "sieger": null
+      "ergebnis": "6:3, 6:3",
+      "saetze": "2:0",
+      "sieger": 1
     },
     {
       "id": "partie26",

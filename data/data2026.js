@@ -1958,9 +1958,111 @@ window.PADEL_SEASON = {
     },
     {
       "spieltag": 6,
-      "startDate": null,
-      "endDate": null,
-      "title": "Spieltag 6"
+      "startDate": "2026-07-19",
+      "endDate": "2026-08-02",
+      "title": "Absolute Firmendominanz - noch",
+      "meta": "SPIELTAG 6  ·  19. JULI - 31. JULI 2026",
+      "body": [
+        {
+          "type": "p",
+          "text": "Die Tabelle spricht eine klare Sprache: Die Top 5 bestehen komplett aus allen 5 Envidual-Spielern. Luca W. führt mit 12 Punkten, Ludwig W., Marcel M. und Chris M. folgen mit je 11. Somit würde Envidual alle vier Final-Four-Finalisten stellen. Noch."
+        },
+        {
+          "type": "p",
+          "text": "Denn mag man dem neuen Turnierrechner (Prognosen lassen sich manuell oder automatisch berechnen) Glauben schenken, steht am Ende Marco M. als Favorit auf Platz 1 der Final-Four-Prognose. Und das trotz aktuell nur Platz 9 in der Tabelle. Aber nicht jeder findet die Zahlenspielerei hilfreich:"
+        },
+        {
+          "type": "quote",
+          "text": "Erstmal spielen, dann können wir rätseln.",
+          "author": "Andreas L."
+        },
+        {
+          "type": "p",
+          "text": "Dann lohnt sich ein Blick auf die Spiele des sechsten und vorletzten Spieltags."
+        },
+        {
+          "type": "h",
+          "text": "Partie 21 - Bereits gespielt: Schnelles Ding in der Mittagspause"
+        },
+        {
+          "type": "match",
+          "text": "Florian Z. & Leonie R. vs. Andreas L. & Ludwig W.",
+          "result": "0:6, 0:6",
+          "resultLabel": "Ergebnis"
+        },
+        {
+          "type": "p",
+          "text": "Das war ein kurzer Prozess und das dominanteste Ergebnis der gesamten Liga. Andreas L. und Ludwig W. ließen keinen einzigen Spielgewinn zu. Es spielte selbst keine Rolle, dass Andreas verspätet und ohne Warmmachen antrat. Für Leonie R. bedeutet das die fünfte Niederlage im fünften Spiel. Für Flo, der inzwischen bei Partie 16 und 17 zwei Siege am Stück feiern konnte, eine harte Lektion, die womöglich als Grundlage für den folgenden Erfolg diente."
+        },
+        {
+          "type": "h",
+          "text": "Partie 22 - Die Anfängerin kennt keine Gnade mehr"
+        },
+        {
+          "type": "match",
+          "text": "Irene W. & Cristian B. vs. Greta P. & Christoph L.",
+          "result": "61 : 39 %",
+          "resultLabel": "Gewinnwahrscheinlichkeit"
+        },
+        {
+          "type": "p",
+          "text": "Irene W. hat sich von der blutigen Anfängerin zur selbstbewusstesten Stimme der Liga entwickelt. Vom wortkarg gemurmelten \"Das werden wir sehen\" vor Spieltag 3 zur lautesten Kampfansage der Saison:"
+        },
+        {
+          "type": "quote",
+          "text": "Ganz klare Niederlage für unsere Gegner. Nur 61 %? Mit verbundenen Augen vielleicht.",
+          "author": "Irene W."
+        },
+        {
+          "type": "p",
+          "text": "An ihrer Seite Cristian B.: Platz 6, drei Siege, vollständig genesen und in Topform. Gegenüber: Greta P., die nach drei Spielen immer noch auf ihren ersten Sieg wartet, und Christoph L., der seine Niederlagen bekanntlich zuverlässiger vorhersagt als jeder Algorithmus. Team 2 braucht ein Wunder oder einen sehr guten Tag, zumindest laut Prognose und Irene."
+        },
+        {
+          "type": "h",
+          "text": "Partie 23 - Jonas braucht jeden Punkt"
+        },
+        {
+          "type": "match",
+          "text": "Jonas L. & Marco M. vs. Agnes K. & Martin B.",
+          "result": "84 : 16 %",
+          "resultLabel": "Gewinnwahrscheinlichkeit"
+        },
+        {
+          "type": "p",
+          "text": "Vor wenigen Wochen stand Jonas L. noch an der Tabellenspitze. Dann kam Partie 16, und Marcel beendete die Serie. Jetzt Platz 5 und außerhalb der Final-Four-Plätze. Für den einstigen Tabellenführer zählt nur noch eins: Gewinnen."
+        },
+        {
+          "type": "quote",
+          "text": "Ich hoffe, der Marco ist fit und kalt. Es ist eng, ich brauche jeden Punkt.",
+          "author": "Jonas L."
+        },
+        {
+          "type": "p",
+          "text": "Seine Hoffnung dürfte berechtigt sein: Marco M. mag auf Platz 9 stehen, aber sein Elo von 1149 ist das höchste der Liga. Der Turnierrechner sieht ihn sogar als Nummer eins der Final-Four-Prognose. Zusammen das stärkste Elo-Duo des Turniers gegen Agnes K. und Martin B., die zusammen null Siege auf dem Konto haben. Auf dem Papier eine klare Sache. Aber Jonas weiß inzwischen: Auf dem Papier stand er auch schon mal an der Spitze."
+        },
+        {
+          "type": "h",
+          "text": "Partie 24 - Bereits gespielt: Ein episches Match bei 47 Grad"
+        },
+        {
+          "type": "match",
+          "text": "Marcel M. & Niklas K. vs. Lukas P. & Luca W.",
+          "result": "4:6, 4:6",
+          "resultLabel": "Ergebnis"
+        },
+        {
+          "type": "p",
+          "text": "Was für ein Spiel! Und es hätte kaum extremere Umstände geben können. In der Mittagshitze bei gefühlten 47 Grad im Kessel des Lucky Star lieferten sich Marcel M. und Niklas K. auf der einen und Lukas P. und Luca W. auf der anderen Seite. Heiß ging es hin und her, sodass es schon für die Zuschauer zu warm war, die volle Partie zu verfolgen. Am Ende stand ein knapper 6:4, 6:4 Erfolg und wie bereits berichtet die erste Saisonniederlage für den Spirit-König."
+        },
+        {
+          "type": "p",
+          "text": "Vier Punkte trennen Platz 1 von Platz 6. Neun Partien stehen noch aus. Die Envidual-Dominanz steht - aber sie wackelt. Wer am Ende im Final Four steht, entscheidet sich in den nächsten Wochen."
+        },
+        {
+          "type": "p",
+          "text": "Erstmal spielen. Dann rätseln."
+        }
+      ]
     },
     {
       "spieltag": 7,

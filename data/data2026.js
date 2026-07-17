@@ -2069,6 +2069,18 @@ window.PADEL_SEASON = {
       "startDate": null,
       "endDate": null,
       "title": "Spieltag 7"
+    },
+    {
+      "spieltag": 8,
+      "startDate": null,
+      "endDate": null,
+      "title": "Final Four"
+    },
+    {
+      "spieltag": "abschluss",
+      "startDate": null,
+      "endDate": null,
+      "title": "Abschlussartikel"
     }
   ]
 };

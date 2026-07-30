@@ -81,6 +81,11 @@ window.PADEL_SEASON = {
           "date": "2026-07-16",
           "elo": 629,
           "partie": "Partie 25"
+        },
+        {
+          "date": "2026-07-30",
+          "elo": 580,
+          "partie": "Partie 18"
         }
       ]
     },
@@ -152,6 +157,11 @@ window.PADEL_SEASON = {
           "date": "2026-07-16",
           "elo": 1058,
           "partie": "Partie 25"
+        },
+        {
+          "date": "2026-07-30",
+          "elo": 934,
+          "partie": "Partie 18"
         }
       ]
     },
@@ -284,6 +294,11 @@ window.PADEL_SEASON = {
           "date": "2026-06-11",
           "elo": 748,
           "partie": "Partie 1"
+        },
+        {
+          "date": "2026-07-30",
+          "elo": 847,
+          "partie": "Partie 18"
         }
       ]
     },
@@ -350,6 +365,11 @@ window.PADEL_SEASON = {
           "date": "2026-07-16",
           "elo": 912,
           "partie": "Partie 16"
+        },
+        {
+          "date": "2026-07-30",
+          "elo": 986,
+          "partie": "Partie 18"
         }
       ]
     },
@@ -1012,8 +1032,8 @@ window.PADEL_SEASON = {
     {
       "id": "partie18",
       "spieltag": 5,
-      "datum": "2026-07-06",
-      "uhrzeit": null,
+      "datum": "2026-07-30",
+      "uhrzeit": "10.00",
       "team1": {
         "spieler": [
           "Chris M.",
@@ -1026,9 +1046,9 @@ window.PADEL_SEASON = {
           "Greta P."
         ]
       },
-      "ergebnis": null,
-      "saetze": null,
-      "sieger": null
+      "ergebnis": "0:6, 0:6",
+      "saetze": "0:2",
+      "sieger": 2
     },
     {
       "id": "partie19",

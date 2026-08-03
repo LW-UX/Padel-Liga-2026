@@ -2113,7 +2113,7 @@ window.PADEL_SEASON = {
         },
         {
           "type": "h",
-          "text": "🎾 Partie 25 - Niklas holt seine ersten Punkte"
+          "text": "Partie 25 - Bereits gespielt: Niklas holt seine ersten Punkte"
         },
         {
           "type": "match",
@@ -2127,7 +2127,7 @@ window.PADEL_SEASON = {
         },
         {
           "type": "h",
-          "text": "🎾 Partie 26 - Luca hat die Fäden in der Hand"
+          "text": "Partie 26 - Luca hat die Fäden in der Hand"
         },
         {
           "type": "match",
@@ -2154,7 +2154,7 @@ window.PADEL_SEASON = {
         },
         {
           "type": "h",
-          "text": "🎾 Partie 27 - Das Duell am Tabellenende"
+          "text": "Partie 27 - Das Duell am Tabellenende"
         },
         {
           "type": "match",

@@ -2086,9 +2086,99 @@ window.PADEL_SEASON = {
     },
     {
       "spieltag": 7,
-      "startDate": null,
-      "endDate": null,
-      "title": "Spieltag 7"
+      "startDate": "2026-08-03",
+      "endDate": "2026-08-16",
+      "title": "Die Liga ruft zum Endspurt",
+      "meta": "SPIELTAG 7  ·  3. AUGUST - 14. AUGUST 2026",
+      "body": [
+        {
+          "type": "p",
+          "text": "Der letzte Spieltag ist da! Mit ihm liefert die Liga Drama bis zum Schluss. Die Tabelle ist eng, die Final-Four-Plätze umkämpft und mittendrin zwei Ereignisse, auf die alle gewartet haben: Niklas K. und Greta P. haben ihren ersten Sieg geholt."
+        },
+        {
+          "type": "p",
+          "text": "In Partie 18 fegte Greta P. mit Jonas L. das Duo Chris M. und Agnes K. mit 6:0, 6:0 vom Platz. Greta, die seit dem ersten Spieltag auf diesen Moment gewartet hatte. Die „Diesmal wirklich\" gesagt hatte. Und diesmal hat es wirklich geklappt."
+        },
+        {
+          "type": "h",
+          "text": "Wer schafft es ins Final Four?"
+        },
+        {
+          "type": "p",
+          "text": "An der Tabellenspitze hat sich Jonas L. mit diesem Sieg und 11 Punkten auf Platz 2 vorgeschoben. Luca W. führt weiterhin mit 12 Punkten. Dahinter Ludwig W. und Marcel M. mit je 11 Punkten auf den Plätzen 3 und 4. Chris M. rundet die Envidual-Top-5 auf Platz 5 ab."
+        },
+        {
+          "type": "p",
+          "text": "Wer der Prognose des Turnierrechners glaubt, schiebt sich Marco M. souverän auf Platz eins. Er und Luca W. scheinen sicher im Final Four. Jonas wird es aller Voraussicht nach ebenfalls schaffen, zu eindeutig war das 6:0, 6:0 ohne Spielverlust. Bleibt der vierte und letzte Platz: Dieser wird sich laut der Prognose zwischen Ludwig und Marcel entscheiden. Mitentscheidend hierfür: Partie 26."
+        },
+        {
+          "type": "h",
+          "text": "🎾 Partie 25 - Niklas holt seine ersten Punkte"
+        },
+        {
+          "type": "match",
+          "text": "Niklas K. & Chris M. vs. Agnes K. & Andreas L.",
+          "result": "6:3, 6:3",
+          "resultLabel": "Ergebnis"
+        },
+        {
+          "type": "p",
+          "text": "Es hat gedauert: vier Spiele, vier Niederlagen, „dramatisch\" niedrige Siegwahrscheinlichkeiten. Niklas’ Saisonverlauf las sich wie ein einziger Kampf gegen die Statistik. In Partie 25 hat er sie endlich besiegt. Mit Chris M. an seiner Seite gewann er souverän mit 6:3, 6:3 gegen Agnes K. und Andreas L., bei einer Siegwahrscheinlichkeit von knappen 52 Prozent. Für Niklas sind es die ersten Punkte der Saison."
+        },
+        {
+          "type": "h",
+          "text": "🎾 Partie 26 - Luca hat die Fäden in der Hand"
+        },
+        {
+          "type": "match",
+          "text": "Florian Z. & Raphael H. vs. Marcel M. & Luca W.",
+          "result": "38 : 62 %",
+          "resultLabel": "Gewinnwahrscheinlichkeit"
+        },
+        {
+          "type": "p",
+          "text": "Das ist sie. Die Partie, die über den letzten Final-Four-Platz mitentscheiden könnte. Marcel M. steht auf Platz 4 mit 11 Punkten, jedoch punktgleich mit Jonas und Ludwig. Ein hoher Sieg hier, und er festigt seinen Platz im Finale. Gibt er zu viele Spiele ab, könnte Ludwig vorbeiziehen."
+        },
+        {
+          "type": "p",
+          "text": "An Marcels Seite steht der Tabellenführer höchstpersönlich. Und Luca weiß genau, welche Macht er in dieser Konstellation hat:"
+        },
+        {
+          "type": "quote",
+          "text": "Wie ein Puppenspieler habe ich die Zügel in der Hand und kann über das Geschehen entscheiden. Wer bietet mehr, das ist die Frage.",
+          "author": "Luca W."
+        },
+        {
+          "type": "p",
+          "text": "Auf der anderen Seite stehen mit Florian Z. und Raphael H. zwei Spieler, für die es sportlich um nichts mehr geht, die aber genau deshalb befreit aufspielen können. Die 62:38 % für Team Marcel sprechen eine deutliche Sprache. Aber um 7:30 Uhr morgens ist noch keine Partie entschieden."
+        },
+        {
+          "type": "h",
+          "text": "🎾 Partie 27 - Das Duell am Tabellenende"
+        },
+        {
+          "type": "match",
+          "text": "Leonie R. & Lukas P. vs. Greta P. & Martin B.",
+          "result": "60 : 40 %",
+          "resultLabel": "Gewinnwahrscheinlichkeit"
+        },
+        {
+          "type": "p",
+          "text": "Vier Spieler, die in dieser Liga mehr gelitten als gefeiert haben. Und doch steckt in dieser Partie mehr, als die Tabelle verrät. Greta P. kommt mit dem Rückenwind ihres ersten Saisonsiegs, der ihr Selbstvertrauen auf ein neues Level gehoben haben dürfte. Kann sie dieses Momentum auch ohne den Zweitplatzierten der Liga an ihrer Seite mitnehmen? An ihrer Seite steht dieses Mal Martin B. mit einem Punkt und auf Platz 16 gelistet."
+        },
+        {
+          "type": "p",
+          "text": "Gegenüber: Leonie R., die nach wie vor auf ihren ersten Sieg wartet, und Lukas P., der nach seinem holprigen Saisonstart zuletzt zwei Siege in Folge landete und mit einem Elo von 1130 zu den stärksten Spielern der Liga gehört. Die 60:40 für Team Leonie sind vor allem Lukas' Verdienst. Für Leonie selbst wäre ein Sieg hier ein gelungener Abschluss für die Liga."
+        },
+        {
+          "type": "p",
+          "text": "Drei Partien am letzten Spieltag, acht insgesamt noch offen. Das Rennen um die Final-Four-Plätze ist eng. Marco M. laut Prognose auf Platz 1, Luca derzeit auf der 1, Jonas drängt, und zwischen Ludwig und Marcel fällt die Entscheidung möglicherweise an diesem Donnerstagmorgen um 7:30."
+        },
+        {
+          "type": "p",
+          "text": "Der letzte Spieltag. Die letzte Chance. Der letzte Platz im Final Four."
+        }
+      ]
     },
     {
       "spieltag": 8,

@@ -3293,7 +3293,7 @@ function initChart() {
       scales: {
         x: { grid: { color: '#222' }, ticks: { color: '#5a5a72', font: { family: 'DM Sans', size: 12 } } },
         y: {
-          min: 600, max: 1250,
+          min: 500, max: 1250,
           grid: { color: '#222' },
           ticks: { color: '#5a5a72', font: { family: 'DM Sans', size: 12 } }
         }

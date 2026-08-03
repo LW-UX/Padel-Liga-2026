@@ -2154,7 +2154,7 @@ window.PADEL_SEASON = {
         },
         {
           "type": "h",
-          "text": "Partie 27 - Das Duell am Tabellenende"
+          "text": "Partie 27 - Das Duell zum versöhnlichen Abschluss?"
         },
         {
           "type": "match",
@@ -2169,6 +2169,10 @@ window.PADEL_SEASON = {
         {
           "type": "p",
           "text": "Gegenüber: Leonie R., die nach wie vor auf ihren ersten Sieg wartet, und Lukas P., der nach seinem holprigen Saisonstart zuletzt zwei Siege in Folge landete und mit einem Elo von 1130 zu den stärksten Spielern der Liga gehört. Die 60:40 für Team Leonie sind vor allem Lukas' Verdienst. Für Leonie selbst wäre ein Sieg hier ein gelungener Abschluss für die Liga."
+        },
+         {
+          "type": "p",
+          "text": ""
         },
         {
           "type": "p",

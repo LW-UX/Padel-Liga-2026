@@ -2170,10 +2170,6 @@ window.PADEL_SEASON = {
           "type": "p",
           "text": "Gegenüber: Leonie R., die nach wie vor auf ihren ersten Sieg wartet, und Lukas P., der nach seinem holprigen Saisonstart zuletzt zwei Siege in Folge landete und mit einem Elo von 1130 zu den stärksten Spielern der Liga gehört. Die 60:40 für Team Leonie sind vor allem Lukas' Verdienst. Für Leonie selbst wäre ein Sieg hier ein gelungener Abschluss für die Liga."
         },
-         {
-          "type": "p",
-          "text": ""
-        },
         {
           "type": "p",
           "text": "Drei Partien am letzten Spieltag, acht insgesamt noch offen. Das Rennen um die Final-Four-Plätze ist eng. Marco M. laut Prognose auf Platz 1, Luca derzeit auf der 1, Jonas drängt, und zwischen Ludwig und Marcel fällt die Entscheidung möglicherweise an diesem Donnerstagmorgen um 7:30."

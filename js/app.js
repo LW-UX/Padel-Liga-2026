@@ -1086,8 +1086,11 @@ function getCurrentArticle() {
     const end = article.endDate || '9999-12-31';
     return start <= todayKey && todayKey <= end;
   });
+  const latest = articles
+    .filter(article => article.startDate && article.startDate <= todayKey)
+    .sort((a, b) => b.startDate.localeCompare(a.startDate))[0];
 
-  return current || articles[0];
+  return current || latest || articles[0];
 }
 
 function formatArticleMeta(meta) {

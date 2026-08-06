@@ -266,6 +266,11 @@ window.PADEL_SEASON = {
           "date": "2026-07-16",
           "elo": 866,
           "partie": "Partie 16"
+        },
+        {
+          "date": "2026-08-06",
+          "elo": 814,
+          "partie": "Partie 26"
         }
       ]
     },
@@ -441,6 +446,11 @@ window.PADEL_SEASON = {
           "date": "2026-07-15",
           "elo": 973,
           "partie": "Partie 17"
+        },
+        {
+          "date": "2026-08-06",
+          "elo": 1051,
+          "partie": "Partie 26"
         }
       ]
     },
@@ -545,6 +555,11 @@ window.PADEL_SEASON = {
           "date": "2026-07-16",
           "elo": 1117,
           "partie": "Partie 16"
+        },
+        {
+          "date": "2026-08-06",
+          "elo": 1170,
+          "partie": "Partie 26"
         }
       ]
     },
@@ -667,6 +682,11 @@ window.PADEL_SEASON = {
           "date": "2026-07-07",
           "elo": 1015,
           "partie": "Partie 9"
+        },
+        {
+          "date": "2026-08-06",
+          "elo": 936,
+          "partie": "Partie 26"
         }
       ]
     }
@@ -1214,9 +1234,9 @@ window.PADEL_SEASON = {
           "Luca W."
         ]
       },
-      "ergebnis": null,
-      "saetze": null,
-      "sieger": null
+      "ergebnis": "0:6, 0:6",
+      "saetze": "0:2",
+      "sieger": 2
     },
     {
       "id": "partie27",

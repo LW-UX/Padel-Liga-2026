@@ -119,6 +119,11 @@ window.PADEL_SEASON = {
           "date": "2026-07-16",
           "elo": 1017,
           "partie": "Partie 25"
+        },
+        {
+          "date": "2026-08-19",
+          "elo": 1051,
+          "partie": "Partie 15"
         }
       ]
     },
@@ -408,6 +413,11 @@ window.PADEL_SEASON = {
           "date": "2026-07-14",
           "elo": 629,
           "partie": "Partie 21"
+        },
+        {
+          "date": "2026-08-19",
+          "elo": 611,
+          "partie": "Partie 15"
         }
       ]
     },
@@ -583,6 +593,11 @@ window.PADEL_SEASON = {
           "date": "2026-06-12",
           "elo": 1149,
           "partie": "Partie 7"
+        },
+        {
+          "date": "2026-08-19",
+          "elo": 1170,
+          "partie": "Partie 15"
         }
       ]
     },
@@ -649,6 +664,11 @@ window.PADEL_SEASON = {
           "date": "2026-07-16",
           "elo": 821,
           "partie": "Partie 25"
+        },
+        {
+          "date": "2026-08-19",
+          "elo": 784,
+          "partie": "Partie 15"
         }
       ]
     },
@@ -1003,9 +1023,9 @@ window.PADEL_SEASON = {
           "Niklas K."
         ]
       },
-      "ergebnis": null,
-      "saetze": null,
-      "sieger": null
+      "ergebnis": "6:2, 6:0",
+      "saetze": "2:0",
+      "sieger": 1
     },
     {
       "id": "partie16",

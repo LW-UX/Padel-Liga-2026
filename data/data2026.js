@@ -1136,8 +1136,8 @@ window.PADEL_SEASON = {
     {
       "id": "partie22",
       "spieltag": 6,
-      "datum": "2026-07-20",
-      "uhrzeit": null,
+      "datum": "2026-08-26",
+      "uhrzeit": "14.00",
       "team1": {
         "spieler": [
           "Irene W.",

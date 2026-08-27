@@ -200,6 +200,11 @@ window.PADEL_SEASON = {
           "date": "2026-07-09",
           "elo": 746,
           "partie": "Partie 11"
+        },
+        {
+          "date": "2026-08-27",
+          "elo": 719,
+          "partie": "Partie 20"
         }
       ]
     },
@@ -233,6 +238,11 @@ window.PADEL_SEASON = {
           "date": "2026-07-07",
           "elo": 925,
           "partie": "Partie 9"
+        },
+        {
+          "date": "2026-08-27",
+          "elo": 966,
+          "partie": "Partie 20"
         }
       ]
     },
@@ -342,6 +352,11 @@ window.PADEL_SEASON = {
           "date": "2026-07-09",
           "elo": 805,
           "partie": "Partie 11"
+        },
+        {
+          "date": "2026-08-27",
+          "elo": 773,
+          "partie": "Partie 20"
         }
       ]
     },
@@ -598,6 +613,11 @@ window.PADEL_SEASON = {
           "date": "2026-08-19",
           "elo": 1170,
           "partie": "Partie 15"
+        },
+        {
+          "date": "2026-08-27",
+          "elo": 1187,
+          "partie": "Partie 20"
         }
       ]
     },
@@ -1128,9 +1148,9 @@ window.PADEL_SEASON = {
           "Cristian B."
         ]
       },
-      "ergebnis": null,
-      "saetze": null,
-      "sieger": null
+      "ergebnis": "3:6, 4:6",
+      "saetze": "0:2",
+      "sieger": 2
     },
     {
       "id": "partie21",

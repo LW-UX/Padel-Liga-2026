@@ -60,6 +60,17 @@ function countsForRanking(match) {
   return match?.countsForRanking !== false;
 }
 
+function hasMatchResult(match) {
+  return Boolean(
+    String(match?.ergebnis || '').trim() &&
+    (match?.sieger === 1 || match?.sieger === 2)
+  );
+}
+
+function isOpenMatch(match) {
+  return !hasMatchResult(match);
+}
+
 function isSingleSetMatch(match) {
   return match?.format === 'single-set';
 }
@@ -1172,10 +1183,10 @@ function renderHome() {
 
   const todayKey = toDateKey(new Date());
   const nextMatches = PADEL_DATA.matches
-    .filter(m => m.sieger === null && m.uhrzeit && toDateKey(m.datum) >= todayKey)
+    .filter(m => isOpenMatch(m) && hasScheduledDateTime(m) && toDateKey(m.datum) >= todayKey)
     .sort(compareMatchesByDateTime)
     .slice(0, 3);
-  const allMatchesPlayed = PADEL_DATA.matches.every(match => match.sieger !== null);
+  const allMatchesPlayed = PADEL_DATA.matches.every(hasMatchResult);
   const emptyNextMatchesText = allMatchesPlayed
     ? 'Alle Partien sind gespielt.'
     : 'Keine weiteren Partien terminiert.';
@@ -1184,9 +1195,8 @@ function renderHome() {
     ? nextMatches.map(match => renderHomeMatchCard(match)).join('')
     : `<div class="empty-state">${emptyNextMatchesText}</div>`;
 
-  const playedMatches = PADEL_DATA.matches.filter(match => match.sieger !== null);
+  const playedMatches = PADEL_DATA.matches.filter(hasMatchResult);
   const recentMatches = playedMatches
-    .filter(match => match.sieger !== null && match.ergebnis)
     .sort(compareMatchesByDateTimeDesc)
     .slice(0, 3);
   const emptyRecentMatchesText = playedMatches.length === 0
@@ -1825,7 +1835,7 @@ function renderInfos() {
 
 // ── MATCHES ───────────────────────────────────────────────────────
 function renderMatchRow(m) {
-  if (m.sieger === null) {
+  if (isOpenMatch(m)) {
     const probability = getMatchWinProbability(m);
     const probabilityHtml = probability
       ? `<div class="mc-prob">${probability.team1}% : ${probability.team2}%</div>`
@@ -1889,7 +1899,7 @@ function renderFinalFourGroup(matches) {
   if (!matches.length) return '';
 
   const title = getMatchdayInfo(matches[0].spieltag)?.title || 'Final Four';
-  const played = matches.filter(match => match.sieger !== null).length;
+  const played = matches.filter(hasMatchResult).length;
   return `<div class="spieltag-group final-four-group">
     <div class="sh final-four-heading">
       <div class="sh-heading">
@@ -1908,13 +1918,13 @@ function renderPartien() {
     .filter(m => !countsForRanking(m))
     .sort(compareMatchesByNumber);
   const spieltage = [...new Set(regularMatches.map(m => m.spieltag))].sort((a,b)=>a-b);
-  const played = regularMatches.filter(m => m.sieger !== null).length;
+  const played = regularMatches.filter(hasMatchResult).length;
   document.getElementById('sp-meta').textContent = `${played}/${regularMatches.length}`;
 
   const regularHtml = spieltage.map(st => {
     const matches = regularMatches
       .filter(m => m.spieltag === st)
-      .filter(m => matchScope !== 'open' || m.sieger === null)
+      .filter(m => matchScope !== 'open' || isOpenMatch(m))
       .filter(m => matchScope !== 'mine' || isViewerMatch(m))
       .sort(compareMatchesByNumber);
     return renderMatchdayGroup(st, matches);
@@ -1928,7 +1938,7 @@ function renderPartien() {
 // ── CALCULATOR ────────────────────────────────────────────────────
 function getOpenMatches() {
   return PADEL_DATA.matches
-    .filter(match => match.sieger === null)
+    .filter(isOpenMatch)
     .filter(countsForRanking)
     .sort(compareMatchesByNumber);
 }

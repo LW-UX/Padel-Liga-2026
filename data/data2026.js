@@ -1210,9 +1210,9 @@ window.PADEL_SEASON = {
           "Christoph L."
         ]
       },
-      "ergebnis": null,
-      "saetze": null,
-      "sieger": null
+      "ergebnis": "3:6, 3:6",
+      "saetze": "0:2",
+      "sieger": 2
     },
     {
       "id": "partie23",

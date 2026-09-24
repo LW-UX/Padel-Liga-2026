@@ -324,6 +324,11 @@ window.PADEL_SEASON = {
           "date": "2026-07-30",
           "elo": 847,
           "partie": "Partie 18"
+        },
+        {
+          "date": "2026-09-23",
+          "elo": 778,
+          "partie": "Partie 27"
         }
       ]
     },
@@ -443,6 +448,11 @@ window.PADEL_SEASON = {
           "date": "2026-08-19",
           "elo": 611,
           "partie": "Partie 15"
+        },
+        {
+          "date": "2026-09-23",
+          "elo": 700,
+          "partie": "Partie 27"
         }
       ]
     },
@@ -552,6 +562,11 @@ window.PADEL_SEASON = {
           "date": "2026-06-25",
           "elo": 1130,
           "partie": "Partie 14"
+        },
+        {
+          "date": "2026-09-23",
+          "elo": 1151,
+          "partie": "Partie 27"
         }
       ]
     },
@@ -671,6 +686,11 @@ window.PADEL_SEASON = {
           "date": "2026-09-03",
           "elo": 607,
           "partie": "Partie 23"
+        },
+        {
+          "date": "2026-09-23",
+          "elo": 566,
+          "partie": "Partie 27"
         }
       ]
     },
@@ -1315,9 +1335,9 @@ window.PADEL_SEASON = {
           "Martin B."
         ]
       },
-      "ergebnis": null,
-      "saetze": null,
-      "sieger": null
+      "ergebnis": "6:1, 6:3",
+      "saetze": "2:0",
+      "sieger": 1
     },
     {
       "id": "partie28",

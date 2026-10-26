@@ -1345,23 +1345,23 @@ window.PADEL_SEASON = {
       "spieltag": 8,
       "format": "single-set",
       "countsForRanking": false,
-      "datum": null,
-      "uhrzeit": null,
+      "datum": "2026-10-08",
+      "uhrzeit": "18.00",
       "team1": {
         "spieler": [
-          "Erster",
-          "Zweiter"
+          "Luca W.",
+          "Jonas L."
         ]
       },
       "team2": {
         "spieler": [
-          "Dritter",
-          "Vierter"
+          "Marcel M.",
+          "Ludwig W."
         ]
       },
-      "ergebnis": null,
-      "saetze": null,
-      "sieger": null
+      "ergebnis": "5:7",
+      "saetze": "0:1",
+      "sieger": 2
     },
     {
       "id": "partie29",
@@ -1369,23 +1369,23 @@ window.PADEL_SEASON = {
       "spieltag": 8,
       "format": "single-set",
       "countsForRanking": false,
-      "datum": null,
-      "uhrzeit": null,
+      "datum": "2026-10-08",
+      "uhrzeit": "18.30",
       "team1": {
         "spieler": [
-          "Erster",
-          "Vierter"
+          "Luca W.",
+          "Ludwig W."
         ]
       },
       "team2": {
         "spieler": [
-          "Zweiter",
-          "Dritter"
+          "Jonas L.",
+          "Marcel M."
         ]
       },
-      "ergebnis": null,
-      "saetze": null,
-      "sieger": null
+      "ergebnis": "6:4",
+      "saetze": "1:0",
+      "sieger": 1
     },
     {
       "id": "partie30",
@@ -1393,23 +1393,23 @@ window.PADEL_SEASON = {
       "spieltag": 8,
       "format": "single-set",
       "countsForRanking": false,
-      "datum": null,
-      "uhrzeit": null,
+      "datum": "2026-10-08",
+      "uhrzeit": "19.00",
       "team1": {
         "spieler": [
-          "Erster",
-          "Dritter"
+          "Luca W.",
+          "Marcel M."
         ]
       },
       "team2": {
         "spieler": [
-          "Zweiter",
-          "Vierter"
+          "Jonas L.",
+          "Ludwig W."
         ]
       },
-      "ergebnis": null,
-      "saetze": null,
-      "sieger": null
+      "ergebnis": "6:3",
+      "saetze": "1:0",
+      "sieger": 1
     }
   ],
   "articles": [
